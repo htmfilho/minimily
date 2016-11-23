@@ -1,0 +1,12 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <h3>Import Bank File</h3>
+
+    <form action="{% url 'accounting_import_bank_file' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ exception }}
+        {{ form.as_p }}
+        <input type="submit" value="Import">
+    </form>
+{% endblock%}

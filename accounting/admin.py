@@ -1,3 +1,5 @@
 from django.contrib import admin
+from accounting.models import account, transaction
 
-# Register your models here.
+admin.site.register(account.Account, account.AccountAdmin)
+admin.site.register(transaction.Transaction, transaction.TransactionAdmin)

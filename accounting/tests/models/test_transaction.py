@@ -11,11 +11,19 @@ class BankDataImportTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        cls.csv_data = csv_import.import_csv_data(cls.CORRECT_CSV_FILE)
+        cls.csv_data = csv_import.import_csv_file(cls.CORRECT_CSV_FILE)
 
-    def test_field_names(self):
+    def test_file_import(self):
         try:
-            transaction.BankDataImport(self.FAILING_CSV_FILE)
+            transaction.BankDataImport().load_csv_file(self.FAILING_CSV_FILE)
+            self.fail('The field names of the csv file are not correct.')
+        except exceptions.BankDataImportValidationException:
+            pass
+
+    def test_content_import(self):
+        try:
+            with open(self.FAILING_CSV_FILE) as csv_file_content:
+                transaction.BankDataImport().load_csv_data(csv_file_content)
             self.fail('The field names of the csv file are not correct.')
         except exceptions.BankDataImportValidationException:
             pass
@@ -23,13 +31,15 @@ class BankDataImportTest(TestCase):
     def test_stripped_data(self):
         unstripped_row = self.csv_data[0]
 
-        bank_data_import = transaction.BankDataImport(self.CORRECT_CSV_FILE)
+        bank_data_import = transaction.BankDataImport()
+        bank_data_import.load_csv_file(self.CORRECT_CSV_FILE)
         bank_data_import.strip_data()
         self.assertFalse(unstripped_row['Description'] == bank_data_import.csv_data[0]['Description'],
                          "Fields may have useless spaces that can be ignored.")
 
     def test_import_without_account(self):
-        bank_data_import = transaction.BankDataImport(self.CORRECT_CSV_FILE)
+        bank_data_import = transaction.BankDataImport()
+        bank_data_import.load_csv_file(self.CORRECT_CSV_FILE)
         self.assertRaises(exceptions.InexistingAccountException, bank_data_import.import_data)
 
     def test_import_with_counterparty(self):
@@ -43,7 +53,7 @@ class BankDataImportTest(TestCase):
         _create_account()
         _perform_bank_data_import(self.CORRECT_CSV_FILE)
 
-        self.assertEqual(transaction.Transaction.objects.all().count(), len(self.csv_data),
+        self.assertEqual(transaction.Transaction.objects.all().count(), len(self.csv_data) - 1,
                          'The number of records in the database is different from the rows in the csv file.')
 
     def test_transaction_type(self):
@@ -62,5 +72,6 @@ def _create_account():
 
 
 def _perform_bank_data_import(csv_file):
-    bank_data_import = transaction.BankDataImport(csv_file)
+    bank_data_import = transaction.BankDataImport()
+    bank_data_import.load_csv_file(csv_file)
     bank_data_import.import_data()

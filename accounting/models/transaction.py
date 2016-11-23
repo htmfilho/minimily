@@ -1,10 +1,17 @@
 import datetime
 from django.db import models
+from django.contrib import admin
 from accounting.utils import csv_import
 from . import account, exceptions
 
 TRANSACTION_TYPES = (('CREDIT', 'Credit'),
                      ('DEBIT', 'Debit'))
+
+
+class TransactionAdmin(admin.ModelAdmin):
+    list_display = ('account', 'counterparty', 'type', 'amount', 'value_date', 'booking_date')
+    fieldsets = ((None, {'fields': ('account', 'counterparty', 'type', 'amount', 'value_date', 'booking_date',
+                                    'description', 'details', 'message')}),)
 
 
 class Transaction(models.Model):
@@ -43,9 +50,16 @@ class BankDataImport:
 
     csv_data = None
 
-    def __init__(self, csv_file_path):
+    def __init__(self):
         self.fields.sort()
-        self.csv_data = csv_import.import_csv_data(csv_file_path)
+
+    def load_csv_file(self, csv_file_path):
+        self.csv_data = csv_import.import_csv_file(csv_file_path)
+        if not self._are_fields_valid():
+            raise exceptions.BankDataImportValidationException()
+
+    def load_csv_data(self, csv_file_content):
+        self.csv_data = csv_import.import_csv_data(csv_file_content)
         if not self._are_fields_valid():
             raise exceptions.BankDataImportValidationException()
 
@@ -59,9 +73,10 @@ class BankDataImport:
             an_account = account.get_by_reference(csv_row[self.ACCOUNT_NUMBER])
             if an_account:
                 a_transaction = self._create_transaction(an_account, csv_row)
-                a_transaction.save()
+                if a_transaction:
+                    a_transaction.save()
             else:
-                raise exceptions.InexistingAccountException()
+                raise exceptions.InexistingAccountException(csv_row[self.ACCOUNT_NUMBER])
 
     def _are_fields_valid(self):
         row = self.csv_data[0]
@@ -71,14 +86,17 @@ class BankDataImport:
 
     def _create_transaction(self, an_account, csv_row):
         counterparty = self._get_counterparty(csv_row[self.COUNTERPARTY_ACCOUNT])
-        amount = float(csv_row[self.AMOUNT].replace(',', '.'))
-        transaction_type = TRANSACTION_TYPES[0][0] if amount >= 0 else TRANSACTION_TYPES[1][0]
-        value_date = datetime.datetime.strptime(csv_row[self.VALUE_DATE], self.DATE_FORMAT).date()
-        booking_date = datetime.datetime.strptime(csv_row[self.BOOKING_DATE], self.DATE_FORMAT).date()
-        return Transaction(account=an_account, counterparty=counterparty, type=transaction_type,
-                           amount=amount, value_date=value_date, booking_date=booking_date,
-                           description=csv_row[self.DESCRIPTION], details=csv_row[self.ENTRY_DETAILS],
-                           message=csv_row[self.MESSAGE])
+        if csv_row[self.AMOUNT]:
+            amount = float(csv_row[self.AMOUNT].replace(',', '.'))
+            transaction_type = TRANSACTION_TYPES[0][0] if amount >= 0 else TRANSACTION_TYPES[1][0]
+            value_date = datetime.datetime.strptime(csv_row[self.VALUE_DATE], self.DATE_FORMAT).date()
+            booking_date = datetime.datetime.strptime(csv_row[self.BOOKING_DATE], self.DATE_FORMAT).date()
+            return Transaction(account=an_account, counterparty=counterparty, type=transaction_type,
+                               amount=amount, value_date=value_date, booking_date=booking_date,
+                               description=csv_row[self.DESCRIPTION], details=csv_row[self.ENTRY_DETAILS],
+                               message=csv_row[self.MESSAGE])
+        else:
+            return None
 
     def _get_counterparty(self, reference):
         counterparty = account.get_by_reference(reference)
