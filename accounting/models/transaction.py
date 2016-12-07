@@ -9,14 +9,15 @@ TRANSACTION_TYPES = (('CREDIT', 'Credit'),
 
 
 class TransactionAdmin(admin.ModelAdmin):
-    list_display = ('account', 'counterparty', 'type', 'amount', 'value_date', 'booking_date')
-    fieldsets = ((None, {'fields': ('account', 'counterparty', 'type', 'amount', 'value_date', 'booking_date',
-                                    'description', 'details', 'message')}),)
+    list_display = ('account', 'counterparty', 'category', 'type', 'amount', 'value_date', 'booking_date')
+    fieldsets = ((None, {'fields': ('account', 'counterparty', 'category', 'type', 'amount', 'value_date',
+                                    'booking_date', 'description', 'details', 'message')}),)
 
 
 class Transaction(models.Model):
     account = models.ForeignKey('Account')
     counterparty = models.ForeignKey('Account', related_name='counterparty', null=True, blank=True)
+    category = models.ForeignKey('Category', null=True, blank=True)
     type = models.CharField(max_length=10, choices=TRANSACTION_TYPES)
     amount = models.DecimalField(max_digits=8, decimal_places=2)
     value_date = models.DateTimeField()
