@@ -12,9 +12,14 @@ class Category(models.Model):
     portfolio = models.ForeignKey('Portfolio')
     top_limit = models.DecimalField(max_digits=8, decimal_places=2, blank=True, null=True)
     parent = models.ForeignKey('Category', blank=True, null=True)
+    children = []
 
-    def children(self):
-        return Category.objects.filter(parent=self).order_by('name')
+    def get_children(self):
+        if self.children:
+            return self.children
+        else:
+            self.children = Category.objects.filter(parent=self).order_by('name')
+            return self.children
 
     def siblings(self):
         return Category.objects.filter(parent=self.parent).exclude(pk=self.pk).order_by('name')
@@ -27,10 +32,24 @@ def find_by_portfolio(portfolio):
     return Category.objects.filter(portfolio=portfolio)
 
 
-def build_full_tree(categories, parent):
-    pass
+def build_tree(a_list, parent):
+    children = []
+    for element in a_list:
+        if element.parent is parent:
+            children.append(element)
+            element.children = build_tree(a_list, element)
+    return children
 
 
-def get_full_tree(portfolio):
+def build_forest(a_list):
+    roots = []
+    for element in a_list:
+        if element.parent is None:
+            roots.append(element)
+            element.children = build_tree(a_list, element)
+    return roots
+
+
+def get_tree_categories(portfolio):
     categories = list(find_by_portfolio(portfolio))
-    return build_full_tree(categories)
+    return build_forest(categories)
