@@ -2,7 +2,6 @@ _site
 .sass-cache
 .jekyll-metadata
 target/
-minimily/
 .lein-repl-history
 .lein-failures
 .lein-repl-history
