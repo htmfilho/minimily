@@ -3,3 +3,6 @@ _site
 .jekyll-metadata
 target/
 minimily/
+.lein-repl-history
+.lein-failures
+.lein-repl-history

@@ -1,0 +1,7 @@
+{:up   ["create table user_account (
+           id                char(32)     primary key,
+           username          varchar(100) not null,
+           password          varchar(64)  not null,
+           registration_date timestamp    default current_timestamp
+         );"]
+ :down ["drop table user_account;"]}
