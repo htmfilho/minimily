@@ -4,9 +4,7 @@
 
 (deftest test-mandatory-datasource-options
   (testing "The mandatory datasource options are present."
-    (is (contains? options :adapter))
-    (is (contains? options :server-name))
-    (is (contains? options :port-number))
-    (is (contains? options :database-name))
-    (is (contains? options :username))
-    (is (contains? options :password))))
+    (is (reduce #(and %1 %2)
+                (map #(contains? options %)
+                     [:adapter :server-name :port-number :database-name
+                      :username :password])))))
