@@ -1,7 +1,83 @@
 {:up   ["create table user_account (
-           id                char(32)     primary key,
+           id                serial       primary key,
            username          varchar(100) not null,
            password          varchar(64)  not null,
            registration_date timestamp    default current_timestamp
+         );
+
+         create table user_profile (
+           id           serial       primary key,
+           user_account integer      not null references user_account,
+           first_name   varchar(30)  not null,
+           last_name    varchar(30)  not null,
+           email        varchar(100) constraint unique_email unique
+         );
+
+         create table account (
+           id     serial      primary key,
+           holder integer     not null references user_profile,
+           name   varchar(30) not null,
+           number varchar(30)
+         );
+
+         create table transaction (
+           id               serial        primary key,
+           account          integer       not null references account,
+           type             smallint      not null,
+           amount           decimal(8, 2) not null constraint positive_amount check (amount > 0),
+           description      varchar(255),
+           date_transaction timestamp     default current_timestamp
+         );
+
+         create table beneficiary (
+           id   serial      primary key,
+           name varchar(50) not null
+         );
+
+         create table expenditure (
+           id           serial        primary key,
+           beneficiary  integer       not null references beneficiary,
+           account      integer       not null references account,
+           description  varchar(100)  not null,
+           amount       decimal(8, 2) not null,
+           payment_date date,
+           transaction  integer       references transaction
+         );
+
+         create table expenditure_item (
+           id   serial       primary key,
+           name varchar(100) not null
+         );
+
+         create table expenditure_decomposition (
+           id         serial        primary key,
+           item       integer       not null references expenditure_item,
+           volume     integer       not null,
+           unit       varchar(10)   not null,
+           unit_price decimal(8, 2) not null
+         );
+
+         create table sponsor (
+           id   serial      primary key,
+           name varchar(50) not null
+         );
+
+         create table income (
+           id           serial        primary key,
+           sponsor      integer       not null references sponsor,
+           account      integer       not null references account,
+           description  varchar(100)  not null,
+           amount       decimal(8, 2) not null,
+           payment_date date,
+           transaction  integer       references transaction
          );"]
- :down ["drop table user_account;"]}
+ :down ["drop table income;
+         drop table sponsor;
+         drop table expenditure_decomposition;
+         drop table expenditure_item;
+         drop table expenditure;
+         drop table beneficiary;
+         drop table transaction;
+         drop table account;
+         drop table user_profile;
+         drop table user_account;"]}
