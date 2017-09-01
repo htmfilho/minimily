@@ -12,3 +12,8 @@
 
 (def datasource
   (make-datasource options))
+
+(defn resultset [query]
+  (jdbc/with-db-connection [conn {:datasource datasource}]
+    (let [rows (jdbc/query conn query)]
+      rows)))

@@ -1,15 +1,19 @@
 (ns minimily.accounting.model.account
-  (:require [minimily.persistence-model :refer :all]))
+  (:require [minimily.persistence-model :refer :all]
+            [honeysql.core              :as sql]
+            [honeysql.helpers           :refer :all :as helpers]))
 
 (defrecord Account [id holder name  ; required
                     number]         ; optional
   Entity
 
-  (save [record]
+  (defn save [record]
     record)
 
-  (remove [record]
+  (defn remove [record]
     nil)
 
-  (get-one [id]
-    nil))
+  (defn get-one [id]
+    (sql/build :select :*
+               :from :account
+               :where [:= :id id]))
