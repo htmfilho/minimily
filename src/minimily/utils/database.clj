@@ -13,7 +13,15 @@
 (def datasource
   (make-datasource options))
 
+(defmacro with-conn [& body]
+  `(jdbc/with-db-connection [~'conn {:datasource datasource}]
+    ~@body))
+
 (defn resultset [query]
-  (jdbc/with-db-connection [conn {:datasource datasource}]
+  (with-conn
     (let [rows (jdbc/query conn query)]
       rows)))
+
+(defn delete-record [table id]
+  (with-conn
+    (jdbc/delete! conn table ["id = ?" id])))

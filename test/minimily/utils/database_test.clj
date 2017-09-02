@@ -8,3 +8,7 @@
                 (map #(contains? options %)
                      [:adapter :server-name :port-number :database-name
                       :username :password])))))
+
+(deftest test-delete-record
+  (testing "Delete record that doesn't exist"
+    (is (= 0 (first (delete-record :account 0))))))
