@@ -5,3 +5,4 @@ target/
 .lein-repl-history
 .lein-failures
 .lein-repl-history
+.nrepl-port

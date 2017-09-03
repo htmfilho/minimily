@@ -1,4 +1,11 @@
-(ns minimily.auth.model.user-account)
+(ns minimily.auth.model.user-account
+  (:require [minimily.utils.database :as db]))
 
-(defrecord UserAccount [id username password  ; required
-                        registration_date])   ; optional
+(def table :user_account)
+
+(defn get [id]
+  (db/get-record table id))
+
+(defn save [record]
+  (db/save-record table record))
+

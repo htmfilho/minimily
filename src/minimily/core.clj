@@ -10,4 +10,4 @@
 
 (defn -main [& args]
   (repl/migrate migration-config)
-  (println (resultset "SELECT 0")))
+  (println (find-records "SELECT 0")))
