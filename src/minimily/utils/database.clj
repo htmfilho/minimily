@@ -19,18 +19,17 @@
 
 (defn find-records [query]
   (with-conn
-    (let [rows (jdbc/query conn query)]
-      rows)))
+    (jdbc/query conn query)))
 
 (defn get-record [table id]
   (find-records ["select * from ? where id = ?" table id]))
 
 (defn insert-record
   "Returns the number of inserted records."
-  [table record
+  [table record]
    (with-conn
     (let [record (dissoc record :id)]
-      (jdbc/insert! conn table (keys record) (vals record))))])
+      (jdbc/insert! conn table (keys record) (vals record)))))
 
 (defn update-record [table record]
   (with-conn
