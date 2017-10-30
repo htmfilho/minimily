@@ -4,12 +4,7 @@
             [compojure.route    :as route]
             [clojure.java.io    :as io]
             [ring.adapter.jetty :as jetty]
-            [environ.core       :refer [env]]
-            [liberator.core     :only [defresource]]))
-
-(defresource hello-world
-  :available-media-types ["text/plain"]
-  :handle-ok "Minimily RESTful!")
+            [environ.core       :refer [env]]))
 
 (defn splash []
   {:status 200
@@ -18,7 +13,7 @@
 
 (defroutes app
   (GET "/" []
-       (hello-world))
+       (splash))
   (ANY "*" []
        (route/not-found (slurp (io/resource "404.html")))))
 
