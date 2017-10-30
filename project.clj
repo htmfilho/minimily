@@ -18,7 +18,7 @@
 
                  [compojure                 "1.6.0" ]  ; routing library
                  [ring/ring-jetty-adapter   "1.4.0" ]  ; web application library
-                 ] 
+                 [liberator                 "0.15.1"]] ; RESTful web service library
   :min-lein-version "2.0.0"
   :plugins [[environ/environ.lein "0.3.1"]]
   :hooks [environ.leiningen.hooks]

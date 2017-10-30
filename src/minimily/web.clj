@@ -4,16 +4,21 @@
             [compojure.route    :as route]
             [clojure.java.io    :as io]
             [ring.adapter.jetty :as jetty]
-            [environ.core       :refer [env]]))
+            [environ.core       :refer [env]]
+            [liberator.core     :only [defresource]]))
+
+(defresource hello-world
+  :available-media-types ["text/plain"]
+  :handle-ok "Minimily RESTful!")
 
 (defn splash []
   {:status 200
    :headers {"Content-Type" "text/plain"}
-   :body "Hello from Heroku"})
+   :body "Minimily"})
 
 (defroutes app
   (GET "/" []
-       (splash))
+       (hello-world))
   (ANY "*" []
        (route/not-found (slurp (io/resource "404.html")))))
 
