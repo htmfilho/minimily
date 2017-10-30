@@ -1,0 +1,6 @@
+{
+  "name": "Minimily",
+  "description": "Application designed to keep life as simple as possible"
+  "image": "heroku/clojure",
+  "addons": [ "heroku-postgresql" ]
+}

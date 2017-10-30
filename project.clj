@@ -13,5 +13,12 @@
                  [honeysql                  "0.9.0" ]  ; sql abstraction
                  [hikari-cp                 "1.7.6" ]  ; connection pool
                  [ragtime                   "0.7.1" ]  ; migration
-                 [org.slf4j/slf4j-nop       "1.7.13"]] ; hikari-cp's dependency
-  :main minimily.core)
+                 [org.slf4j/slf4j-nop       "1.7.13"]  ; hikari-cp's dependency
+
+                 [compojure                 "1.4.0" ]
+                 [ring/ring-jetty-adapter   "1.4.0" ]
+                 [environ                   "1.0.0" ]] 
+  :plugins [[environ/environ.lein "0.3.1"]]
+  :hooks [environ.leiningen.hooks]
+  :uberjar-name "minimily-standalone.jar"
+  :profiles {:production {:env {:production true}}})
