@@ -5,7 +5,8 @@
             [config.core       :refer [env]]))
 
 (defn decompose-url [url]
-  (let [double-slashes (str/index-of url "//")
+  (let [url            (or url (System/getenv "DATABASE_URL"))
+        double-slashes (str/index-of url "//")
         second-colon   (str/index-of url ":" (+ double-slashes 2))
         at             (str/index-of url "@")
         third-colon    (str/index-of url ":" at)
@@ -16,11 +17,12 @@
      :port-number   (subs url (+ third-colon 1) slash)
      :database-name (subs url (+ slash 1))}))
 
-(def options  (conj {:pool-name "db-pool" :adapter "postgresql"}
-                    (decompose-url (:DATABASE_URL env))))
+(def options {:pool-name "db-pool" :adapter "postgresql"})
 
 (def datasource
-  (make-datasource options))
+  (make-datasource (conj options
+                         (decompose-url
+                           (env :DATABASE_URL)))))
 
 (defmacro with-conn [& body]
   `(jdbc/with-db-connection [~'conn {:datasource datasource}]

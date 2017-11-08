@@ -4,10 +4,11 @@
             [compojure.route         :as route]
             [clojure.java.io         :as io]
             [ring.adapter.jetty      :as jetty]
-            [environ.core            :refer [env]]
+            [config.core             :refer [env]]
             [minimily.utils.database :refer :all]
             [ragtime.jdbc            :as migration]
-            [ragtime.repl            :as repl]))
+            [ragtime.repl            :as repl])
+  (:gen-class))
 
 (defn splash []
   {:status 200
@@ -29,6 +30,3 @@
   (println (find-records "SELECT 0"))
   (let [port (Integer. (or port (env :port) 5000))]
     (jetty/run-jetty (site #'app) {:port port :join? false})))
-
-; (.stop server)
-; (def server (-main))
