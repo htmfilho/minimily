@@ -1,14 +1,23 @@
 (ns minimily.utils.database
   (:require [hikari-cp.core    :refer :all]
-            [clojure.java.jdbc :as jdbc]))
+            [clojure.string    :as str]
+            [clojure.java.jdbc :as jdbc]
+            [config.core       :refer [env]]))
 
-(def options {:pool-name     "db-pool"
-              :adapter       "postgresql"
-              :username      "minimily_usr"
-              :password      "secret"
-              :database-name "minimily"
-              :server-name   "localhost"
-              :port-number   5432})
+(defn decompose-url [url]
+  (let [double-slashes (str/index-of url "//")
+        second-colon   (str/index-of url ":" (+ double-slashes 2))
+        at             (str/index-of url "@")
+        third-colon    (str/index-of url ":" at)
+        slash          (str/index-of url "/" third-colon)]
+    {:username      (subs url (+ double-slashes 2) second-colon)
+     :password      (subs url (+ second-colon 1) at)
+     :server-name   (subs url (+ at 1) third-colon)
+     :port-number   (subs url (+ third-colon 1) slash)
+     :database-name (subs url (+ slash 1))}))
+
+(def options  (conj {:pool-name "db-pool" :adapter "postgresql"}
+                    (decompose-url (:DATABASE_URL env))))
 
 (def datasource
   (make-datasource options))

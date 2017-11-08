@@ -6,3 +6,5 @@ target/
 .lein-failures
 .lein-repl-history
 .nrepl-port
+config/dev/config.edn
+config/prod/config.edn

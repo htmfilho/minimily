@@ -7,19 +7,24 @@
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure       "1.8.0" ]  ; recent version of Clojure
-                 [environ                   "1.1.0" ]  ; manage environment variables
+                 [yogthos/config            "0.9"   ]  ; manage environment variables
 
                  [org.clojure/java.jdbc     "0.7.0" ]  ; jdbc api
                  [org.postgresql/postgresql "42.1.4"]  ; db driver
                  [honeysql                  "0.9.0" ]  ; sql abstraction
-                 [hikari-cp                 "1.7.6" ]  ; connection pool
+                 [hikari-cp                 "1.8.1" ]  ; connection pool
                  [ragtime                   "0.7.1" ]  ; migration
                  [org.slf4j/slf4j-nop       "1.7.13"]  ; hikari-cp's dependency
 
                  [compojure                 "1.6.0" ]  ; routing library
-                 [ring/ring-jetty-adapter   "1.4.0" ]] ; web application library
+                 [hiccup                    "1.0.5" ]  ; html template library
+                 [ring-server               "0.5.0" ]] ; web application library
   :min-lein-version "2.0.0"
-  :plugins [[environ/environ.lein "0.3.1"]]
-  :hooks [environ.leiningen.hooks]
+  :main ^:ship-aot minimily.web
+  :plugins [[lein-ring            "0.8.12"]]
+  :ring {:handler minimily.handler/app
+         :init minimily.handler/init
+         :destroy minimily.handler/destroy}
   :uberjar-name "minimily-standalone.jar"
-  :profiles {:production {:env {:production true}}})
+  :profiles {:prod {:resource-paths ["config/prod"]}
+             :dev  {:resource-paths ["config/dev"]}})
