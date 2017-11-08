@@ -20,12 +20,7 @@
                  [hiccup                    "1.0.5" ]  ; html template library
                  [ring-server               "0.5.0" ]] ; web application library
   :min-lein-version "2.0.0"
-  ;:main minimily.web
   :main ^:ship-aot minimily.web
-  :plugins [[lein-ring            "0.8.12"]]
-  :ring {:handler minimily.handler/app
-         :init minimily.handler/init
-         :destroy minimily.handler/destroy}
   :uberjar-name "minimily-standalone.jar"
   :profiles {:prod {:resource-paths ["config/prod"]}
              :dev  {:resource-paths ["config/dev"]}
