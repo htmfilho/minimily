@@ -2,7 +2,9 @@
   (:require [hikari-cp.core    :refer :all]
             [clojure.string    :as str]
             [clojure.java.jdbc :as jdbc]
-            [config.core       :refer [env]]))
+            [config.core       :refer [env]]
+            [ragtime.jdbc      :as migration]
+            [ragtime.repl      :as repl]))
 
 (defn decompose-url [url]
   (let [url            (or url (System/getenv "DATABASE_URL"))
@@ -23,6 +25,13 @@
   (make-datasource (conj options
                          (decompose-url
                            (env :DATABASE_URL)))))
+
+(def migration-config
+ {:datastore  (migration/sql-database {:datasource datasource})
+  :migrations (migration/load-resources "migrations")})
+
+(defn migrate []
+  (repl/migrate migration-config))
 
 (defmacro with-conn [& body]
   `(jdbc/with-db-connection [~'conn {:datasource datasource}]

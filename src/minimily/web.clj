@@ -3,30 +3,26 @@
             [compojure.handler       :refer [site]]
             [compojure.route         :as route]
             [clojure.java.io         :as io]
+            [ring.middleware.reload  :refer [wrap-reload]]
             [ring.adapter.jetty      :as jetty]
             [config.core             :refer [env]]
-            [minimily.utils.database :refer :all]
-            [ragtime.jdbc            :as migration]
-            [ragtime.repl            :as repl])
+            [minimily.routing        :as routing]
+            [minimily.utils.database :as db])
   (:gen-class))
 
-(defn splash []
-  {:status 200
-   :headers {"Content-Type" "text/plain"}
-   :body "Minimily"})
+(defonce server (atom nil))
 
-(defroutes app
-  (GET "/" []
-       (splash))
-  (ANY "*" []
-       (route/not-found (slurp (io/resource "404.html")))))
+(defn start-server [port]
+  (reset! server (jetty/run-jetty (if (env :reload) 
+                                    (wrap-reload (site #'routing/app))
+                                    (site #'routing/app)) 
+                                  {:port port :join? false})))
 
-(def migration-config
- {:datastore  (migration/sql-database {:datasource datasource})
-  :migrations (migration/load-resources "migrations")})
+(defn stop-server []
+  (.stop @server)
+  (reset! server nil))
 
 (defn -main [& [port]]
-  (repl/migrate migration-config)
-  (println (find-records "SELECT 0"))
+  (db/migrate)
   (let [port (Integer. (or port (env :port) 5000))]
-    (jetty/run-jetty (site #'app) {:port port :join? false})))
+    (start-server port)))

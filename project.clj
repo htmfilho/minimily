@@ -23,5 +23,5 @@
   :main ^:ship-aot minimily.web
   :uberjar-name "minimily-standalone.jar"
   :profiles {:prod {:resource-paths ["config/prod"]}
-             :dev  {:resource-paths ["config/dev"]}
+             :dev  {:resource-paths ["config/dev"]} ; it runs when using the repl.
              :uberjar {:aot :all :resource-paths ["config/prod"]}}) ;
