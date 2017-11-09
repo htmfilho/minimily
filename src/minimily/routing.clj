@@ -1,15 +1,15 @@
 (ns minimily.routing
-  (:require [compojure.core          :refer [defroutes GET PUT POST DELETE ANY]]
-            [compojure.route         :as route]
-            [clojure.java.io         :as io]))
+  (:require [compojure.core            :as core]
+            [compojure.route           :as route]
+            [clojure.java.io           :as io]
+            [minimily.auth.web.routing :as auth]))
 
-(defn splash []
+(defn homepage []
   {:status 200
-   :headers {"Content-Type" "text/plain"}
-   :body "Minimily!"})
+   :headers {"Content-Type" "text/html"}
+   :body "<a href='/new_account'>New Account</a>"})
 
-(defroutes app
-  (GET "/" []
-       (splash))
-  (ANY "*" []
-       (route/not-found (slurp (io/resource "public/404.html")))))
+(core/defroutes app
+  (core/GET "/" [] (homepage))
+  (auth/routes)
+  (core/ANY "*" [] (route/not-found (slurp (io/resource "public/404.html")))))

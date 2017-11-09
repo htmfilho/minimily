@@ -1,10 +1,11 @@
 (ns minimily.web
-  (:require [compojure.core          :refer [defroutes GET PUT POST DELETE ANY]]
+  (:require [clojure.java.io         :as io]
+            [ring.middleware.reload  :refer [wrap-reload]]
+            [ring.middleware.session :refer [wrap-session]]
+            [ring.adapter.jetty      :as jetty]
+            [compojure.core          :refer [defroutes GET PUT POST DELETE ANY]]
             [compojure.handler       :refer [site]]
             [compojure.route         :as route]
-            [clojure.java.io         :as io]
-            [ring.middleware.reload  :refer [wrap-reload]]
-            [ring.adapter.jetty      :as jetty]
             [config.core             :refer [env]]
             [minimily.routing        :as routing]
             [minimily.utils.database :as db])
@@ -13,10 +14,12 @@
 (defonce server (atom nil))
 
 (defn start-server [port]
-  (reset! server (jetty/run-jetty (if (env :reload) 
-                                    (wrap-reload (site #'routing/app))
-                                    (site #'routing/app)) 
-                                  {:port port :join? false})))
+  (let [routing-app (wrap-session (site #'routing/app))]
+    (reset! server (jetty/run-jetty (if (env :reload)
+                                      (wrap-reload routing-app)
+                                      routing-app) 
+                                    {:port port :join? false})))
+  (println (str "Go to http://localhost:" port)))
 
 (defn stop-server []
   (.stop @server)
