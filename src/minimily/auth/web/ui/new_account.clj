@@ -4,7 +4,7 @@
 
 (defn draw-ui []
   (layout "New Account"
-      (form/form-to [:post "/account/new"]))
+      (form/form-to [:post "/account/new"])))
 
 (defn new-account []
   {:status 200

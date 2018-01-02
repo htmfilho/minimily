@@ -7,7 +7,7 @@
       [:title "Minimily"]
       (page/include-css "/css/bootstrap.min.css")]
     [:body 
-      [:nav {:class "navbar navbar-light bg-light"}
+      [:nav {:class "navbar navbar-dark bg-primary"}
         [:a {:class "navbar-brand" :href "/"} "Minimily"]
         [:button {:class "navbar-toggler"
                   :type "button"
