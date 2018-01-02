@@ -3,8 +3,7 @@
             [minimily.web.ui.layout :refer [layout]]))
 
 (defn draw-ui []
-  (layout "Home"
-      [:a {:href "/new_account"} "New account"]))
+  (layout "" ""))
 
 (defn home []
   {:status 200
