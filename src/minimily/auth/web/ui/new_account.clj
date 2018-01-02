@@ -1,10 +1,10 @@
 (ns minimily.auth.web.ui.new-account
-  (:require [hiccup.page :as page]
+  (:require [hiccup.form            :as form]
             [minimily.web.ui.layout :refer [layout]]))
 
 (defn draw-ui []
   (layout "New Account"
-      [:p "Create a new account"]))
+      (form/form-to [:post "/account/new"]))
 
 (defn new-account []
   {:status 200

@@ -1,6 +1,5 @@
 (ns minimily.web.ui.home
-  (:require [hiccup.page :as page]
-            [minimily.web.ui.layout :refer [layout]]))
+  (:require [minimily.web.ui.layout :refer [layout]]))
 
 (defn draw-ui []
   (layout "" ""))
