@@ -20,7 +20,7 @@
                  [hiccup                    "1.0.5" ]  ; html template library
                  [ring-server               "0.5.0" ]] ; web application library
   :min-lein-version "2.0.0"
-  :main ^:ship-aot minimily.web
+  :main ^:ship-aot minimily.app
   :uberjar-name "minimily-standalone.jar"
   :profiles {:prod {:resource-paths ["config/prod"]}
              :dev  {:resource-paths ["config/dev"]} ; it runs when using the repl.

@@ -1,4 +1,4 @@
-(ns minimily.web
+(ns minimily.app
   (:require [clojure.java.io         :as io]
             [ring.middleware.reload  :refer [wrap-reload]]
             [ring.middleware.session :refer [wrap-session]]
@@ -7,7 +7,7 @@
             [compojure.handler       :refer [site]]
             [compojure.route         :as route]
             [config.core             :refer [env]]
-            [minimily.routing        :as routing]
+            [minimily.web.routing    :as routing]
             [minimily.utils.database :as db])
   (:gen-class))
 

@@ -1,4 +1,4 @@
-(ns minimily.routing
+(ns minimily.web.routing
   (:require [compojure.core            :as core]
             [compojure.route           :as route]
             [clojure.java.io           :as io]
