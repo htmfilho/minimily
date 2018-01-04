@@ -6,8 +6,7 @@
   (testing "The mandatory datasource options are present."
     (is (reduce #(and %1 %2)
                 (map #(contains? options %)
-                     [:adapter :server-name :port-number :database-name
-                      :username :password])))))
+                     [:pool-name :adapter])))))
 
 (deftest test-find-records
   (testing "The find function is operational with a query."
