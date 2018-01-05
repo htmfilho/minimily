@@ -45,25 +45,33 @@
   (find-records ["select * from ? where id = ?" table id]))
 
 (defn insert-record
-  "Returns the number of inserted records."
+  "Returns a map of fields persisted in the database."
   [table record]
    (with-conn
     (let [record (dissoc record :id)]
-      (jdbc/insert! conn table (keys record) (vals record)))))
+      (first (jdbc/insert! conn table record)))))
 
-(defn update-record [table record]
+(defn update-record
+  "Returns the number of records updated in the database."
+  [table record]
   (with-conn
     (let [id     (:id record)
           record (dissoc record :id)]
       (jdbc/update! conn table record ["id = ?" id]))))
 
-(defn save-record [table record]
-    (if (nil? (get record :id))
-      (insert-record table record)
-      (update-record table record)))
+(defn save-record
+  "If the object doesn't exist it returns the id of the recently persisted 
+   object. If the object exists it returns the id that comes with the object 
+   only if at least one object is updated or zero if no object is updated."
+  [table record]
+  (if (nil? (get record :id))
+    (:id (insert-record table record))
+    (if (> (update-record table record) 0)
+      (:id record)
+      0)))
 
 (defn delete-record
-  "Returns the number of deleted records."
+  "Returns the number of deleted records from the database."
   [table id]
   (with-conn
     (jdbc/delete! conn table ["id = ?" id])))

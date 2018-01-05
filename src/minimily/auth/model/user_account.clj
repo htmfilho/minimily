@@ -6,8 +6,8 @@
 (defn get-it [id]
   (db/get-record table id))
 
-(defn save [a-user-account]
-  (db/save-record table a-user-account))
+(defn save [user-account]
+  (db/save-record table user-account))
 
 (defn delete [id]
   (db/delete-record table id))
