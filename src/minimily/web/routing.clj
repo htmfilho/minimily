@@ -7,7 +7,7 @@
 
 (defn routes []
   (core/routes
-    (core/GET "/" [] (ui/home))))
+    (core/GET "/" {session :session} (ui/home session))))
 
 (core/defroutes app
   (routes)
