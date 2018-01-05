@@ -5,9 +5,10 @@
   (page/html5 
     [:head
       [:title "Minimily"]
-      (page/include-css "/css/bootstrap.min.css")]
+      (page/include-css "/css/bootstrap.min.css"
+                        "/css/custom.css")]
     [:body 
-      [:nav {:class "navbar navbar-dark bg-primary"}
+      [:nav {:class "navbar fixed-top navbar-dark bg-primary"}
         [:a {:class "navbar-brand" :href "/"} "Minimily"]
         [:button {:class "navbar-toggler"
                   :type "button"
@@ -21,10 +22,12 @@
           [:ul {:class "navbar-nav mr-auto"}]
           [:ul {:class "navbar-nav my-2 my-lg-0"}
             [:li {:class "nav-item"}
-              [:a {:class "nav-link  my-2 my-sm-0" :href "/new_account"} "Sign Up"]]]]]
+              [:a {:class "nav-link  my-2 my-sm-0" :href "/signup"} "Sign Up"]]
+            [:li {:class "nav-item"}
+              [:a {:class "nav-link  my-2 my-sm-0" :href "/signin"} "Sign In"]]]]]
       
-      [:div {:class "container"} 
-        (when title [:h1 title])
+      [:div {:class "container"}
+        (when title [:div {:class "page-title"} title])
         content]
       
       (page/include-js "/js/jquery-3.2.1.slim.min.js"

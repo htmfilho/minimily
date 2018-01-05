@@ -1,0 +1,10 @@
+body {
+    padding-top: 80px;
+}
+
+.page-title {
+    font-size: 2em;
+    font-weight: bold;
+    border-bottom: 1px solid gray;
+    margin-bottom: 15px;
+}
