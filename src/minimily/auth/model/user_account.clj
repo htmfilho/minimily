@@ -13,13 +13,16 @@
   (db/delete-record table id))
 
 (defn authenticate
-  "Returns full name."
+  "Returns some reference data about the authenticated user or nil if the user
+   is not authenticated."
   [username password]
   (let [auth_user (db/find-records
-                    [(str "select first_name, last_name from "
+                    [(str "select u.id, first_name, last_name from "
                           (name table)
-                          " left join user_profile on user_account.id = user_profile.user_account where username = ? and password = ?")
+                          " u left join user_profile p" 
+                          " on u.id = p.user_account"
+                          " where u.username = ? and u.password = ?")
                      username password])]
     (if (empty? auth_user)
       nil
-      (dissoc (first auth_user) :password :registration_date))))
+      (first auth_user))))

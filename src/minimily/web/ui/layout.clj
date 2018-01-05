@@ -1,7 +1,7 @@
 (ns minimily.web.ui.layout
   (:require [hiccup.page :as page]))
 
-(defn layout [title content]
+(defn layout [session title content]
   (page/html5 
     [:head
       [:title "Minimily"]
@@ -20,14 +20,19 @@
           [:span {:class "navbar-toggler-icon"}]]
         [:div {:class "collapse navbar-collapse" :id "navbarSupportedContent"}
           [:ul {:class "navbar-nav mr-auto"}]
-          [:ul {:class "navbar-nav my-2 my-lg-0"}
-            [:li {:class "nav-item"}
-              [:a {:class "nav-link  my-2 my-sm-0" :href "/signup"} "Sign Up"]]
-            [:li {:class "nav-item"}
-              [:a {:class "nav-link  my-2 my-sm-0" :href "/signin"} "Sign In"]]]]]
+          (if (empty? session)
+            [:ul {:class "navbar-nav my-2 my-lg-0"}
+              [:li {:class "nav-item"}
+                [:a {:class "nav-link my-2 my-sm-0" :href "/signup"} "Sign Up"]]
+              [:li {:class "nav-item"}
+                [:a {:class "nav-link  my-2 my-sm-0" :href "/signin"} "Sign In"]]]
+            [:ul {:class "navbar-nav my-2 my-lg-0"}
+              [:li {:class "nav-item"}
+                [:a {:class "nav-link  my-2 my-sm-0" :href "/signout"} "Sign Out"]]])]]
       
       [:div {:class "container"}
-        (when title [:div {:class "page-title"} title])
+        (when title 
+          [:div {:class "page-title"} title])
         content]
       
       (page/include-js "/js/jquery-3.2.1.slim.min.js"

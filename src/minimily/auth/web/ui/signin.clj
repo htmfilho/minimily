@@ -4,7 +4,7 @@
             [minimily.web.ui.layout :refer [layout]]))
 
 (defn signin-page []
-  (layout "Sign In"
+  (layout nil "Sign In"
       (form-to [:post "/account/login"]
         [:div {:class "form-group"}
           (label "username" "Email address")

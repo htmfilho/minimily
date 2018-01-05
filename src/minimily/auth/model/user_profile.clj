@@ -5,3 +5,8 @@
 
 (defn save [user-profile]
   (db/save-record table user-profile))
+
+(defn full-name [profile]
+  (str (:first_name profile)
+       " "
+       (:last_name profile)))

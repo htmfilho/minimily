@@ -16,19 +16,23 @@
     (redirect "/signin")))
 
 (defn login [params session]
-  (let [full-name (user-account/authenticate (:username params) 
-                                                (:password params))]
-    (if full-name
-      (let [session (assoc session :full-name (str (:first_name full-name)
-                                                   " "
-                                                   (:last_name full-name)))]
+  (let [auth-user (user-account/authenticate (:username params) 
+                                             (:password params))]
+    (if (nil? auth-user)
+      (println "login error")
+      (let [session {:full-name (user-profile/full-name auth-user)
+                     :user-id (:id auth-user)}]
         (-> (redirect "/")
-            (assoc :session session)))
-      (println "login error"))))
+            (assoc :session session))))))
+
+(defn logout [session]
+  (-> (redirect "/")
+      (assoc :session {})))
 
 (defn routes []
   (core/routes
     (core/GET  "/signin"      [] (signin))
     (core/GET  "/signup"      [] (signup))
+    (core/GET  "/signout"     {session :session} (logout session))
     (core/POST "/account/new" {params :params} (new-account params))
     (core/POST "/account/login" {params :params session :session} (login params session))))
