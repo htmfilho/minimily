@@ -2,7 +2,7 @@
   (:require [minimily.web.ui.layout :refer [layout]]))
 
 (defn draw-ui [session]
-  (layout (:username session) nil))
+  (layout (:full-name session) nil))
 
 (defn home [session]
   {:status 200

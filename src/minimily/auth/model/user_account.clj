@@ -12,11 +12,13 @@
 (defn delete [id]
   (db/delete-record table id))
 
-(defn authenticate [username password]
+(defn authenticate
+  "Returns full name."
+  [username password]
   (let [auth_user (db/find-records
-                    [(str "select * from "
+                    [(str "select first_name, last_name from "
                           (name table)
-                          " where username = ? and password = ?")
+                          " left join user_profile on user_account.id = user_profile.user_account where username = ? and password = ?")
                      username password])]
     (if (empty? auth_user)
       nil

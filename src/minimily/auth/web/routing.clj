@@ -16,10 +16,12 @@
     (redirect "/signin")))
 
 (defn login [params session]
-  (let [user-account (user-account/authenticate (:username params) 
+  (let [full-name (user-account/authenticate (:username params) 
                                                 (:password params))]
-    (if user-account
-      (let [session (assoc session :username (:username user-account))]
+    (if full-name
+      (let [session (assoc session :full-name (str (:first_name full-name)
+                                                   " "
+                                                   (:last_name full-name)))]
         (-> (redirect "/")
             (assoc :session session)))
       (println "login error"))))
