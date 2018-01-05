@@ -4,7 +4,7 @@
             [ring.middleware.session :refer [wrap-session]]
             [ring.adapter.jetty      :as jetty]
             [compojure.core          :refer [defroutes GET PUT POST DELETE ANY]]
-            [compojure.handler       :refer [site]]
+            [compojure.handler       :as handler]
             [compojure.route         :as route]
             [config.core             :refer [env]]
             [minimily.web.routing    :as routing]
@@ -14,7 +14,7 @@
 (defonce server (atom nil))
 
 (defn start-server [port]
-  (let [routing-app (wrap-session (site #'routing/app))]
+  (let [routing-app (wrap-session (handler/site #'routing/app))]
     (reset! server (jetty/run-jetty (if (env :reload)
                                       (wrap-reload routing-app)
                                       routing-app) 
