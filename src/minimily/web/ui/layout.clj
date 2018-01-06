@@ -2,8 +2,11 @@
   (:require [hiccup.page :as page]))
 
 (defn layout [session title content]
-  (page/html5 
+  (page/html5 {:lang "en"}
     [:head
+      [:meta {:charset "UTF-8"}]
+      [:meta {:name "viewport" 
+              :content "width=device-width, initial-scale=1, shrink-to-fit=no"}]
       [:title "Minimily"]
       (page/include-css "/css/bootstrap.min.css"
                         "/css/custom.css")]
@@ -34,6 +37,9 @@
         (when title 
           [:div {:class "page-title"} title])
         content]
+
+      [:nav {:class "navbar fixed-bottom navbar-light bg-light"}
+        [:a {:class "nav-link" :href "http://www.minimily.com"} "Help"]]
       
       (page/include-js "/js/jquery-3.2.1.slim.min.js"
                        "/js/popper.min.js"
