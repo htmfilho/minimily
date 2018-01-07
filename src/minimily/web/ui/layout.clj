@@ -36,7 +36,10 @@
       [:div {:class "container"}
         (when title 
           [:div {:class "page-title"} title])
-        content]
+        content
+        [:br]
+        [:br]
+        [:br]]
 
       [:nav {:class "navbar fixed-bottom navbar-light bg-light"}
         [:a {:class "nav-link" :href "http://www.minimily.com"} "Help"]]

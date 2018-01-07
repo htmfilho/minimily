@@ -1,11 +1,13 @@
 (ns minimily.auth.web.ui.signup
-  (:require [hiccup.form            :refer [email-field form-to label 
-                                            password-field submit-button
-                                            text-field]]
-            [minimily.web.ui.layout :refer [layout]]))
+  (:require [minimily.web.ui.layout     :refer [layout]]
+            [minimily.utils.web.wrapper :refer [http-headers]]
+            [hiccup.form                :refer [email-field form-to label 
+                                                password-field submit-button
+                                                text-field]]))
 
-(defn signup-page []
-  (layout nil "Sign Up"
+(defn signup []
+  (http-headers 
+    (layout nil "Sign Up"
       (form-to [:post "/account/new"]
         [:div {:class "form-group"}
           (label "first_name" "First Name")
@@ -23,9 +25,4 @@
                            :autocomplete "off"} "password")]
         (submit-button {:class "btn btn-primary"} "Submit")
         (str "&nbsp;")
-        [:a {:class "btn btn-outline-secondary" :href "/"} "Cancel"])))
-
-(defn signup []
-  {:status 200
-   :headers {"Content-Type" "text/html"}
-   :body (signup-page)})
+        [:a {:class "btn btn-outline-secondary" :href "/"} "Cancel"]))))
