@@ -3,14 +3,8 @@
 
 (def table :user_account)
 
-(defn get-it [id]
-  (db/get-record table id))
-
 (defn save [user-account]
   (db/save-record table user-account))
-
-(defn delete [id]
-  (db/delete-record table id))
 
 (defn authenticate
   "Returns some reference data about the authenticated user or nil if the user

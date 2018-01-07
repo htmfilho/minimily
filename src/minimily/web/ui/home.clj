@@ -2,7 +2,7 @@
   (:require [minimily.web.ui.layout :refer [layout]]
   [minimily.utils.web.wrapper       :refer [http-headers]]))
 
-(defn home [session]
+(defn home-page [session]
   (http-headers 
     (layout session (:full-name session) 
       (when (not (empty? session))

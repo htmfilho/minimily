@@ -37,12 +37,19 @@
   `(jdbc/with-db-connection [~'conn {:datasource datasource}]
     ~@body))
 
+(defn valid-id [id]
+  (if (int? id)
+    id
+    (try (Integer/parseInt id)
+      (catch Exception e nil))))
+
 (defn find-records [query]
   (with-conn
     (jdbc/query conn query)))
 
 (defn get-record [table id]
-  (find-records ["select * from ? where id = ?" table id]))
+  (with-conn
+    (jdbc/get-by-id conn table (valid-id id))))
 
 (defn insert-record
   "Returns a map of fields persisted in the database."

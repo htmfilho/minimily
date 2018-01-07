@@ -5,9 +5,9 @@
             [minimily.web.ui.layout     :refer [layout]]
             [minimily.utils.web.wrapper :refer [http-headers]]))
 
-(defn account-form []
+(defn account-form-page [session]
   (http-headers
-    (layout nil "New Account"
+    (layout session "New Account"
       (form-to [:post "/accounts/save"]
         [:div {:class "form-group"}
           (label "name" "Name")

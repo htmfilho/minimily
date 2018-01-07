@@ -4,11 +4,11 @@
             [clojure.java.io                 :as io]
             [minimily.auth.web.routing       :as auth]
             [minimily.accounting.web.routing :as accounting]
-            [minimily.web.ui.home            :as ui]))
+            [minimily.web.ui.home            :refer [home-page]]))
 
 (defn routes []
   (core/routes
-    (core/GET "/" {session :session} (ui/home session))))
+    (core/GET "/" {session :session} (home-page session))))
 
 (core/defroutes app
   (routes)

@@ -2,6 +2,10 @@ body {
     padding-top: 80px;
 }
 
+.label {
+    font-weight: bold;
+}
+
 .page-title {
     font-size: 2em;
     font-weight: bold;

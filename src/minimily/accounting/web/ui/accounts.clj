@@ -2,7 +2,7 @@
   (:require [minimily.web.ui.layout     :refer [layout]]
             [minimily.utils.web.wrapper :refer [http-headers]]))
 
-(defn accounts [session user-accounts]
+(defn accounts-page [session accounts]
   (http-headers 
     (layout session "Accounts"
       [:div {:class "card"}
@@ -14,6 +14,5 @@
               [:th "Name"]
               [:th "Number"]]]
           [:tbody 
-            [:tr 
-              [:td "Main"]
-              [:td "1234"]]]]])))
+            (map #(vector :tr [:td [:a {:href (str "/accounts/" (:id %))} (:name %)]]
+                              [:td (:number %)]) accounts)]]])))

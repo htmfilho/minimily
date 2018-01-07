@@ -5,7 +5,7 @@
                                                 password-field submit-button
                                                 text-field]]))
 
-(defn signup []
+(defn signup-page []
   (http-headers 
     (layout nil "Sign Up"
       (form-to [:post "/account/new"]

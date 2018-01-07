@@ -4,7 +4,7 @@
             [hiccup.form                :refer [email-field form-to label 
                                                 password-field submit-button]]))
 
-(defn signin []
+(defn signin-page []
   (http-headers 
     (layout nil "Sign In"
       (form-to [:post "/account/login"]

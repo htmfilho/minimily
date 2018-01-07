@@ -7,5 +7,8 @@
   (db/find-records (str "select * from account where holder = " 
                         (if profile-id profile-id 0))))
 
+(defn get-it [id]
+  (db/get-record table id))
+
 (defn save [account]
   (db/save-record table account))
