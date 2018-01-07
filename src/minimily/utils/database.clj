@@ -37,7 +37,7 @@
   `(jdbc/with-db-connection [~'conn {:datasource datasource}]
     ~@body))
 
-(defn valid-id [id]
+(defn- valid-id [id]
   (if (int? id)
     id
     (try (Integer/parseInt id)
@@ -81,4 +81,4 @@
   "Returns the number of deleted records from the database."
   [table id]
   (with-conn
-    (jdbc/delete! conn table ["id = ?" id])))
+    (jdbc/delete! conn table ["id = ?" (valid-id id)])))

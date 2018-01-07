@@ -14,5 +14,6 @@
               [:th "Name"]
               [:th "Number"]]]
           [:tbody 
-            (map #(vector :tr [:td [:a {:href (str "/accounts/" (:id %))} (:name %)]]
+            (map #(vector :tr [:td [:a {:href (str "/accounts/" (:id %))} 
+                                       (:name %)]]
                               [:td (:number %)]) accounts)]]])))

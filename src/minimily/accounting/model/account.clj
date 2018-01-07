@@ -12,3 +12,6 @@
 
 (defn save [account]
   (db/save-record table account))
+
+(defn delete-it [id]
+  (db/delete-record table id))

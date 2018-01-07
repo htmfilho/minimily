@@ -22,10 +22,16 @@
         id  (account/save acc)]
     (redirect (str "/accounts/" id))))
 
+(defn delete-account [params]
+  (let [id (:id params)]
+    (account/delete-it id)
+    (redirect "/accounts")))
+
 (defn routes []
   (core/routes
-    (core/GET  "/accounts"      {session :session} (view-accounts session))
-    (core/GET  "/accounts/new"  {session :session} (new-account session))
-    (core/POST "/accounts/save" {session :session params :params} 
-                                (save-account session params))
-    (core/GET  "/accounts/:id"  [id] (view-account id))))
+    (core/GET  "/accounts"        {session :session} (view-accounts session))
+    (core/GET  "/accounts/new"    {session :session} (new-account session))
+    (core/POST "/accounts/save"   {session :session params :params} 
+                                  (save-account session params))
+    (core/GET  "/accounts/:id"    [id] (view-account id))
+    (core/POST "/accounts/delete" {params :params} (delete-account params))))
