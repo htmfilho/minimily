@@ -4,7 +4,7 @@
 (defn layout [session title content]
   (page/html5 {:lang "en"}
     [:head
-      [:meta {:charset "UTF-8"}]
+      [:meta {:charset "utf-8"}]
       [:meta {:name "viewport" 
               :content "width=device-width, initial-scale=1, shrink-to-fit=no"}]
       [:title "Minimily"]
@@ -45,5 +45,5 @@
         [:a {:class "nav-link" :href "http://www.minimily.com"} "Help"]]
       
       (page/include-js "/js/jquery-3.2.1.slim.min.js"
-                       "/js/popper.min.js"
-                       "/js/bootstrap.min.js")]))
+                       "/js/bootstrap.bundle.min.js"
+                       "/js/minimily.js")]))

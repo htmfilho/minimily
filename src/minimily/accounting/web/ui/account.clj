@@ -10,11 +10,11 @@
     (layout nil "Account"
       [:div {:class "card"}
         [:div {:class "card-header"}
-          (form-to [:post "/accounts/delete"]
+          (form-to {:id "frm_delete"} [:post "/accounts/delete"]
             [:a {:href "/accounts" :class "btn btn-secondary"} "Back"]
             (str "&nbsp;")
             (hidden-field "id" (:id account))
-            (submit-button {:class "btn btn-danger"} "Delete"))]
+            (submit-button {:id "bt_delete" :class "btn btn-danger"} "Delete"))]
         [:div {:class "card-body"}
           (show-field "Name"   account :name)
           (show-field "Number" account :number)]])))
