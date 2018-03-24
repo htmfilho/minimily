@@ -64,7 +64,7 @@
   (with-conn
     (let [id     (:id record)
           record (dissoc record :id)]
-      (jdbc/update! conn table record ["id = ?" id]))))
+      (first (jdbc/update! conn table record ["id = ?" id])))))
 
 (defn save-record
   "If the object doesn't exist it returns the id of the recently persisted 

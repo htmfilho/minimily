@@ -19,7 +19,6 @@
   (let [auth-user (user-account/authenticate (:username params) 
                                              (:password params))]
     (if (nil? auth-user)
-      (println "login error")
       (let [session {:full-name (user-profile/full-name auth-user)
                      :user-id (:id auth-user)}]
         (-> (redirect "/")
