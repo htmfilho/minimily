@@ -2,8 +2,12 @@ body {
     padding-top: 80px;
 }
 
-.label {
+label {
     font-weight: bold;
+}
+
+.read-only {
+    font-style: italic;
 }
 
 .page-title {

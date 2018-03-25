@@ -24,7 +24,7 @@
       [:br]
       [:div {:class "card"}
         [:div {:class "card-header"}
-          [:a {:href "/transactions/new" :class "btn btn-secondary"} "New Transaction"]]
+          [:a {:href (str "/accounts/" (:id account) "/transactions/new") :class "btn btn-secondary"} "New Transaction"]]
         [:table {:class "table table-striped"}
           [:thead
             [:tr 
