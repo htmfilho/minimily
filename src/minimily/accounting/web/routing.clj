@@ -1,42 +1,32 @@
 (ns minimily.accounting.web.routing
-  (:require [ring.util.response                      :refer [redirect]]
-            [compojure.core                          :as core]
-            [minimily.accounting.web.ui.accounts     :refer [accounts-page]]
-            [minimily.accounting.web.ui.account-form :refer [account-form-page]]
-            [minimily.accounting.web.ui.account      :refer [account-page]]
-            [minimily.accounting.model.account       :as account-model]))
-
-(defn view-accounts [session]
-  (let [accounts (account-model/find-all (:user-id session))]
-    (accounts-page session accounts)))
-
-(defn view-account [id]
-  (let [account (account-model/get-it id)]
-    (account-page account)))
-
-(defn new-account [session]
-  (account-form-page session))
-
-(defn edit-account [session id]
-  (let [account (account-model/get-it id)]
-    (account-form-page session account)))
-
-(defn save-account [session params]
-  (let [account (assoc params :holder (:user-id session))
-        id      (account-model/save account)]
-    (redirect (str "/accounts/" id))))
-
-(defn delete-account [params]
-  (let [id (:id params)]
-    (account-model/delete-it id)
-    (redirect "/accounts")))
+  (:require [compojure.core                              :as core]
+            [minimily.accounting.web.ctrl.account     :as account-ctrl]
+            [minimily.accounting.web.ctrl.transaction :as transaction-ctrl]))
 
 (defn routes []
   (core/routes
-    (core/GET  "/accounts"          {session :session} (view-accounts session))
-    (core/GET  "/accounts/new"      {session :session} (new-account session))
-    (core/POST "/accounts/save"     {session :session params :params} 
-                                    (save-account session params))
-    (core/GET  "/accounts/:id"      [id] (view-account id))
-    (core/GET  "/accounts/:id/edit" [session id] (edit-account session id))
-    (core/POST "/accounts/delete"   {params :params} (delete-account params))))
+    (core/context "/accounts" []
+      (core/GET  "/"         {session :session} 
+                             (account-ctrl/view-accounts session))
+      (core/GET  "/new"      {session :session} 
+                             (account-ctrl/new-account session))
+      (core/POST "/save"     {session :session params :params} 
+                             (account-ctrl/save-account session params))
+      (core/POST "/delete"   {params :params} 
+                             (account-ctrl/delete-account params))
+      (core/GET  "/:id"      [id] 
+                             (account-ctrl/view-account id))
+      (core/GET  "/:id/edit" [session id] 
+                             (account-ctrl/edit-account session id))
+                                   
+      (core/context "/:id/transactions" []
+        (core/GET  "/new"      {session :session} 
+                              (transaction-ctrl/new-transaction session))
+        (core/POST "/save"     {session :session params :params} 
+                              (transaction-ctrl/save-transaction session params))
+        (core/GET  "/:id"      [id] 
+                              (transaction-ctrl/view-transaction id))
+        (core/GET  "/:id/edit" [session id] 
+                              (transaction-ctrl/edit-transaction session id))
+        (core/POST "/delete"   {params :params} 
+                              (transaction-ctrl/delete-transaction params))))))
