@@ -5,7 +5,7 @@
 
 (defn find-all [profile-id]
   (db/find-records (str "select * from account where holder = " 
-                        (if profile-id profile-id 0))))
+                        profile-id)))
 
 (defn get-it [id]
   (db/get-record table id))
