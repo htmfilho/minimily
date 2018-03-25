@@ -1,7 +1,7 @@
 (ns minimily.web.ui.layout
   (:require [hiccup.page :as page]))
 
-(defn layout [session title content]
+(defn layout [session title & content]
   (page/html5 {:lang "en"}
     [:head
       [:meta {:charset "utf-8"}]
@@ -34,8 +34,7 @@
                 [:a {:class "nav-link  my-2 my-sm-0" :href "/signout"} "Sign Out"]]])]]
       
       [:div {:class "container"}
-        (when title 
-          [:div {:class "page-title"} title])
+        (when title [:div {:class "page-title"} title])
         content
         [:br]
         [:br]
