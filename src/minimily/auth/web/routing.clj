@@ -18,11 +18,14 @@
 (defn signin [params session]
   (let [auth-user (user-account/authenticate (:username params) 
                                              (:password params))]
-    (if (nil? auth-user)
+    (if auth-user
       (let [session {:full-name (user-profile/full-name auth-user)
                      :user-id (:id auth-user)}]
         (-> (redirect "/")
             (assoc :session session))))))
+
+(defn signin-fail []
+  (redirect "/"))
 
 (defn signout [session]
   (-> (redirect "/")
@@ -30,8 +33,10 @@
 
 (defn routes []
   (core/routes
-    (core/GET  "/signin"      [] (signin-page))
-    (core/GET  "/signup"      [] (signup-page))
-    (core/GET  "/signout"     {session :session} (signout session))
-    (core/POST "/account/new" {params :params} (new-account params))
-    (core/POST "/account/login" {params :params session :session} (signin params session))))
+    (core/GET  "/signin"        [] (signin-page))
+    (core/GET  "/signup"        [] (signup-page))
+    (core/GET  "/signout"       {session :session} (signout session))
+    (core/POST "/account/new"   {params :params} (new-account params))
+    (core/POST "/account/login" {params :params session :session} 
+                                (signin params session))
+    (core/GET  "/account/login/fail" [] (signin-fail))))

@@ -23,8 +23,7 @@
 
 (def datasource
   (make-datasource (conj options
-                         (decompose-url
-                           (env :DATABASE_URL)))))
+                         (decompose-url (env :DATABASE_URL)))))
 
 (def migration-config
  {:datastore  (migration/sql-database {:datasource datasource})
@@ -64,7 +63,7 @@
   (with-conn
     (let [id     (:id record)
           record (dissoc record :id)]
-      (first (jdbc/update! conn table record ["id = ?" id])))))
+      (first (jdbc/update! conn table record ["id = ?" (valid-id id)])))))
 
 (defn save-record
   "If the object doesn't exist it returns the id of the recently persisted 
