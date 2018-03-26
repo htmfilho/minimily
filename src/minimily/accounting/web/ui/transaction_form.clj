@@ -15,8 +15,7 @@
         [:div {:class "form-group"}
           (label "acc" "Account")
           [:br]
-          [:span {:id "acc" :class "read-only"} (:name account)]
-          (hidden-field "account" (:id account))]
+          [:span {:id "acc" :class "read-only"} (:name account)]]
         [:div {:class "row"}
           [:div {:class "col-md-2"}
             [:div {:class "form-group"}

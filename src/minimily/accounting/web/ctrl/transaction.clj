@@ -12,10 +12,9 @@
   (let [transaction (transaction-model/get-it id)]
     (transaction-form-page session transaction)))
 
-(defn save-transaction [transaction account-id]
-  (println transaction)
+(defn save-transaction [transaction]
   (transaction-model/save transaction)
-  (redirect (str "/accounts/" account-id)))
+  (redirect (str "/accounts/" (:account-id transaction))))
 
 (defn delete-transaction [params]
   (let [id (:id params)]

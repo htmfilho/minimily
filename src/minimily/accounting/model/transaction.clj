@@ -10,8 +10,12 @@
 (defn get-it [id]
   (db/get-record table id))
 
-(defn save [account]
-  (db/save-record table account))
+(defn save [transaction]
+  (let [transaction (conj transaction {:amount 1.2})
+        transaction (conj transaction {:account (:account-id transaction)})
+        transaction (dissoc transaction :account-id)]
+    (println transaction)
+    (db/save-record table transaction)))
 
 (defn delete-it [id]
   (db/delete-record table id))
