@@ -3,15 +3,17 @@
             [minimily.accounting.web.ui.accounts     :refer [accounts-page]]
             [minimily.accounting.web.ui.account-form :refer [account-form-page]]
             [minimily.accounting.web.ui.account      :refer [account-page]]
-            [minimily.accounting.model.account       :as account-model]))
+            [minimily.accounting.model.account       :as account-model]
+            [minimily.accounting.model.transaction   :as transaction-model]))
 
 (defn view-accounts [session]
   (let [accounts (account-model/find-all (:user-id session))]
     (accounts-page session accounts)))
 
 (defn view-account [id]
-  (let [account (account-model/get-it id)]
-    (account-page account)))
+  (let [account (account-model/get-it id)
+        transactions (transaction-model/find-by-account id)]
+    (account-page account transactions)))
 
 (defn new-account [session]
   (account-form-page session))

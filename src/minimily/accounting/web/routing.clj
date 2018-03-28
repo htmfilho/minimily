@@ -19,12 +19,14 @@
       (core/GET  "/:id/edit" [session id] 
                              (account-ctrl/edit-account session id))
 
-      (core/context "/:account-id/transactions" []
-        (core/GET  "/new"      [session account-id]
-                               (transaction-ctrl/new-transaction session account-id))
+      (core/context "/:account/transactions" []
+        (core/GET  "/new"      [session account]
+                               (transaction-ctrl/new-transaction session account))
         (core/POST "/save"     {params :params}
                                (transaction-ctrl/save-transaction params))
-        (core/GET  "/:id/edit" [session id] 
-                               (transaction-ctrl/edit-transaction session id))
         (core/POST "/delete"   {params :params} 
-                               (transaction-ctrl/delete-transaction params))))))
+                               (transaction-ctrl/delete-transaction params))
+        (core/GET  "/:id"      [account id]
+                               (transaction-ctrl/view-transaction account id))
+        (core/GET  "/:id/edit" [session id]
+                               (transaction-ctrl/edit-transaction session id))))))

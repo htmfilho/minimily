@@ -33,7 +33,7 @@
               [:th "Amount"]
               [:th "Date"]]]
           [:tbody 
-            (map #(vector :tr [:td [:a {:href (str "/transactions/" (:id %))} 
+            (map #(vector :tr [:td [:a {:href (str "/accounts/" (:id account) "/transactions/" (:id %))} 
                                        (:description %)]]
                               [:td (:type %)]
                               [:td (:amount %)]

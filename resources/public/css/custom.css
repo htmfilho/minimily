@@ -6,6 +6,10 @@ label {
     font-weight: bold;
 }
 
+.label {
+    font-weight: bold;
+}
+
 .read-only {
     font-style: italic;
 }
