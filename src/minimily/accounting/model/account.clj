@@ -13,5 +13,9 @@
 (defn save [account]
   (db/save-record table account))
 
+(defn update-balance [id new-balance]
+  (db/update-record table {:id id :balance new-balance})
+  new-balance)
+
 (defn delete-it [id]
   (db/delete-record table id))

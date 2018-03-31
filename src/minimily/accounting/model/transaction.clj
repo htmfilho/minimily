@@ -15,3 +15,8 @@
 
 (defn delete-it [id]
   (db/delete-record table id))
+
+(defn calculate-balance [account-id]
+  (let [transactions (db/find-records (str "select type, amount from transaction where account = " account-id))
+        amounts      (map #(* (:type %) (:amount %)) transactions)]
+    (reduce + amounts)))
