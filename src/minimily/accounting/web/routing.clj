@@ -24,7 +24,7 @@
                                (transaction-ctrl/new-transaction session account))
         (core/POST "/save"     {params :params}
                                (transaction-ctrl/save-transaction params))
-        (core/POST "/delete"   {params :params} 
+        (core/POST "/delete"   {params :params}
                                (transaction-ctrl/delete-transaction params))
         (core/GET  "/:id"      [account id]
                                (transaction-ctrl/view-transaction account id))

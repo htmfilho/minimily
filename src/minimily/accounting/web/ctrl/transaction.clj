@@ -19,15 +19,26 @@
     (transaction-form-page session transaction)))
 
 (defn save-transaction [transaction]
-  (println transaction)
-  (let [transaction (conj transaction {:type (Integer/parseInt (:type transaction))})
-        transaction (conj transaction {:account (Integer/parseInt (:account transaction))})
-        transaction (conj transaction {:amount (BigDecimal. (:amount transaction))})]
-    (println transaction)
+  (let [account-id  (Integer/parseInt (:account transaction))
+        type        (Integer/parseInt (:type transaction))
+        amount      (BigDecimal. (:amount transaction))
+        balance     (account-model/update-balance account-id
+                                                  (+ (* type amount) 
+                                                     (transaction-model/calculate-balance account-id)))
+        transaction (-> transaction
+                        (conj {:account account-id})
+                        (conj {:type (Integer/parseInt (:type transaction))})
+                        (conj {:amount (BigDecimal. (:amount transaction))})
+                        (conj {:balance balance}))]
     (transaction-model/save transaction)
     (redirect (str "/accounts/" (:account transaction)))))
 
 (defn delete-transaction [params]
-  (let [id (:id params)]
+  (let [account     (:account params)
+        id          (:id params)
+        transaction (transaction-model/get-it id)]
+    (account-model/update-balance account
+                                  (- (transaction-model/calculate-balance account)
+                                     (* (:type transaction) (:amount transaction))))
     (transaction-model/delete-it id)
-    (redirect "/accounts")))
+    (redirect (str "/accounts/" account))))

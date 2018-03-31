@@ -6,12 +6,16 @@ label {
     font-weight: bold;
 }
 
-.label {
-    font-weight: bold;
+.credit {
+    color: #00c200;
 }
 
-.read-only {
-    font-style: italic;
+.debit {
+    color: #c20000;
+}
+
+.label {
+    font-weight: bold;
 }
 
 .page-title {
@@ -19,4 +23,8 @@ label {
     font-weight: bold;
     border-bottom: 1px solid gray;
     margin-bottom: 15px;
+}
+
+.read-only {
+    font-style: italic;
 }

@@ -16,7 +16,7 @@
             [:a {:href (str "/accounts/" (:id account) "/transactions/" (:id transaction) "/edit") 
                 :class "btn btn-primary"} "Edit"]
             (str "&nbsp;")
-            (hidden-field "id" (:id account))
+            (hidden-field "id" (:id transaction))
             (submit-button {:id "bt_delete" :class "btn btn-danger"} "Delete"))]
         [:div {:class "card-body"}
           (show-field "Account"     account :name)
