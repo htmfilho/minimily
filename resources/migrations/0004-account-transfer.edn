@@ -1,0 +1,4 @@
+{:up   
+  ["alter table transaction add column account_transfer integer references account;"]
+ :down 
+  ["alter table transaction drop column account_transfer;"]}
