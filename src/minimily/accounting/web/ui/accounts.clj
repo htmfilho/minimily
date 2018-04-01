@@ -20,4 +20,4 @@
                               [:td (:number %)]
                               [:td {:style "text-align: right;"} (:balance %)]) accounts)
             [:td {:colspan "2" :style "text-align: right;"} [:b "Total:"]]
-            [:td {:style "text-align: right;"} (reduce + (map #(:balance %) accounts))]]]])))
+            [:td {:style "text-align: right;"} (reduce + (filter #(not (nil? %)) (map #(:balance %) accounts)))]]]])))
