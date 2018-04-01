@@ -13,15 +13,15 @@
     (layout session "Transfer"
       (form-to [:post (str "/accounts/" (:id account) "/transfer/perform")]
         [:div {:class "row"}
-          [:div {:class "col-md-4"}
+          [:div {:class "col-md-5"}
             [:div {:class "form-group"}
               (label "from" "From Account")
               [:br]
               [:span {:id "from" :class "read-only"} (:name account)]]]
-          [:div {:class "col-md-6"}
+          [:div {:class "col-md-5"}
             [:div {:class "form-group"}
               (label "to" "To Account")
-              [:select {:name "to" :class "form-control"}
+              [:select {:name "to" :class "form-control" :id "to"}
                 (map #(vector :option {:value (:id %)} (:name %)) 
                      to-accounts)]]]
           [:div {:class "col-md-2"}

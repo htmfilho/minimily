@@ -35,7 +35,6 @@
     (redirect (str "/accounts/" (:account transaction)))))
 
 (defn save-transaction [transaction]
-  (println transaction)
   (let [transaction (-> transaction
                         (conj {:account (Integer/parseInt (:account transaction))}))]
     (transaction-model/save transaction)

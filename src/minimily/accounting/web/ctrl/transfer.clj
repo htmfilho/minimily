@@ -11,17 +11,28 @@
                                                    (:id account))]
     (form/transfer-form-page session account to-accounts)))
 
-(defn perform-transfer [transaction]
-  (let [account-id  (Integer/parseInt (:account transaction))
-        type        (Integer/parseInt (:type transaction))
-        amount      (BigDecimal. (:amount transaction))
-        balance     (account-model/update-balance account-id
-                                                  (+ (* type amount) 
-                                                     (transaction-model/calculate-balance account-id)))
-        transaction (-> transaction
-                        (conj {:account account-id})
-                        (conj {:type (Integer/parseInt (:type transaction))})
-                        (conj {:amount (BigDecimal. (:amount transaction))})
-                        (conj {:balance balance}))]
-    (transaction-model/save transaction)
-    (redirect (str "/accounts/" (:account transaction)))))
+(defn perform-transfer [transfer]
+  (let [from             (account-model/get-it (:account transfer))
+        to               (account-model/get-it (:to transfer))
+        amount           (BigDecimal. (:amount transfer))
+        balance-from     (account-model/update-balance (:id from)
+                                                       (+ (* -1 amount)
+                                                          (transaction-model/calculate-balance (:id from))))
+        balance-to       (account-model/update-balance (:id to)
+                                                       (+ amount
+                                                          (transaction-model/calculate-balance (:id to))))
+        transaction-from {:account (:id from) 
+                          :type -1 
+                          :amount amount 
+                          :description (str "Transfer to " (:name to))
+                          :balance balance-from
+                          :account_transfer (:id to)}
+        transaction-to   {:account (:id to) 
+                          :type 1 
+                          :amount amount 
+                          :description (str "Transfer from " (:name from))
+                          :balance balance-to
+                          :account_transfer (:id from)}]
+    (transaction-model/save transaction-from)
+    (transaction-model/save transaction-to)
+    (redirect (str "/accounts/" (:id from)))))
