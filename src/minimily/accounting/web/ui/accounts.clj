@@ -12,8 +12,12 @@
           [:thead
             [:tr 
               [:th "Name"]
-              [:th "Number"]]]
+              [:th "Number"]
+              [:th "Balance"]]]
           [:tbody 
             (map #(vector :tr [:td [:a {:href (str "/accounts/" (:id %))} 
                                        (:name %)]]
-                              [:td (:number %)]) accounts)]]])))
+                              [:td (:number %)]
+                              [:td {:style "text-align: right;"} (:balance %)]) accounts)
+            [:td {:colspan "2" :style "text-align: right;"} [:b "Total:"]]
+            [:td {:style "text-align: right;"} (reduce + (map #(:balance %) accounts))]]]])))

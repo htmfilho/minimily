@@ -4,11 +4,10 @@
 (def table :account)
 
 (defn find-all [profile-id]
-  (db/find-records (str "select * from account where holder = " 
-                        profile-id)))
+  (db/find-records (str "select * from account")))
 
 (defn find-all-except [profile-id except-id]
-  (db/find-records (str "select * from account where holder = " profile-id " and id <> " except-id)))
+  (db/find-records (str "select * from account where id <> " except-id)))
 
 (defn get-it [id]
   (db/get-record table id))
