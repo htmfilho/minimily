@@ -23,4 +23,4 @@
                       (:number account))]
         (submit-button {:class "btn btn-primary"} "Submit")
         (str "&nbsp;")
-        [:a {:class "btn btn-outline-secondary" :href "/accounts"} "Cancel"]))))
+        [:a {:class "btn btn-outline-secondary" :href (str "/accounts/" (:id account))} "Cancel"]))))

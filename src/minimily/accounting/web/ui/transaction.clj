@@ -5,9 +5,9 @@
             [minimily.web.ui.bootstrap :refer [show-field]]
             [minimily.utils.web.wrapper :refer [http-headers]]))
 
-(defn transaction-page [account transaction]
+(defn transaction-page [session account transaction]
   (http-headers
-    (layout nil "Transaction"
+    (layout session "Transaction"
       [:div {:class "card"}
         [:div {:class "card-header"}
           (form-to {:id "frm_delete"} [:post (str "/accounts/" (:id account) "/transactions/delete")]

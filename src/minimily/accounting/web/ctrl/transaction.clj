@@ -5,10 +5,10 @@
             [minimily.accounting.model.account           :as account-model]
             [minimily.accounting.model.transaction       :as transaction-model]))
 
-(defn view-transaction [account id]
+(defn view-transaction [session account id]
   (let [account     (account-model/get-it account)
         transaction (transaction-model/get-it id)]
-    (transaction-page account transaction)))
+    (transaction-page session account transaction)))
 
 (defn new-transaction [session account]
   (let [account (account-model/get-it account)]

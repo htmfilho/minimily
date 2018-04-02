@@ -10,10 +10,10 @@
   (let [accounts (account-model/find-all (:user-id session))]
     (accounts-page session accounts)))
 
-(defn view-account [id]
+(defn view-account [session id]
   (let [account (account-model/get-it id)
         transactions (transaction-model/find-by-account id)]
-    (account-page account transactions)))
+    (account-page session account transactions)))
 
 (defn new-account [session]
   (account-form-page session))

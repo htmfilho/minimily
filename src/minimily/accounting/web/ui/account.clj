@@ -6,9 +6,9 @@
             [minimily.utils.date        :refer [to-string]]
             [minimily.utils.web.wrapper :refer [http-headers]]))
 
-(defn account-page [account & [transactions]]
+(defn account-page [session account & [transactions]]
   (http-headers
-    (layout nil "Account"
+    (layout session "Account"
       [:div {:class "card"}
         [:div {:class "card-header"}
           (form-to {:id "frm_delete"} [:post "/accounts/delete"]
