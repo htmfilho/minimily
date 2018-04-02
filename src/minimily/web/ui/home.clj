@@ -12,5 +12,10 @@
                       align-items-start"}
             [:div {:class "d-flex w-100 justify-content-between"}
               [:h5 {:class "mb-1"} "Accounts"]]
-            [:p {:class "mb-1"} "The accounts you organize your 
-                                 finances."]]]))))
+            [:p {:class "mb-1"} "The accounting to organize your finances."]]
+          [:a {:href "/folders" 
+              :class "list-group-item list-group-item-action flex-column 
+                      align-items-start"}
+            [:div {:class "d-flex w-100 justify-content-between"}
+              [:h5 {:class "mb-1"} "Documents"]]
+            [:p {:class "mb-1"} "The archive to organize your digital documents."]]]))))
