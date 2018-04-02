@@ -2,7 +2,7 @@
   (:require [hiccup.form                :refer [form-to submit-button 
                                                 hidden-field]]
             [minimily.web.ui.layout     :refer [layout]]
-            [minimily.web.ui.bootstrap  :refer [show-field]]
+            [minimily.web.ui.bootstrap  :refer [show-field back-button edit-button]]
             [minimily.utils.date        :refer [to-string]]
             [minimily.utils.web.wrapper :refer [http-headers]]))
 
@@ -12,10 +12,9 @@
       [:div {:class "card"}
         [:div {:class "card-header"}
           (form-to {:id "frm_delete"} [:post "/accounts/delete"]
-            [:a {:href "/accounts" :class "btn btn-secondary"} "Back"]
+            (back-button "/accounts")
             (str "&nbsp;")
-            [:a {:href (str "/accounts/" (:id account) "/edit") 
-                :class "btn btn-primary"} "Edit"]
+            (edit-button (str "/accounts/" (:id account) "/edit"))
             (str "&nbsp;")
             (hidden-field "id" (:id account))
             (submit-button {:id "bt_delete" :class "btn btn-danger"} "Delete"))]

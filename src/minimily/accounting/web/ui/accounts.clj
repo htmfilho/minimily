@@ -1,5 +1,6 @@
 (ns minimily.accounting.web.ui.accounts
   (:require [minimily.web.ui.layout     :refer [layout]]
+            [minimily.web.ui.bootstrap  :refer [back-button]]
             [minimily.utils.web.wrapper :refer [http-headers]]))
 
 (defn accounts-page [session accounts]
@@ -7,6 +8,8 @@
     (layout session "Accounts"
       [:div {:class "card"}
         [:div {:class "card-header"}
+          (back-button "/")
+          (str "&nbsp;")
           [:a {:href "/accounts/new" :class "btn btn-secondary"} "New Account"]]
         [:table {:class "table table-striped"}
           [:thead
