@@ -16,8 +16,9 @@
     (document-form-page session folder)))
 
 (defn edit-document [session id]
-  (let [document (document-model/get-it id)]
-    (document-form-page session document)))
+  (let [document (document-model/get-it id)
+        folder   (folder-model/get-it (:folder document))]
+    (document-form-page session folder document)))
 
 (defn save-document [session document]
   (let [folder (Integer/parseInt (:folder document))
@@ -29,4 +30,4 @@
   (let [id     (:id params)
         folder (:folder params)]
     (document-model/delete-it id)
-    (redirect (str "/folders" folder))))
+    (redirect (str "/folders/" folder))))

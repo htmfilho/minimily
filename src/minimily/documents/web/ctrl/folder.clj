@@ -4,11 +4,16 @@
             [minimily.documents.web.ui.folder-form :refer [folder-form-new 
                                                            folder-form-edit]]
             [minimily.documents.web.ui.folder      :refer [folder-page]]
-            [minimily.documents.model.folder       :as folder-model]))
+            [minimily.documents.model.folder       :as folder-model]
+            [minimily.documents.model.document     :as document-model]))
 
 (defn merge-num-children [folders]
-  (map #(conj % {:num-children (folder-model/count-children (:id %))})
+  (map #(conj % {:num-children (document-model/count-siblings (:id %))})
        folders))
+
+(defn merge-documents [folder-id folders]
+  (let [documents (document-model/find-by-folder folder-id)]
+    (reduce conj documents folders)))
 
 (defn view-parent-folders [session]
   (let [folders (merge-num-children (folder-model/find-parents))]
@@ -16,7 +21,7 @@
 
 (defn view-folder [session id]
   (let [folder (folder-model/get-it id)
-        children (merge-num-children (folder-model/find-children id))
+        children (merge-documents id (merge-num-children (folder-model/find-children id)))
         path (folder-model/find-path id)]
     (folder-page session folder children path)))
 

@@ -14,7 +14,11 @@
       [:nav {:aria-label "breadcrumb"}
         [:ol {:class "breadcrumb"}
           [:li {:class "breadcrumb-item"} [:a {:href "/folders"} [:i {:class "fas fa-university"}]]]
-          (map #(vector :li {:class "breadcrumb-item"} [:a {:href (str "/folders/" (:id %))} (:name %)]) path)
+          (map #(vector :li 
+                        {:class "breadcrumb-item"} 
+                        (if (= % (last path))
+                          (:name %)
+                          [:a {:href (str "/folders/" (:id %))} (:name %)])) path)
         ]]
       [:div {:class "card"}
         [:div {:class "card-header"}
@@ -36,10 +40,14 @@
               [:th "Description"]]]
           [:tbody 
             (map #(vector :tr [:td 
-                                [:a {:href (str "/folders/" (:id %))} 
-                                  (if (> (:num-children %) 0) 
-                                    [:i {:class "fas fa-folder"}]
-                                    [:i {:class "far fa-folder"}])
-                                  (str "&nbsp;")
-                                  (:name %)]]
+                                  (if (:name %)
+                                    [:span 
+                                      (if (> (:num-children %) 0) 
+                                        [:i {:class "fas fa-folder"}]
+                                        [:i {:class "far fa-folder"}])
+                                      (str "&nbsp;")
+                                      [:a {:href (str "/folders/" (:id %))} (:name %)]]
+                                    [:span [:i {:class "far fa-file-alt"}]
+                                           (str "&nbsp;")
+                                           [:a {:href (str "/folders/" (:folder %) "/documents/" (:id %))} (:title %)]])]
                               [:td (:description %)]) children)]]])))

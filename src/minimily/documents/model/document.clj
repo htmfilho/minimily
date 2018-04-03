@@ -10,6 +10,11 @@
 (defn count-documents [folder-id]
   (:count (first (db/find-records (str "select count(*) from document where folder = " folder-id)))))
 
+(defn count-siblings [folder-id]
+  (let [num-folders (folder-model/count-children folder-id)
+        num-documents (:count (first (db/find-records (str "select count(*) from document where folder = " folder-id))))]
+    (+ num-folders num-documents)))
+
 (defn get-it [id]
   (db/get-record table id))
 

@@ -7,7 +7,7 @@
 
 (defn document-page [session document folder path]
   (http-headers
-    (layout session [:span [:i {:class "far fa-folder-open"}] (str "&nbsp;") (:name document)]
+    (layout session [:span [:i {:class "far fa-file-alt"}] (str "&nbsp;") (:title document)]
       [:div {:class "card"}
         [:div {:class "card-header"}
           (form-to {:id "frm_delete"} [:post (str "/folders/" (:id folder) "/documents/delete")]
