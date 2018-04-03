@@ -23,6 +23,8 @@
             (str "&nbsp;")
             [:a {:href (str "/folders/new?parent=" (:id folder)) :class "btn btn-secondary"} "New Folder"]
             (str "&nbsp;")
+            [:a {:href (str "/folders/" (:id folder) "/documents/new") :class "btn btn-secondary"} "New Document"]
+            (str "&nbsp;")
             (edit-button (str "/folders/" (:id folder) "/edit"))
             (hidden-field "id" (:id folder))
             (str "&nbsp;")
