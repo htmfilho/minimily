@@ -1,0 +1,10 @@
+{:up   
+  ["alter table document add column file_original_name varchar(200) not null;
+    alter table document add column file_store_path varchar(200) not null;
+    alter table document add column file_format varchar(20) not null;
+    alter table document add column file_size integer not null;"]
+ :down 
+  ["alter table transaction drop column file_original_name;
+    alter table transaction drop column file_store_path;
+    alter table transaction drop column file_format;
+    alter table transaction drop column file_size;"]}
