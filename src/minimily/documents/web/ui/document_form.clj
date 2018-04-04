@@ -11,7 +11,9 @@
 (defn document-form-page [session folder & [document]]
   (http-headers
     (layout session "Document"
-      (form-to [:post (str "/folders/" (:id folder) "/documents/save")]
+      [:form {:action (str "/folders/" (:id folder) "/documents/save") 
+              :method "POST"
+              :enctype "multipart/form-data"}
         (when document (hidden-field "id" (:id document)))
         (show-field "Folder" folder :name)
         [:div {:class "form-group"}
@@ -24,6 +26,10 @@
           (text-area {:class "form-control" :id "description"} 
                      "description" 
                      (:description document))]
+        [:div {:class "form-group"}
+          (label "file" "File")
+          [:input {:type "file" :name "file" :id "file" :class "form-control"}]]
         (submit-button {:class "btn btn-primary"} "Submit")
         (str "&nbsp;")
-        [:a {:class "btn btn-outline-secondary" :href (str "/folders/" (:id folder))} "Cancel"]))))
+        [:a {:class "btn btn-outline-secondary" 
+             :href (str "/folders/" (:id folder))} "Cancel"]])))

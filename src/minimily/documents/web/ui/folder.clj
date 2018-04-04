@@ -18,8 +18,7 @@
                         {:class "breadcrumb-item"} 
                         (if (= % (last path))
                           (:name %)
-                          [:a {:href (str "/folders/" (:id %))} (:name %)])) path)
-        ]]
+                          [:a {:href (str "/folders/" (:id %))} (:name %)])) path)]]
       [:div {:class "card"}
         [:div {:class "card-header"}
           (form-to {:id "frm_delete"} [:post "/folders/delete"]

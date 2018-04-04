@@ -8,6 +8,14 @@
 (defn document-page [session document folder path]
   (http-headers
     (layout session [:span [:i {:class "far fa-file-alt"}] (str "&nbsp;") (:title document)]
+      [:nav {:aria-label "breadcrumb"}
+        [:ol {:class "breadcrumb"}
+          [:li {:class "breadcrumb-item"} [:a {:href "/folders"} [:i {:class "fas fa-university"}]]]
+          (map #(vector :li 
+                        {:class "breadcrumb-item"} 
+                        (if (= % (last path))
+                          (:name %)
+                          [:a {:href (str "/folders/" (:id %))} (:name %)])) path)]]
       [:div {:class "card"}
         [:div {:class "card-header"}
           (form-to {:id "frm_delete"} [:post (str "/folders/" (:id folder) "/documents/delete")]
@@ -18,6 +26,14 @@
             (str "&nbsp;")
             (submit-button {:id "bt_delete" :class "btn btn-danger"} "Delete"))]
         [:div {:class "card-body"}
-          (show-field "Folder" folder :name)
-          (show-field "Title" document :title)
-          (show-field "Description" document :description)]])))
+          [:div {:class "row"}
+            [:div {:class "col-md-4"} (show-field "Folder" folder :name)]
+            [:div {:class "col-md-4"} (show-field "Title" document :title)]
+            [:div {:class "col-md-4"} (show-field "Description" document :description)]]
+          [:div {:class "row"}
+            [:div {:class "col-md-4"} (show-field "File" document :file_original_name)]
+            [:div {:class "col-md-4"} (show-field "Format" document :file_format)]
+            [:div {:class "col-md-4"} (show-field "Size" document :file_size)]]
+          
+          
+          ]])))

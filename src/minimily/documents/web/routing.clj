@@ -1,5 +1,7 @@
 (ns minimily.documents.web.routing
   (:require [compojure.core                       :as core]
+            [ring.middleware.params               :refer [wrap-params]]
+            [ring.middleware.multipart-params     :refer [wrap-multipart-params]]
             [minimily.documents.web.ctrl.folder   :as folder-ctrl]
             [minimily.documents.web.ctrl.document :as document-ctrl]))
 
@@ -23,7 +25,8 @@
         (core/GET  "/new"      {session :session {folder :folder} :params}
                                (document-ctrl/new-document session folder))
         (core/POST "/save"     {session :session params :params} 
-                               (document-ctrl/save-document session params))
+                               (wrap-multipart-params
+                                 (document-ctrl/save-document session params)))
         (core/POST "/delete"   {params :params}
                                (document-ctrl/delete-document params))
         (core/GET  "/:id"      {session :session {id :id} :params}

@@ -25,5 +25,7 @@
   (db/delete-record table id))
 
 (defn find-path [id]
-  (let [document (get-it id)]
-    (conj (folder-model/find-path (:folder document)) document)))
+  (let [document    (get-it id)
+        document    (conj document {:name (:title document)})
+        folder-path (folder-model/find-path (:folder document))]
+    (concat folder-path [document])))

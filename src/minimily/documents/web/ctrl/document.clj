@@ -9,6 +9,7 @@
   (let [document (document-model/get-it id)
         folder   (folder-model/get-it (:folder document))
         path     (document-model/find-path id)]
+    (println path)
     (document-page session document folder path)))
 
 (defn new-document [session folder-id]
@@ -20,9 +21,17 @@
         folder   (folder-model/get-it (:folder document))]
     (document-form-page session folder document)))
 
-(defn save-document [session document]
-  (let [folder (Integer/parseInt (:folder document))
-        document (conj document {:folder folder})
+(defn save-document [session params]
+  (println params)
+  (let [folder (Integer/parseInt (:folder params))
+        document (-> {} 
+                     (conj {:folder folder})
+                     (conj {:title (:title params)})
+                     (conj {:description (:description params)})
+                     (conj {:file_original_name (:filename (:file params))})
+                     (conj {:file_format (:content-type (:file params))})
+                     (conj {:file_size (:size (:file params))})
+                     (conj {:file_store_path "/path/to/file"}))
         id (document-model/save document)]
     (redirect (str "/folders/" folder))))
 
