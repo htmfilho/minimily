@@ -1,5 +1,11 @@
 (ns minimily.web.ui.bootstrap)
 
+(defn show-value [label value]
+  [:p 
+    [:span {:class "label"} label]
+    [:br]
+    (str value)])
+
 (defn show-field [label object value & [when-true when-false]]
   [:p 
     [:span {:class "label"} label]
@@ -9,6 +15,14 @@
         when-true
         when-false)
       (value object))])
+
+(defn show-field-link [label object value link & [download]]
+  [:p 
+    [:span {:class "label"} label]
+    [:br]
+    [:a (if download 
+          {:href link :download download}
+          {:href link}) (value object)]])
 
 (defn back-button [url]
   [:a {:href url :class "btn btn-outline-secondary"} 

@@ -1,5 +1,8 @@
 (ns minimily.documents.web.ctrl.document
-  (:require [ring.util.response                      :refer [redirect]]
+  (:require [ring.util.response                      :refer [redirect 
+                                                             file-response 
+                                                             header
+                                                             content-type]]
             [minimily.documents.web.ui.document-form :refer [document-form-page]]
             [minimily.documents.web.ui.document      :refer [document-page]]
             [minimily.documents.model.folder         :as folder-model]
@@ -9,7 +12,6 @@
   (let [document (document-model/get-it id)
         folder   (folder-model/get-it (:folder document))
         path     (document-model/find-path id)]
-    (println path)
     (document-page session document folder path)))
 
 (defn new-document [session folder-id]
@@ -22,7 +24,6 @@
     (document-form-page session folder document)))
 
 (defn save-document [session params]
-  (println params)
   (let [folder (Integer/parseInt (:folder params))
         document (-> {} 
                      (conj {:folder folder})
@@ -40,3 +41,7 @@
         folder (:folder params)]
     (document-model/delete-it id)
     (redirect (str "/folders/" folder))))
+
+(defn download-document [session id]
+  (let [document (document-model/get-it id)]
+    (file-response "/home/htmfilho/Documents/assinatura-beto-kenia-cessao.pdf")))

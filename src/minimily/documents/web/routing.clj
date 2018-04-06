@@ -32,4 +32,6 @@
         (core/GET  "/:id"      {session :session {id :id} :params}
                                (document-ctrl/view-document session id))
         (core/GET  "/:id/edit" {session :session {id :id} :params}
-                               (document-ctrl/edit-document session id))))))
+                               (document-ctrl/edit-document session id))
+        (core/GET  "/:id/file" {session :session {id :id} :params}
+                               (document-ctrl/download-document session id))))))

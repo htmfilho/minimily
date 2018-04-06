@@ -2,7 +2,9 @@
   (:require [hiccup.form                :refer [form-to submit-button 
                                                 hidden-field]]
             [minimily.web.ui.layout     :refer [layout]]
-            [minimily.web.ui.bootstrap  :refer [back-button edit-button show-field]]
+            [minimily.web.ui.bootstrap  :refer [back-button edit-button 
+                                                show-field show-field-link
+                                                show-value]]
             [minimily.utils.web.wrapper :refer [http-headers]]))
 
 (defn document-page [session document folder path]
@@ -31,9 +33,11 @@
             [:div {:class "col-md-4"} (show-field "Title" document :title)]
             [:div {:class "col-md-4"} (show-field "Description" document :description)]]
           [:div {:class "row"}
-            [:div {:class "col-md-4"} (show-field "File" document :file_original_name)]
+            [:div {:class "col-md-4"} (show-field-link "File" document :file_original_name 
+                                                       (str "/folders/" (:id folder) "/documents/" (:id document) "/file")
+                                                       (:file_original_name document))]
             [:div {:class "col-md-4"} (show-field "Format" document :file_format)]
-            [:div {:class "col-md-4"} (show-field "Size" document :file_size)]]
+            [:div {:class "col-md-4"} (show-value "Size" (format "%.1f MB" (/ (:file_size document) 1000000.0)))]]
           
           
           ]])))
