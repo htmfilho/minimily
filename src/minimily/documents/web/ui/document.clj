@@ -37,7 +37,4 @@
                                                        (str "/folders/" (:id folder) "/documents/" (:id document) "/file")
                                                        (:file_original_name document))]
             [:div {:class "col-md-4"} (show-field "Format" document :file_format)]
-            [:div {:class "col-md-4"} (show-value "Size" (format "%.1f MB" (/ (:file_size document) 1000000.0)))]]
-          
-          
-          ]])))
+            [:div {:class "col-md-4"} (show-value "Size" (format "%.1f MB" (/ (:file_size document) 1000000.0)))]]]])))
