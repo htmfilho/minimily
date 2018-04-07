@@ -6,19 +6,24 @@
   :url "http://minimily.com"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
-  :dependencies [[org.clojure/clojure       "1.9.0" ]  ; recent version of Clojure
-                 [yogthos/config            "0.9"   ]  ; manage environment variables
+  :dependencies [[org.clojure/clojure       "1.9.0"  ]  ; recent version of Clojure
+                 
+                 ; Database dependencies
+                 [org.clojure/java.jdbc     "0.7.0"  ]  ; jdbc api
+                 [org.postgresql/postgresql "42.1.4" ]  ; db driver
+                 [honeysql                  "0.9.0"  ]  ; sql abstraction
+                 [hikari-cp                 "1.8.1"  ]  ; connection pool
+                 [ragtime                   "0.7.1"  ]  ; migration
+                 [org.slf4j/slf4j-nop       "1.7.13" ]  ; hikari-cp's dependency
 
-                 [org.clojure/java.jdbc     "0.7.0" ]  ; jdbc api
-                 [org.postgresql/postgresql "42.1.4"]  ; db driver
-                 [honeysql                  "0.9.0" ]  ; sql abstraction
-                 [hikari-cp                 "1.8.1" ]  ; connection pool
-                 [ragtime                   "0.7.1" ]  ; migration
-                 [org.slf4j/slf4j-nop       "1.7.13"]  ; hikari-cp's dependency
-
-                 [compojure                 "1.6.0" ]  ; routing library
-                 [hiccup                    "1.0.5" ]  ; html template library
-                 [ring-server               "0.5.0" ]] ; web application library
+                 ; Web dependencies
+                 [compojure                 "1.6.0"  ]  ; routing library
+                 [hiccup                    "1.0.5"  ]  ; html template library
+                 [ring-server               "0.5.0"  ] ; web application library
+                 
+                 ; Extra dependencies
+                 [yogthos/config            "0.9"    ]  ; manage environment variables
+                 [amazonica                 "0.3.121"]]
   :min-lein-version "2.0.0"
   :main ^:ship-aot minimily.app
   :uberjar-name "minimily-standalone.jar"

@@ -1,8 +1,10 @@
 (ns minimily.documents.model.document
   (:require [minimily.utils.database         :as db]
-            [minimily.documents.model.folder :as folder-model]))
+            [minimily.documents.model.folder :as folder-model]
+            [amazonica.aws.s3                :as s3]))
 
-(def table :document)
+(def table  :document)
+(def bucket "minimily")
 
 (defn find-by-folder [folder-id]
   (db/find-records (str "select * from document where folder = " folder-id)))
@@ -18,8 +20,21 @@
 (defn get-it [id]
   (db/get-record table id))
 
-(defn save [folder]
-  (db/save-record table folder))
+(defn get-file [id]
+  (let [document (get-it id)]
+    (s3/get-object :bucket-name bucket
+                   :key (:file_store_path document))))
+
+(defn save-file [file document]
+  (s3/put-object :bucket-name bucket
+                 :key (:file_store_path document)
+                 :file file)
+  document)
+
+(defn save [document file]
+  (let [id (db/save-record table document)]
+    (save-file file document)
+    id))
 
 (defn delete-it [id]
   (db/delete-record table id))

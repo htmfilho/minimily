@@ -25,15 +25,17 @@
 
 (defn save-document [session params]
   (let [folder (Integer/parseInt (:folder params))
+        file (:file params)
         document (-> {} 
                      (conj {:folder folder})
                      (conj {:title (:title params)})
                      (conj {:description (:description params)})
-                     (conj {:file_original_name (:filename (:file params))})
-                     (conj {:file_format (:content-type (:file params))})
-                     (conj {:file_size (:size (:file params))})
-                     (conj {:file_store_path "/path/to/file"}))
-        id (document-model/save document)]
+                     (conj {:file_original_name (:filename file)})
+                     (conj {:file_format (:content-type file)})
+                     (conj {:file_size (:size file)})
+                     (conj {:file_store_path (str "documents/" (:filename file))}))]
+    (document-model/save document (:tempfile file))
+    (println folder)
     (redirect (str "/folders/" folder))))
 
 (defn delete-document [params]
@@ -42,6 +44,15 @@
     (document-model/delete-it id)
     (redirect (str "/folders/" folder))))
 
-(defn download-document [session id]
-  (let [document (document-model/get-it id)]
-    (file-response "/home/htmfilho/Documents/assinatura-beto-kenia-cessao.pdf")))
+(defn download-document [id]
+  (let [document (document-model/get-file id)]
+    (content-type {:status 200
+                   :headers {}
+                   :body (:input-stream document)} (:content-type 
+                                                      (:object-metadata document)))))
+
+;(defn download-document [id]
+;  (-> (file-response "/path/to/my/document/ugly_file_name.pdf")
+;      (header "Content-Disposition" "attachment; filename=\"nice_file_name.pdf\"")
+;      (content-type "application/pdf")
+;      (header "Content-Length" 3746220)))
