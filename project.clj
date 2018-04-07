@@ -19,7 +19,9 @@
                  ; Web dependencies
                  [compojure                 "1.6.0"  ]  ; routing library
                  [hiccup                    "1.0.5"  ]  ; html template library
-                 [ring-server               "0.5.0"  ] ; web application library
+                 [ring/ring-core            "1.6.3"  ]  ; web application library
+                 [ring/ring-jetty-adapter   "1.6.3"  ]  ; web server library 
+                 [ring/ring-devel           "1.6.3"  ]
                  
                  ; Extra dependencies
                  [yogthos/config            "0.9"    ]  ; manage environment variables
