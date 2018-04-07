@@ -35,8 +35,7 @@
                      (conj {:file_size (:size file)})
                      (conj {:file_store_path (str "documents/" (:filename file))}))]
     (document-model/save document (:tempfile file))
-    (println folder)
-    (redirect (str "/folders/" folder))))
+    (redirect (str "/folders/" folder) :see-other)))
 
 (defn delete-document [params]
   (let [id     (:id params)
@@ -48,11 +47,5 @@
   (let [document (document-model/get-file id)]
     (content-type {:status 200
                    :headers {}
-                   :body (:input-stream document)} (:content-type 
-                                                      (:object-metadata document)))))
-
-;(defn download-document [id]
-;  (-> (file-response "/path/to/my/document/ugly_file_name.pdf")
-;      (header "Content-Disposition" "attachment; filename=\"nice_file_name.pdf\"")
-;      (content-type "application/pdf")
-;      (header "Content-Length" 3746220)))
+                   :body (:input-stream document)} 
+                  (:content-type (:object-metadata document)))))

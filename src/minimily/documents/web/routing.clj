@@ -25,8 +25,7 @@
         (core/GET  "/new"      {session :session {folder :folder} :params}
                                (document-ctrl/new-document session folder))
         (core/POST "/save"     {session :session params :params} 
-                               (wrap-multipart-params
-                                 (document-ctrl/save-document session params)))
+                               (document-ctrl/save-document session params))
         (core/POST "/delete"   {params :params}
                                (document-ctrl/delete-document params))
         (core/GET  "/:id"      {session :session {id :id} :params}
@@ -34,4 +33,4 @@
         (core/GET  "/:id/edit" {session :session {id :id} :params}
                                (document-ctrl/edit-document session id))
         (core/GET  "/:id/file" {session :session {id :id} :params}
-                               (document-ctrl/download-document session id))))))
+                               (document-ctrl/download-document id))))))

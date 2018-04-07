@@ -17,6 +17,9 @@
         (when document (hidden-field "id" (:id document)))
         (show-field "Folder" folder :name)
         [:div {:class "form-group"}
+          (label "file" "File")
+          [:input {:type "file" :name "file" :id "file" :class "form-control"}]]
+        [:div {:class "form-group"}
           (label "title" "Title")
           (text-field {:class "form-control" :id "title"} 
                       "title" 
@@ -26,9 +29,6 @@
           (text-area {:class "form-control" :id "description"} 
                      "description" 
                      (:description document))]
-        [:div {:class "form-group"}
-          (label "file" "File")
-          [:input {:type "file" :name "file" :id "file" :class "form-control"}]]
         (submit-button {:class "btn btn-primary"} "Submit")
         (str "&nbsp;")
         [:a {:class "btn btn-outline-secondary" 
