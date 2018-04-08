@@ -1,10 +1,11 @@
 (ns minimily.documents.model.document
   (:require [minimily.utils.database         :as db]
             [minimily.documents.model.folder :as folder-model]
-            [amazonica.aws.s3                :as s3]))
+            [amazonica.aws.s3                :as s3]
+            [config.core                     :refer [env]]))
 
 (def table  :document)
-(def bucket "minimily")
+(def bucket (env :AWS_S3_BUCKET_NAME))
 
 (defn find-by-folder [folder-id]
   (db/find-records (str "select * from document where folder = " folder-id)))
