@@ -6,6 +6,9 @@
 
 (def table  :document)
 (def bucket (env :AWS_S3_BUCKET_NAME))
+(def cred {:access-key (env :AWS_ACCESS_KEY_ID)
+           :secret-key (env :AWS_SECRET_ACCESS_KEY)
+           :endpoint   (env :AWS_ENDPOINT)})
 
 (defn find-by-folder [folder-id]
   (db/find-records (str "select * from document where folder = " folder-id)))
@@ -23,11 +26,13 @@
 
 (defn get-file [id]
   (let [document (get-it id)]
-    (s3/get-object :bucket-name bucket
+    (s3/get-object cred 
+                   :bucket-name bucket
                    :key (:file_store_path document))))
 
 (defn save-file [file document]
-  (s3/put-object :bucket-name bucket
+  (s3/put-object cred
+                 :bucket-name bucket
                  :key (:file_store_path document)
                  :file file)
   document)
