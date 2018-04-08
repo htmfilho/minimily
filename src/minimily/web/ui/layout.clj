@@ -10,12 +10,13 @@
       [:title "Minimily"]
       (page/include-css "/css/bootstrap.min.css"
                         "/css/custom.css")
+      [:link {:href "https://fonts.googleapis.com/css?family=Caveat|Montserrat|Pacifico" :rel "stylesheet"}]
       [:script {:src "https://use.fontawesome.com/releases/v5.0.9/js/all.js" 
                 :integrity "sha384-8iPTk2s/jMVj81dnzb/iFR2sdA7u06vHJyyLlAd4snFpCl/SnyUjRrbdJsw1pGIl" 
                 :crossorigin "anonymous"}]]
     [:body 
-      [:nav {:class "navbar fixed-top navbar-dark bg-primary"}
-        [:a {:class "navbar-brand" :href "/"} "Minimily"]
+      [:nav {:class "navbar navbar-expand-lg fixed-top navbar-dark bg-dark"}
+        [:a {:class "navbar-brand" :href "/" :style "font-family: 'Pacifico', cursive;"} "Minimily"]
         [:button {:class "navbar-toggler"
                   :type "button"
                   :data-toggle "collapse"

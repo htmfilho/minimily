@@ -1,5 +1,10 @@
 body {
     padding-top: 80px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+h3 {
+    font-family: 'Caveat', cursive;
 }
 
 label {
@@ -19,6 +24,7 @@ label {
 }
 
 .page-title {
+    font-family: 'Caveat', cursive;
     font-size: 2em;
     font-weight: bold;
     border-bottom: 1px solid gray;
