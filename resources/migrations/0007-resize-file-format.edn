@@ -1,0 +1,4 @@
+{:up   
+  ["alter table document alter column file_format type varchar(100);"]
+ :down 
+  ["alter table document alter column file_format type varchar(20);"]}

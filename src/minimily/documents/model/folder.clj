@@ -1,5 +1,6 @@
 (ns minimily.documents.model.folder
-  (:require [minimily.utils.database :as db]))
+  (:require [minimily.utils.database :as db]
+            [minimily.utils.string   :as s]))
 
 (def table :folder)
 
@@ -29,3 +30,6 @@
                 (let [parent (get-it (:parent folder))]
                   (recur parent 
                         (conj path folder)))))))
+
+(defn path [id]
+  (reduce #(str %1 "/" %2) (map #(s/tech (:name %)) (find-path id))))

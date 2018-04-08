@@ -6,7 +6,8 @@
             [minimily.documents.web.ui.document-form :refer [document-form-page]]
             [minimily.documents.web.ui.document      :refer [document-page]]
             [minimily.documents.model.folder         :as folder-model]
-            [minimily.documents.model.document       :as document-model]))
+            [minimily.documents.model.document       :as document-model]
+            [minimily.utils.string                   :as s]))
 
 (defn view-document [session id]
   (let [document (document-model/get-it id)
@@ -33,7 +34,7 @@
                      (conj {:file_original_name (:filename file)})
                      (conj {:file_format (:content-type file)})
                      (conj {:file_size (:size file)})
-                     (conj {:file_store_path (str "documents/" (:filename file))}))]
+                     (conj {:file_store_path (str (folder-model/path folder) "/" (s/tech (:filename file)))}))]
     (document-model/save document (:tempfile file))
     (redirect (str "/folders/" folder) :see-other)))
 

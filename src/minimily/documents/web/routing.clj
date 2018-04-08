@@ -1,7 +1,6 @@
 (ns minimily.documents.web.routing
   (:require [compojure.core                       :as core]
             [ring.middleware.params               :refer [wrap-params]]
-            [ring.middleware.multipart-params     :refer [wrap-multipart-params]]
             [minimily.documents.web.ctrl.folder   :as folder-ctrl]
             [minimily.documents.web.ctrl.document :as document-ctrl]))
 
