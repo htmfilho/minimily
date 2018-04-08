@@ -29,8 +29,8 @@
           [:ul {:class "navbar-nav mr-auto"}]
           (if (empty? session)
             [:ul {:class "navbar-nav my-2 my-lg-0"}
-              [:li {:class "nav-item"}
-                [:a {:class "nav-link my-2 my-sm-0" :href "/signup"} "Sign Up"]]
+              ;[:li {:class "nav-item"}
+              ;  [:a {:class "nav-link my-2 my-sm-0" :href "/signup"} "Sign Up"]]
               [:li {:class "nav-item"}
                 [:a {:class "nav-link  my-2 my-sm-0" :href "/signin"} "Sign In"]]]
             [:ul {:class "navbar-nav my-2 my-lg-0"}
