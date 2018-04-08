@@ -19,7 +19,9 @@
      :port-number   (subs url (+ third-colon 1) slash)
      :database-name (subs url (+ slash 1))}))
 
-(def options {:pool-name "db-pool" :adapter "postgresql"})
+(def options {:pool-name "db-pool" 
+              :adapter "postgresql" 
+              :maximum-pool-size 2})
 
 (def datasource
   (make-datasource (conj options
