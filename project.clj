@@ -24,7 +24,7 @@
                  [ring/ring-devel           "1.6.3"  ]
                  
                  ; Extra dependencies
-                 [yogthos/config            "0.9"    ]  ; manage environment variables
+                 [yogthos/config            "1.1.1"  ]  ; manage environment variables
                  [amazonica                 "0.3.121"]]
   :min-lein-version "2.0.0"
   :main ^:ship-aot minimily.app

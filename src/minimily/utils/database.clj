@@ -7,8 +7,7 @@
             [ragtime.repl      :as repl]))
 
 (defn decompose-url [url]
-  (let [url            (or url (System/getenv "DATABASE_URL"))
-        double-slashes (str/index-of url "//")
+  (let [double-slashes (str/index-of url "//")
         second-colon   (str/index-of url ":" (+ double-slashes 2))
         at             (str/index-of url "@")
         third-colon    (str/index-of url ":" at)
@@ -25,7 +24,7 @@
 
 (def datasource
   (make-datasource (conj options
-                         (decompose-url (env :DATABASE_URL)))))
+                         (decompose-url (:DATABASE_URL env)))))
 
 (def migration-config
  {:datastore  (migration/sql-database {:datasource datasource})
