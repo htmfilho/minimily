@@ -7,7 +7,8 @@
             [ragtime.repl      :as repl]))
 
 (defn decompose-url [url]
-  (let [double-slashes (str/index-of url "//")
+  (let [url            (or url (System/getenv "DATABASE_URL"))
+        double-slashes (str/index-of url "//")
         second-colon   (str/index-of url ":" (+ double-slashes 2))
         at             (str/index-of url "@")
         third-colon    (str/index-of url ":" at)
