@@ -5,10 +5,10 @@
             [config.core                     :refer [env]]))
 
 (def table  :document)
-(def bucket (env :AWS_S3_BUCKET_NAME))
-(def cred {:access-key (env :AWS_ACCESS_KEY_ID)
-           :secret-key (env :AWS_SECRET_ACCESS_KEY)
-           :endpoint   (env :AWS_ENDPOINT)})
+(def bucket (System/getenv "AWS_S3_BUCKET_NAME"))
+(def cred {:access-key (System/getenv "AWS_ACCESS_KEY_ID")
+           :secret-key (System/getenv "AWS_SECRET_ACCESS_KEY")
+           :endpoint   (System/getenv "AWS_ENDPOINT")})
 
 (defn find-by-folder [folder-id]
   (db/find-records (str "select * from document where folder = " folder-id)))
