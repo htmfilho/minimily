@@ -1,13 +1,19 @@
 (ns minimily.accounting.model.account
-  (:require [minimily.utils.database :as db]))
+  (:require [minimily.utils.database :as db]
+            [minimily.core.model.family-member :as family-member-model]))
 
 (def table :account)
 
 (defn find-all [profile-id]
-  (db/find-records (str "select * from account where holder = " profile-id)))
+  (let [family-members (map #(:user_profile %) 
+                       (family-member-model/find-members-same-family profile-id))]
+    (if (empty? family-members)
+      (db/find-records (str "select * from account where holder = " profile-id))
+      (db/find-records (str "select * from account where holder in " (str "(" (reduce #(str %1 "," %2) family-members) ")"))))))
 
 (defn find-all-except [profile-id except-id]
-  (db/find-records (str "select * from account where holder = " profile-id " and id <> " except-id)))
+  (filter #(not= (:holder %) except-id) 
+          (find-all profile-id)))
 
 (defn get-it [id]
   (db/get-record table id))
