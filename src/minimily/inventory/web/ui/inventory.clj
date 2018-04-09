@@ -6,12 +6,12 @@
   (http-headers 
     (layout session (:full-name session) 
       [:div {:class "list-group"}
-        [:a {:href "/locations"
+        [:a {:href "/inventory/locations"
              :class "list-group-item list-group-item-action flex-column align-items-start"}
           [:div {:class "d-flex w-100 justify-content-between"}
             [:h3 {:class "mb-1"} "Locations"]]
           [:p {:class "mb-1"} "The locations where you organize your goods."]]
-        [:a {:href "/collections"
+        [:a {:href "/inventory/collections"
              :class "list-group-item list-group-item-action flex-column align-items-start"}
           [:div {:class "d-flex w-100 justify-content-between"}
             [:h3 {:class "mb-1"} "Collections"]]
