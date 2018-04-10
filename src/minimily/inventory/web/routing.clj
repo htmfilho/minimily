@@ -10,19 +10,19 @@
                              (inventory-ctrl/view-inventory session))
       
       (core/context "/locations" []
-        (core/GET "/" {session :session}
-                      (location-ctrl/view-locations session))))))
-;        (core/GET  "/new"      {session :session {folder :folder} :params}
-;                               (document-ctrl/new-document session folder))
-;        (core/POST "/save"     {session :session params :params} 
-;                               (document-ctrl/save-document session params))
-;        (core/POST "/delete"   {params :params}
-;                               (document-ctrl/delete-document params))
-;        (core/GET  "/:id"      {session :session {id :id} :params}
-;                               (document-ctrl/view-document session id))
-;        (core/GET  "/:id/edit" {session :session {id :id} :params}
-;                               (document-ctrl/edit-document session id)))
-;                               
+        (core/GET  "/"         {session :session}
+                               (location-ctrl/view-locations session))
+        (core/GET  "/new"      {session :session}
+                               (location-ctrl/new-location session))
+        (core/POST "/save"     {session :session params :params} 
+                               (location-ctrl/save-location session params))
+        (core/POST "/delete"   {params :params}
+                               (location-ctrl/delete-location params))
+        (core/GET  "/:id"      {session :session {id :id} :params}
+                               (location-ctrl/view-location session id))
+        (core/GET  "/:id/edit" {session :session {id :id} :params}
+                               (location-ctrl/edit-location session id))))))
+
 ;      (core/context "/collections" []
 ;        (core/GET  "/new"      {session :session {folder :folder} :params}
 ;                               (document-ctrl/new-document session folder))
