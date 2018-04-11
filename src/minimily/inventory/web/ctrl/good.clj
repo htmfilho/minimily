@@ -52,7 +52,7 @@
                  (conj {:location   (Integer/parseInt (:location params))})
                  (conj {:collection (Integer/parseInt (:collection params))}))
         id (good-model/save good)]
-    (redirect (str "/inventory/goods/" id))))
+    (redirect (str "/inventory/goods?location=" (:location params) "&collection=" (:collection params)))))
 
 (defn delete-good [params]
   (let [id (:id params)]
