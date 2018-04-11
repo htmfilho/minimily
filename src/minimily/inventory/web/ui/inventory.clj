@@ -15,4 +15,9 @@
              :class "list-group-item list-group-item-action flex-column align-items-start"}
           [:div {:class "d-flex w-100 justify-content-between"}
             [:h3 {:class "mb-1"} "Collections"]]
-          [:p {:class "mb-1"} "The collections you classify your goods."]]])))
+          [:p {:class "mb-1"} "The collections you classify your goods."]]
+        [:a {:href "/inventory/goods"
+             :class "list-group-item list-group-item-action flex-column align-items-start"}
+          [:div {:class "d-flex w-100 justify-content-between"}
+            [:h3 {:class "mb-1"} "Goods"]]
+          [:p {:class "mb-1"} "All your goods."]]])))

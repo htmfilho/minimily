@@ -4,7 +4,7 @@
 (def table :location)
 
  (defn find-all []
-  (db/find-records "select * from location"))
+  (db/find-records "select * from location order by name"))
 
 (defn get-it [id]
   (db/get-record table id))
