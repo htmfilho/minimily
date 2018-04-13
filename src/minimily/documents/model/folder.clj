@@ -4,26 +4,26 @@
 
 (def table :folder)
 
-(defn find-parents []
-  (db/find-records (str "select * from folder where parent is null")))
+(defn find-parents [profile-id]
+  (db/find-records (str "select * from folder where profile = " profile-id " parent is null")))
 
-(defn find-children [parent-id]
-  (db/find-records (str "select * from folder where parent = " parent-id)))
+(defn find-children [profile-id parent-id]
+  (db/find-records (str "select * from folder where profile = " profile-id " parent = " parent-id)))
 
-(defn count-children [parent-id]
-  (:count (first (db/find-records (str "select count(*) from folder where parent = " parent-id)))))
+(defn count-children [profile-id parent-id]
+  (:count (first (db/find-records (str "select count(*) from folder where profile = " profile-id " parent = " parent-id)))))
 
-(defn get-it [id]
-  (db/get-record table id))
+(defn get-it [profile-id id]
+  (db/get-record table id profile-id))
 
 (defn save [folder]
   (db/save-record table folder))
 
-(defn delete-it [id]
-  (db/delete-record table id))
+(defn delete-it [profile-id id]
+  (db/delete-record table id profile-id))
 
-(defn find-path [id]
-  (reverse (loop [folder (get-it id)
+(defn find-path [profile-id id]
+  (reverse (loop [folder (get-it profile-id id)
                   path []]
               (if (nil? (:parent folder))
                 (conj path folder)
@@ -31,5 +31,5 @@
                   (recur parent 
                         (conj path folder)))))))
 
-(defn path [id]
-  (reduce #(str %1 "/" %2) (map #(s/tech (:name %)) (find-path id))))
+(defn path [profile-id id]
+  (reduce #(str %1 "/" %2) (map #(s/tech (:name %)) (find-path profile-id id))))

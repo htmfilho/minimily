@@ -4,19 +4,20 @@
 
 (def table :account)
 
-(defn find-all [profile-id]
+(defn find-all [holder]
   (let [family-members (map #(:user_profile %) 
-                       (family-member-model/find-members-same-family profile-id))]
+                       (family-member-model/find-members-same-family holder))]
     (if (empty? family-members)
-      (db/find-records (str "select * from account where holder = " profile-id))
-      (db/find-records (str "select * from account where holder in " (str "(" (reduce #(str %1 "," %2) family-members) ")"))))))
+      (db/find-records (str "select * from account where holder = " holder))
+      (db/find-records (str "select * from account where holder in " 
+                            (str "(" (reduce #(str %1 "," %2) family-members) ")"))))))
 
-(defn find-all-except [profile-id except-id]
+(defn find-all-except [holder except-id]
   (filter #(not= (:holder %) except-id) 
-          (find-all profile-id)))
+          (find-all holder)))
 
-(defn get-it [id]
-  (db/get-record table id))
+(defn get-it [holder id]
+  (db/get-record table id holder))
 
 (defn save [account]
   (db/save-record table account))
@@ -25,5 +26,5 @@
   (db/update-record table {:id id :balance new-balance})
   new-balance)
 
-(defn delete-it [id]
-  (db/delete-record table id))
+(defn delete-it [holder id]
+  (db/delete-record table id holder))

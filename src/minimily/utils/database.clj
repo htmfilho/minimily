@@ -48,9 +48,14 @@
   (with-conn
     (jdbc/query conn query)))
 
-(defn get-record [table id]
-  (with-conn
-    (jdbc/get-by-id conn table (valid-id id))))
+(defn get-record 
+  ([table id]
+    (with-conn
+      (jdbc/get-by-id conn table (valid-id id))))
+  ([table id profile-id]
+    (first (find-records (str "select * from " (name table) 
+                              " where id = " id 
+                              " and profile = " profile-id)))))
 
 (defn insert-record
   "Returns a map of fields persisted in the database."
@@ -80,6 +85,9 @@
 
 (defn delete-record
   "Returns the number of deleted records from the database."
-  [table id]
-  (with-conn
-    (jdbc/delete! conn table ["id = ?" (valid-id id)])))
+  ([table id]
+    (with-conn
+      (jdbc/delete! conn table ["id = ?" (valid-id id)])))
+  ([table id profile-id]
+    (with-conn
+      (jdbc/delete! conn table ["id = ? and profile = ?" id profile-id]))))
