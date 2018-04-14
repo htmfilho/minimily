@@ -23,7 +23,8 @@
     (location-form-page session location)))
 
 (defn save-location [session params]
-  (let [id (location-model/save params)]
+  (let [location (conj params {:profile (:user-id session)})
+        id (location-model/save location)]
     (redirect "/inventory/locations")))
 
 (defn delete-location [session params]

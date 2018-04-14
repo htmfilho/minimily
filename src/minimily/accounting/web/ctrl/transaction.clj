@@ -36,7 +36,8 @@
 
 (defn save-transaction [session transaction]
   (let [transaction (-> transaction
-                        (conj {:account (Integer/parseInt (:account transaction))}))]
+                        (conj {:account (Integer/parseInt (:account transaction))})
+                        (conj {:profile (:user-id session)}))]
     (transaction-model/save transaction)
     (redirect (str "/accounts/" (:account transaction) "/transactions/" (:id transaction)))))
 

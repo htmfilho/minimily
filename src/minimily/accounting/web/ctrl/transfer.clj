@@ -26,13 +26,15 @@
                           :amount amount 
                           :description (str "Transfer to " (:name to))
                           :balance balance-from
-                          :account_transfer (:id to)}
+                          :account_transfer (:id to)
+                          :profile (:user-id session)}
         transaction-to   {:account (:id to) 
                           :type 1 
                           :amount amount 
                           :description (str "Transfer from " (:name from))
                           :balance balance-to
-                          :account_transfer (:id from)}]
+                          :account_transfer (:id from)
+                          :profile (:user-id session)}]
     (transaction-model/save transaction-from)
     (transaction-model/save transaction-to)
     (redirect (str "/accounts/" (:id from)))))

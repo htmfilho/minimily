@@ -23,7 +23,8 @@
     (collection-form-page session collection)))
 
 (defn save-collection [session params]
-  (let [id (collection-model/save params)]
+  (let [collection (conj params {:profile (:user-id session)})
+        id (collection-model/save collection)]
     (redirect "/inventory/collections")))
 
 (defn delete-collection [session params]

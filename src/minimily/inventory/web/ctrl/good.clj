@@ -50,7 +50,8 @@
                  (conj {:quantity   (BigDecimal. (:quantity params))})
                  (conj {:value      (BigDecimal. (:value params))})
                  (conj {:location   (Integer/parseInt (:location params))})
-                 (conj {:collection (Integer/parseInt (:collection params))}))
+                 (conj {:collection (Integer/parseInt (:collection params))})
+                 (conj {:profile    (:user-id session)}))
         id (good-model/save good)]
     (redirect (str "/inventory/goods?location=" (:location params) "&collection=" (:collection params)))))
 

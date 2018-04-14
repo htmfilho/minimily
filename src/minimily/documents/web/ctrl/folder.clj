@@ -39,7 +39,7 @@
 
 (defn save-folder [session folder]
   (let [parent (when (:parent folder) (Integer/parseInt (:parent folder)))
-        folder (conj folder {:parent parent})
+        folder (conj folder {:parent parent :profile (:user-id session)})
         id (folder-model/save folder)]
     (redirect (str "/folders/" (if (nil? parent) id parent)))))
 
