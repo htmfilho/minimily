@@ -13,8 +13,8 @@
                              (folder-ctrl/new-folder session parent))
       (core/POST "/save"     {session :session params :params} 
                              (folder-ctrl/save-folder session params))
-      (core/POST "/delete"   {params :params} 
-                             (folder-ctrl/delete-folder params))
+      (core/POST "/delete"   {session :session params :params} 
+                             (folder-ctrl/delete-folder session params))
       (core/GET  "/:id"      {session :session {id :id} :params}
                              (folder-ctrl/view-folder session id))
       (core/GET  "/:id/edit" {session :session {id :id} :params}
@@ -25,11 +25,11 @@
                                (document-ctrl/new-document session folder))
         (core/POST "/save"     {session :session params :params} 
                                (document-ctrl/save-document session params))
-        (core/POST "/delete"   {params :params}
+        (core/POST "/delete"   {session :session params :params}
                                (document-ctrl/delete-document params))
         (core/GET  "/:id"      {session :session {id :id} :params}
                                (document-ctrl/view-document session id))
         (core/GET  "/:id/edit" {session :session {id :id} :params}
                                (document-ctrl/edit-document session id))
         (core/GET  "/:id/file" {session :session {id :id} :params}
-                               (document-ctrl/download-document id))))))
+                               (document-ctrl/download-document session id))))))

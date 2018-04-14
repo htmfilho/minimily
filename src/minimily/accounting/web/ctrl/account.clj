@@ -11,15 +11,15 @@
     (accounts-page session accounts)))
 
 (defn view-account [session id]
-  (let [account (account-model/get-it id)
-        transactions (transaction-model/find-by-account id)]
+  (let [account (account-model/get-it (:user-id session) id)
+        transactions (transaction-model/find-by-account (:user-id session) id)]
     (account-page session account transactions)))
 
 (defn new-account [session]
   (account-form-page session))
 
 (defn edit-account [session id]
-  (let [account (account-model/get-it id)]
+  (let [account (account-model/get-it (:user-id session) id)]
     (account-form-page session account)))
 
 (defn save-account [session params]
@@ -27,7 +27,7 @@
         id      (account-model/save account)]
     (redirect (str "/accounts/" id))))
 
-(defn delete-account [params]
+(defn delete-account [session params]
   (let [id (:id params)]
-    (account-model/delete-it id)
+    (account-model/delete-it (:user-id session) id)
     (redirect "/accounts")))

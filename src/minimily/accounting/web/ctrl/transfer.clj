@@ -6,14 +6,14 @@
             [minimily.accounting.model.transaction    :as transaction-model]))
 
 (defn new-transfer [session account]
-  (let [account (account-model/get-it account)
+  (let [account (account-model/get-it (:user-id session) account)
         to-accounts (account-model/find-all-except (:user-id session) 
                                                    (:id account))]
     (form/transfer-form-page session account to-accounts)))
 
-(defn perform-transfer [transfer]
-  (let [from             (account-model/get-it (:account transfer))
-        to               (account-model/get-it (:to transfer))
+(defn perform-transfer [session transfer]
+  (let [from             (account-model/get-it (:user-id session) (:account transfer))
+        to               (account-model/get-it (:user-id session) (:to transfer))
         amount           (BigDecimal. (:amount transfer))
         balance-from     (account-model/update-balance (:id from)
                                                        (+ (* -1 amount)

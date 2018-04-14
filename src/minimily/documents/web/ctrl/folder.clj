@@ -7,30 +7,34 @@
             [minimily.documents.model.folder       :as folder-model]
             [minimily.documents.model.document     :as document-model]))
 
-(defn merge-num-children [folders]
-  (map #(conj % {:num-children (document-model/count-siblings (:id %))})
+(defn merge-num-children [profile-id folders]
+  (map #(conj % {:num-children (document-model/count-siblings profile-id (:id %))})
        folders))
 
-(defn merge-documents [folder-id folders]
-  (let [documents (document-model/find-by-folder folder-id)]
+(defn merge-documents [profile-id folder-id folders]
+  (let [documents (document-model/find-by-folder profile-id folder-id)]
     (reduce conj documents folders)))
 
 (defn view-parent-folders [session]
-  (let [folders (merge-num-children (folder-model/find-parents))]
+  (let [folders (merge-num-children (:user-id session) 
+                                    (folder-model/find-parents (:user-id session)))]
     (folders-page session folders)))
 
 (defn view-folder [session id]
-  (let [folder (folder-model/get-it id)
-        children (merge-documents id (merge-num-children (folder-model/find-children id)))
-        path (folder-model/find-path id)]
+  (let [folder (folder-model/get-it (:user-id session) id)
+        children (merge-documents (:user-id session) 
+                                  id 
+                                  (merge-num-children (:user-id session) 
+                                                      (folder-model/find-children (:user-id session) id)))
+        path (folder-model/find-path (:user-id session) id)]
     (folder-page session folder children path)))
 
 (defn new-folder [session parent-id]
-  (let [parent (folder-model/get-it parent-id)]
+  (let [parent (folder-model/get-it (:user-id session) parent-id)]
     (folder-form-new session parent)))
 
 (defn edit-folder [session id]
-  (let [folder (folder-model/get-it id)]
+  (let [folder (folder-model/get-it (:user-id session) id)]
     (folder-form-edit session folder)))
 
 (defn save-folder [session folder]
@@ -39,7 +43,7 @@
         id (folder-model/save folder)]
     (redirect (str "/folders/" (if (nil? parent) id parent)))))
 
-(defn delete-folder [params]
+(defn delete-folder [session params]
   (let [id (:id params)]
-    (folder-model/delete-it id)
+    (folder-model/delete-it (:user-id session) id)
     (redirect "/folders")))
