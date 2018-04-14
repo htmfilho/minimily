@@ -11,14 +11,14 @@
            :endpoint   (or (:AWS_ENDPOINT env) (System/getenv "AWS_ENDPOINT"))})
 
 (defn find-by-folder [profile-id folder-id]
-  (db/find-records (str "select * from document where folder = " folder-id)))
+  (db/find-records ["select * from document where folder = ?" folder-id]))
 
 (defn count-documents [profile-id folder-id]
-  (:count (first (db/find-records (str "select count(*) from document where folder = " folder-id)))))
+  (:count (first (db/find-records ["select count(*) from document where folder = ?" folder-id]))))
 
 (defn count-siblings [profile-id folder-id]
   (let [num-folders (folder-model/count-children folder-id)
-        num-documents (:count (first (db/find-records (str "select count(*) from document where folder = " folder-id))))]
+        num-documents (:count (first (db/find-records ["select count(*) from document where folder = ?" folder-id])))]
     (+ num-folders num-documents)))
 
 (defn get-it [profile-id id]
