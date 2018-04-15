@@ -4,10 +4,12 @@
 (def table :transaction)
 
 (defn find-by-account [profile-id account-id]
-  (db/find-records ["select * from transaction where profile = ? and account = ? order by date_transaction desc" profile-id account-id]))
+  (db/find-records ["select * from transaction 
+                     where profile = ? and account = ? 
+                     order by date_transaction desc" profile-id (Integer/parseInt account-id)]))
 
-(defn calculate-balance [profile-id account-id]
-  (let [transactions (db/find-records ["select type, amount from transaction where profile = ? and account = ?" profile-id account-id])
+(defn calculate-balance [account-id]
+  (let [transactions (db/find-records ["select type, amount from transaction where account = ?" account-id])
         amounts      (map #(* (:type %) (:amount %)) transactions)]
     (reduce + amounts)))
 

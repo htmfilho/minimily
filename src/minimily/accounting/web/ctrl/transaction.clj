@@ -19,34 +19,35 @@
                               (account-model/get-it (:user-id session) account) 
                               (transaction-model/get-it (:user-id session) id)))
 
-(defn add-transaction [session transaction]
-  (let [account-id  (Integer/parseInt (:account transaction))
-        type        (Integer/parseInt (:type transaction))
-        amount      (BigDecimal. (:amount transaction))
+(defn add-transaction [session params]
+  (let [account-id  (Integer/parseInt (:account params))
+        type        (Integer/parseInt (:type params))
+        amount      (BigDecimal. (:amount params))
         balance     (account-model/update-balance account-id
                                                   (+ (* type amount) 
-                                                     (transaction-model/calculate-balance (:user-id session) account-id)))
-        transaction (-> transaction
+                                                     (transaction-model/calculate-balance account-id)))
+        transaction (-> params
                         (conj {:account account-id})
-                        (conj {:type (Integer/parseInt (:type transaction))})
-                        (conj {:amount (BigDecimal. (:amount transaction))})
-                        (conj {:balance balance}))]
+                        (conj {:type (Integer/parseInt (:type params))})
+                        (conj {:amount (BigDecimal. (:amount params))})
+                        (conj {:balance balance})
+                        (conj {:profile (:user-id session)}))]
     (transaction-model/save transaction)
     (redirect (str "/accounts/" (:account transaction)))))
 
-(defn save-transaction [session transaction]
-  (let [transaction (-> transaction
-                        (conj {:account (Integer/parseInt (:account transaction))})
+(defn save-transaction [session params]
+  (let [transaction (-> params
+                        (conj {:account (Integer/parseInt (:account params))})
                         (conj {:profile (:user-id session)}))]
     (transaction-model/save transaction)
     (redirect (str "/accounts/" (:account transaction) "/transactions/" (:id transaction)))))
 
 (defn delete-transaction [session params]
-  (let [account     (:account params)
-        id          (:id params)
-        transaction (transaction-model/get-it id)]
-    (account-model/update-balance account
-                                  (- (transaction-model/calculate-balance (:user-id session) account)
+  (let [account-id  (Integer/parseInt (:account params))
+        id          (Integer/parseInt (:id params))
+        transaction (transaction-model/get-it (:user-id session) id)]
+    (account-model/update-balance account-id
+                                  (- (transaction-model/calculate-balance account-id)
                                      (* (:type transaction) (:amount transaction))))
-    (transaction-model/delete-it id)
-    (redirect (str "/accounts/" account))))
+    (transaction-model/delete-it (:user-id session) id)
+    (redirect (str "/accounts/" account-id))))
