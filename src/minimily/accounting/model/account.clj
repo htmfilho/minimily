@@ -9,7 +9,7 @@
                        (family-member-model/find-members-same-family holder))]
     (if (empty? family-members)
       (db/find-records ["select * from account where holder = ?" holder])
-      (db/find-records ["select * from account where holder in (?)" (reduce #(str %1 "," %2) family-members)]))))
+      (db/find-records (str "select * from account where holder in (" (reduce #(str %1 "," %2) family-members) ")")))))
 
 (defn find-all-except [holder except-id]
   (filter #(not= (:id %) except-id) 
