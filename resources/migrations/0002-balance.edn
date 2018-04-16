@@ -1,0 +1,4 @@
+{:up   
+  ["alter table account add column balance decimal(12, 2);"]
+ :down 
+  ["alter table account drop column balance;"]}

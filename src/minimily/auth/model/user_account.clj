@@ -3,21 +3,20 @@
 
 (def table :user_account)
 
-(defn get-it [id]
-  (db/get-record table id))
+(defn save [user-account]
+  (db/save-record table user-account))
 
-(defn save [a-user-account]
-  (db/save-record table a-user-account))
-
-(defn delete [id]
-  (db/delete-record table id))
-
-(defn authenticate [username password]
+(defn authenticate
+  "Returns some reference data about the authenticated user or nil if the user
+   is not authenticated."
+  [username password]
   (let [auth_user (db/find-records
-                    [(str "select * from "
+                    [(str "select p.id as id, first_name, last_name from "
                           (name table)
-                          " where username = ? and password = ?")
+                          " u left join user_profile p" 
+                          " on u.id = p.user_account"
+                          " where u.username = ? and u.password = ?")
                      username password])]
     (if (empty? auth_user)
       nil
-      (dissoc (first auth_user) :password :registration_date))))
+      (first auth_user))))

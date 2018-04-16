@@ -1,0 +1,40 @@
+body {
+    padding-top: 80px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+h3 {
+    font-family: 'Caveat', cursive;
+}
+
+h4 {
+    font-family: 'Caveat', cursive;
+}
+
+label {
+    font-weight: bold;
+}
+
+.credit {
+    color: #00c200;
+}
+
+.debit {
+    color: #c20000;
+}
+
+.label {
+    font-weight: bold;
+}
+
+.page-title {
+    font-family: 'Caveat', cursive;
+    font-size: 2em;
+    font-weight: bold;
+    border-bottom: 1px solid gray;
+    margin-bottom: 15px;
+}
+
+.read-only {
+    font-style: italic;
+}

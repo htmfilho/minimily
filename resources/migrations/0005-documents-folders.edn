@@ -1,0 +1,17 @@
+{:up   
+  ["create table folder (
+    id          serial        primary key,
+    name        varchar(100)  not null,
+    description varchar(300),
+    parent      integer       references folder
+  );
+
+  create table document (
+    id          serial       primary key,
+    folder      integer      not null references folder,
+    title       varchar(100) not null,
+    description varchar(300)
+  );"]
+ :down 
+  ["drop table document;
+    drop table folder;"]}

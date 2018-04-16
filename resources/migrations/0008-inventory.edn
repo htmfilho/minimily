@@ -1,0 +1,26 @@
+{:up   
+  ["create table location (
+    id          serial        primary key,
+    name        varchar(100)  not null,
+    description varchar(300)
+  );
+  
+  create table collection (
+    id          serial        primary key,
+    name        varchar(100)  not null,
+    description varchar(300)
+  );
+
+  create table good (
+    id          serial       primary key,
+    collection  integer      not null references collection,
+    location    integer      not null references location,
+    name        varchar(100) not null,
+    description varchar(300),
+    quantity    decimal(8, 2) constraint positive_quantity check (quantity > 0),
+    value       decimal(8, 2) constraint positive_value check (value > 0)
+  );"]
+ :down 
+  ["drop table good;
+    drop table collection;
+    drop table location;"]}

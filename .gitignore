@@ -2,7 +2,10 @@ _site
 .sass-cache
 .jekyll-metadata
 target/
+.vscode/
 .lein-repl-history
 .lein-failures
 .lein-repl-history
 .nrepl-port
+config/dev/config.edn
+config/prod/config.edn

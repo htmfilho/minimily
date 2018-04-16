@@ -1,0 +1,16 @@
+{:up   
+  ["alter table transaction add column profile integer references user_profile;
+    alter table location add column profile integer references user_profile;
+    alter table collection add column profile integer references user_profile;
+    alter table good add column profile integer references user_profile;
+    alter table folder add column profile integer references user_profile;
+    alter table document add column profile integer references user_profile;
+    alter table family add column profile integer references user_profile;"]
+ :down 
+  ["alter table family drop column profile;
+    alter table document drop column profile;
+    alter table folder drop column profile;
+    alter table good drop column profile;
+    alter table collection drop column profile;
+    alter table location drop column profile;
+    alter table transaction drop column profile;"]}
