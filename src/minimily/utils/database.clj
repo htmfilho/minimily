@@ -1,41 +1,50 @@
 (ns minimily.utils.database
-  (:require [hikari-cp.core    :refer :all]
+  (:require [hikari-cp.core    :as cp]
             [clojure.string    :as str]
             [clojure.java.jdbc :as jdbc]
-            [config.core       :refer [env]]
+            [clojure.java.io   :as io]
+            [config.core       :refer [env reload-env]]
             [ragtime.jdbc      :as migration]
-            [ragtime.repl      :as repl]))
+            [ragtime.repl      :as repl])
+  (:import (org.postgresql.util PSQLException)))
+
+(defn copy-file [source-path dest-path]
+  (io/copy (io/file source-path) 
+           (io/file dest-path)))
 
 (defn decompose-url [url]
-  (let [url            (or url (System/getenv "DATABASE_URL"))
-        double-slashes (str/index-of url "//")
-        second-colon   (str/index-of url ":" (+ double-slashes 2))
-        at             (str/index-of url "@")
-        third-colon    (str/index-of url ":" at)
-        slash          (str/index-of url "/" third-colon)]
-    {:username      (subs url (+ double-slashes 2) second-colon)
-     :password      (subs url (+ second-colon 1) at)
-     :server-name   (subs url (+ at 1) third-colon)
-     :port-number   (subs url (+ third-colon 1) slash)
-     :database-name (subs url (+ slash 1))}))
+  (if-let [url (or url (System/getenv "DATABASE_URL"))]
+    (let [double-slashes (str/index-of url "//")
+          second-colon   (str/index-of url ":" (+ double-slashes 2))
+          at             (str/index-of url "@")
+          third-colon    (str/index-of url ":" at)
+          slash          (str/index-of url "/" third-colon)]
+      {:username      (subs url (+ double-slashes 2) second-colon)
+       :password      (subs url (+ second-colon 1) at)
+       :server-name   (subs url (+ at 1) third-colon)
+       :port-number   (subs url (+ third-colon 1) slash)
+       :database-name (subs url (+ slash 1))})
+    (do
+      (copy-file "config/dev/config.edn.example" "config/dev/config.edn")
+      (reload-env)
+      (decompose-url (:DATABASE_URL env)))))
 
 (def options {:pool-name "db-pool" 
               :adapter "postgresql" 
               :maximum-pool-size 2})
 
-(def datasource
-  (make-datasource (conj options
-                         (decompose-url (:DATABASE_URL env)))))
-
-(def migration-config
- {:datastore  (migration/sql-database {:datasource datasource})
-  :migrations (migration/load-resources "migrations")})
+(defn datasource []
+  (try
+    (cp/make-datasource (conj options
+                              (decompose-url (:DATABASE_URL env))))
+    (catch Exception psqle (println "Ups"))))
 
 (defn migrate []
-  (repl/migrate migration-config))
+  (repl/migrate {:datastore  (migration/sql-database {:datasource (datasource)})
+                 :migrations (migration/load-resources "migrations")}))
 
 (defmacro with-conn [& body]
-  `(jdbc/with-db-connection [~'conn {:datasource datasource}]
+  `(jdbc/with-db-connection [~'conn {:datasource (datasource)}]
     ~@body))
 
 (defn- valid-id [id]
