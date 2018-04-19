@@ -2,7 +2,7 @@
 
 Minimily is an application designed to help you keeping your life as simple as possible. We will help you to make decisions taking into account the impact on your health, family, living place, community and environment.
 
-## Installation
+## Requirements
 
 Minimily is a web application and it has 3 requirements:
 
@@ -51,6 +51,14 @@ Run the `jar` package:
 
 To deploy to Heroku, make sure you have a PostgreSQL database and an 
 environment variable named DATABASE_URL.
+
+## Code Conventions
+
+### Functions
+
+1. The prefix `get-` indicates the function returns a single value or record.
+2. The prefix `find-` indicates the function returns a collection of values or
+   records.
 
 ## License
 
