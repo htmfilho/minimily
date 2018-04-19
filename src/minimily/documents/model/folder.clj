@@ -5,13 +5,13 @@
 (def table :folder)
 
 (defn find-parents [profile-id]
-  (db/find-records ["select * from folder where profile = ? parent is null" profile-id]))
+  (db/find-records ["select * from folder where profile = ? and parent is null" profile-id]))
 
 (defn find-children [profile-id parent-id]
-  (db/find-records ["select * from folder where profile = ? parent = ?" profile-id parent-id]))
+  (db/find-records ["select * from folder where profile = ? and parent = ?" profile-id parent-id]))
 
 (defn count-children [profile-id parent-id]
-  (:count (first (db/find-records ["select count(*) from folder where profile = ? parent = ?" profile-id parent-id]))))
+  (:count (first (db/find-records ["select count(*) from folder where profile = ? and parent = ?" profile-id parent-id]))))
 
 (defn get-it [profile-id id]
   (db/get-record table id profile-id))
@@ -27,7 +27,7 @@
                   path []]
               (if (nil? (:parent folder))
                 (conj path folder)
-                (let [parent (get-it (:parent folder))]
+                (let [parent (get-it profile-id (:parent folder))]
                   (recur parent 
                         (conj path folder)))))))
 

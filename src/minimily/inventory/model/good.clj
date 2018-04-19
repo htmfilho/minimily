@@ -4,10 +4,10 @@
 (def table :good)
 
 (defn find-by-location [profile-id location-id]
-  (db/find-records ["select * from good where profile = ? location = ?" profile-id location-id]))
+  (db/find-records ["select * from good where profile = ? and location = ?" profile-id location-id]))
 
 (defn find-by-collection [profile-id collection-id]
-  (db/find-records ["select * from good where profile = ? collection = ?" profile-id collection-id]))
+  (db/find-records ["select * from good where profile = ? and collection = ?" profile-id collection-id]))
 
 (defn find-by-criteria [profile-id location-id collection-id]
   (let [location?   (not (empty? location-id))
@@ -27,7 +27,7 @@
                                         c.id as collection_id, c.name as collection 
                                  from good g left join location l on g.location = l.id
                                              left join collection c on g.collection = c.id
-                                 where g.id = ? and profile = ?" id profile-id])]
+                                 where g.id = ? and g.profile = ?" id profile-id])]
     (if (empty? goods)
       nil
       (first goods))))

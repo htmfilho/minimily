@@ -24,7 +24,8 @@
     (goods-page session goods locations collections)))
 
 (defn view-good [session id]
-  (let [good (good-model/get-it (:user-id session) id)]
+  (let [good-id (Integer/parseInt id)
+        good    (good-model/get-it (:user-id session) good-id)]
     (good-page session good)))
 
 (defn new-good [session]
@@ -33,7 +34,8 @@
     (good-form-page session locations collections)))
 
 (defn edit-good [session id]
-  (let [good        (good-model/get-it (:user-id session) id)
+  (let [good-id     (Integer/parseInt id)
+        good        (good-model/get-it (:user-id session) good-id)
         locations   (map #(if (= (:id %) (:location_id good))
                             (conj % {:selected true}) 
                             (conj % {:selected false})) 

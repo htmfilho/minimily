@@ -10,9 +10,10 @@
             [minimily.utils.string                   :as s]))
 
 (defn view-document [session id]
-  (let [document (document-model/get-it (:user-id session) id)
-        folder   (folder-model/get-it (:user-id session) (:folder document))
-        path     (document-model/find-path (:user-id session) id)]
+  (let [document-id (Integer/parseInt id)
+        document    (document-model/get-it (:user-id session) document-id)
+        folder      (folder-model/get-it (:user-id session) (:folder document))
+        path        (document-model/find-path (:user-id session) document-id)]
     (document-page session document folder path)))
 
 (defn new-document [session folder-id]
@@ -40,10 +41,9 @@
     (redirect (str "/folders/" folder) :see-other)))
 
 (defn delete-document [session params]
-  (let [id     (:id params)
-        folder (:folder params)]
-    (document-model/delete-it (:user-id session) id)
-    (redirect (str "/folders/" folder))))
+  (let [document-id (Integer/parseInt (:id params))]
+    (document-model/delete-it (:user-id session) document-id)
+    (redirect (str "/folders/" (:folder params)))))
 
 (defn download-document [session id]
   (let [document (document-model/get-file (:user-id session) id)]
