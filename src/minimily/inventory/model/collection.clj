@@ -3,14 +3,14 @@
 
 (def table :collection)
 
- (defn find-all []
-  (db/find-records "select * from collection order by name"))
+(defn find-all [profile-id]
+  (db/find-records ["select * from collection where profile = ? order by name" profile-id]))
 
-(defn get-it [id]
-  (db/get-record table id))
+(defn get-it [profile-id id]
+  (db/get-record table id profile-id))
 
 (defn save [collection]
   (db/save-record table collection))
 
-(defn delete-it [id]
-  (db/delete-record table id))
+(defn delete-it [profile-id id]
+  (db/delete-record table id profile-id))

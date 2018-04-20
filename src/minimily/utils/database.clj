@@ -1,23 +1,33 @@
 (ns minimily.utils.database
-  (:require [hikari-cp.core    :refer :all]
+  (:require [hikari-cp.core    :as cp]
             [clojure.string    :as str]
             [clojure.java.jdbc :as jdbc]
-            [config.core       :refer [env]]
+            [clojure.java.io   :as io]
+            [config.core       :refer [env reload-env]]
             [ragtime.jdbc      :as migration]
-            [ragtime.repl      :as repl]))
+            [ragtime.repl      :as repl])
+  (:import (org.postgresql.util PSQLException)))
+
+(defn copy-file [source-path dest-path]
+  (io/copy (io/file source-path) 
+           (io/file dest-path)))
 
 (defn decompose-url [url]
-  (let [url            (or url (System/getenv "DATABASE_URL"))
-        double-slashes (str/index-of url "//")
-        second-colon   (str/index-of url ":" (+ double-slashes 2))
-        at             (str/index-of url "@")
-        third-colon    (str/index-of url ":" at)
-        slash          (str/index-of url "/" third-colon)]
-    {:username      (subs url (+ double-slashes 2) second-colon)
-     :password      (subs url (+ second-colon 1) at)
-     :server-name   (subs url (+ at 1) third-colon)
-     :port-number   (subs url (+ third-colon 1) slash)
-     :database-name (subs url (+ slash 1))}))
+  (if-let [url (or url (System/getenv "DATABASE_URL"))]
+    (let [double-slashes (str/index-of url "//")
+          second-colon   (str/index-of url ":" (+ double-slashes 2))
+          at             (str/index-of url "@")
+          third-colon    (str/index-of url ":" at)
+          slash          (str/index-of url "/" third-colon)]
+      {:username      (subs url (+ double-slashes 2) second-colon)
+       :password      (subs url (+ second-colon 1) at)
+       :server-name   (subs url (+ at 1) third-colon)
+       :port-number   (subs url (+ third-colon 1) slash)
+       :database-name (subs url (+ slash 1))})
+    (do
+      (copy-file "config/dev/config.edn.example" "config/dev/config.edn")
+      (reload-env)
+      (decompose-url (:DATABASE_URL env)))))
 
 (def options {:pool-name "db-pool" 
               :adapter "postgresql" 
@@ -45,9 +55,14 @@
   (with-conn
     (jdbc/query conn query)))
 
-(defn get-record [table id]
-  (with-conn
-    (jdbc/get-by-id conn table (valid-id id))))
+(defn get-record 
+  ([table id]
+    (with-conn
+      (jdbc/get-by-id conn table (valid-id id))))
+  ([table id profile-id]
+    (first (find-records (str "select * from " (name table) 
+                              " where id = " id 
+                              " and profile = " profile-id)))))
 
 (defn insert-record
   "Returns a map of fields persisted in the database."
@@ -77,6 +92,9 @@
 
 (defn delete-record
   "Returns the number of deleted records from the database."
-  [table id]
-  (with-conn
-    (jdbc/delete! conn table ["id = ?" (valid-id id)])))
+  ([table id]
+    (with-conn
+      (jdbc/delete! conn table ["id = ?" (valid-id id)])))
+  ([table id profile-id]
+    (with-conn
+      (jdbc/delete! conn table ["id = ? and profile = ?" id profile-id]))))

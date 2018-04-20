@@ -11,7 +11,7 @@
    is not authenticated."
   [username password]
   (let [auth_user (db/find-records
-                    [(str "select p.id, first_name, last_name from "
+                    [(str "select p.id as id, first_name, last_name from "
                           (name table)
                           " u left join user_profile p" 
                           " on u.id = p.user_account"

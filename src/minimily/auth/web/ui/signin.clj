@@ -4,10 +4,8 @@
             [hiccup.form                :refer [email-field form-to label 
                                                 password-field submit-button]]))
 
-(defn signin-page []
-  (http-headers 
-    (layout nil "Sign In"
-      (form-to [:post "/account/login"]
+(defn signin-content []
+  (form-to [:post "/account/login"]
         [:div {:class "form-group"}
           (label "username" "Email address")
           (email-field {:class "form-control" :id "username" 
@@ -18,4 +16,9 @@
                            :autocomplete "off"} "password")]
         (submit-button {:class "btn btn-primary"} "Submit")
         (str "&nbsp;")
-        [:a {:class "btn btn-outline-secondary" :href "/"} "Cancel"]))))
+        [:a {:class "btn btn-outline-secondary" :href "/"} "Cancel"]))
+
+(defn signin-page []
+  (http-headers 
+    (layout nil "Sign In"
+      (signin-content))))

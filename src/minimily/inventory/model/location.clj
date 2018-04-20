@@ -3,14 +3,14 @@
 
 (def table :location)
 
- (defn find-all []
-  (db/find-records "select * from location order by name"))
+ (defn find-all [profile-id]
+  (db/find-records ["select * from location where profile = ? order by name" profile-id]))
 
-(defn get-it [id]
-  (db/get-record table id))
+(defn get-it [profile-id id]
+  (db/get-record table id profile-id))
 
 (defn save [location]
   (db/save-record table location))
 
-(defn delete-it [id]
-  (db/delete-record table id))
+(defn delete-it [profile-id id]
+  (db/delete-record table id profile-id))

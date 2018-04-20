@@ -20,7 +20,7 @@
                                              (:password params))]
     (if auth-user
       (let [session {:full-name (user-profile/full-name auth-user)
-                     :user-id (:id auth-user)}]
+                     :user-id   (:id auth-user)}]
         (-> (redirect "/")
             (assoc :session session))))))
 

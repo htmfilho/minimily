@@ -18,7 +18,7 @@
                                (location-ctrl/new-location session))
         (core/POST "/save"     {session :session params :params} 
                                (location-ctrl/save-location session params))
-        (core/POST "/delete"   {params :params}
+        (core/POST "/delete"   {session :session params :params}
                                (location-ctrl/delete-location params))
         (core/GET  "/:id"      {session :session {id :id} :params}
                                (location-ctrl/view-location session id))
@@ -32,7 +32,7 @@
                                (collection-ctrl/new-collection session))
         (core/POST "/save"     {session :session params :params}
                                (collection-ctrl/save-collection session params))
-        (core/POST "/delete"   {params :params}
+        (core/POST "/delete"   {session :session params :params}
                                (collection-ctrl/delete-collection params))
         (core/GET  "/:id"      {session :session {id :id} :params}
                                (collection-ctrl/view-collection session id))
@@ -46,7 +46,7 @@
                                  (good-ctrl/new-good session))
           (core/POST "/save"     {session :session params :params} 
                                  (good-ctrl/save-good session params))
-          (core/POST "/delete"   {params :params}
+          (core/POST "/delete"   {session :session params :params}
                                  (good-ctrl/delete-good params))
           (core/GET  "/:id"      {session :session {id :id} :params}
                                  (good-ctrl/view-good session id))
