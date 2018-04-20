@@ -23,19 +23,16 @@
               :adapter "postgresql" 
               :maximum-pool-size 2})
 
-(def datasource
-  (make-datasource (conj options
-                         (decompose-url (:DATABASE_URL env)))))
-
-(def migration-config
- {:datastore  (migration/sql-database {:datasource datasource})
-  :migrations (migration/load-resources "migrations")})
+(defn datasource []
+  (let [url (if (nil? env) nil (get env :DATABASE_URL))]
+    (make-datasource (conj options (decompose-url url)))))
 
 (defn migrate []
-  (repl/migrate migration-config))
+  (repl/migrate {:datastore  (migration/sql-database {:datasource (datasource)})
+                 :migrations (migration/load-resources "migrations")}))
 
 (defmacro with-conn [& body]
-  `(jdbc/with-db-connection [~'conn {:datasource datasource}]
+  `(jdbc/with-db-connection [~'conn {:datasource (datasource)}]
     ~@body))
 
 (defn- valid-id [id]
