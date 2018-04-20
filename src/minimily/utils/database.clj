@@ -29,13 +29,13 @@
       (reload-env)
       (decompose-url (:DATABASE_URL env)))))
 
-(def options {:pool-name "db-pool" 
-              :adapter "postgresql" 
+(def options {:pool-name "db-pool"
+              :adapter "postgresql"
               :maximum-pool-size 2})
 
 (defn datasource []
   (let [url (if (nil? env) nil (get env :DATABASE_URL))]
-    (make-datasource (conj options (decompose-url url)))))
+    (cp/make-datasource (conj options (decompose-url url)))))
 
 (defn migrate []
   (repl/migrate {:datastore  (migration/sql-database {:datasource (datasource)})
