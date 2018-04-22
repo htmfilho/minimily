@@ -1,6 +1,6 @@
 (ns minimily.accounting.model.account
   (:require [minimily.utils.database :as db]
-            [minimily.core.model.family-member :as family-member-model]))
+            [minimily.family.model.family-member :as family-member-model]))
 
 (def table :account)
 

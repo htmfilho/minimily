@@ -26,11 +26,14 @@
       [:br]
       [:div {:class "card"}
         [:div {:class "card-header"}
-          [:a {:href (str "/accounts/" (:id account) "/transactions/new") 
-               :class "btn btn-secondary"} "New Transaction"]
-          (str "&nbsp;")
-          [:a {:href (str "/accounts/" (:id account) "/transfer") 
-               :class "btn btn-secondary"} "New Transfer"]]
+          [:div {:class "btn-group" :role "group"}
+            [:button {:id "btnGroupDrop" :type "button" :class "btn btn-secondary dropdown-toggle" :data-toggle "dropdown" :aria-haspopup "true" :aria-expanded "false"}
+              "New"]
+            [:div {:class "dropdown-menu" :aria-labelledby "btnGroupDrop"}
+              [:a {:href (str "/accounts/" (:id account) "/transactions/new") 
+                   :class "dropdown-item"} "Transaction"]
+              [:a {:href (str "/accounts/" (:id account) "/transfer") 
+                   :class "dropdown-item"} "Transfer"]]]]
         [:table {:class "table table-striped"}
           [:thead
             [:tr 

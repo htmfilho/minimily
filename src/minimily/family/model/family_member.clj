@@ -1,4 +1,4 @@
-(ns minimily.core.model.family-member
+(ns minimily.family.model.family-member
   (:require [minimily.utils.database :as db]))
 
 (defn find-members-same-family [member-id]
