@@ -13,7 +13,7 @@
                                                               :account-id (Integer/parseInt account-id)}))))
 
 (defn calculate-balance [account-id]
-  (let [transactions (transactions-by-account-sqlvec {:account-id account-id})
+  (let [transactions (db/find-records (transactions-by-account-sqlvec {:account-id account-id}))
         amounts      (map #(* (:type %) (:amount %)) transactions)]
     (reduce + amounts)))
 
