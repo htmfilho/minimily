@@ -1,10 +1,9 @@
 (ns minimily.documents.model.document
-  (:require [hugsql.core                         :as hugsql]
-            [minimily.utils.database             :as db]
-            [minimily.documents.model.folder     :as folder-model]
-            [minimily.family.model.family-member :as family-member-model]
-            [amazonica.aws.s3                    :as s3]
-            [config.core                         :refer [env]]))
+  (:require [hugsql.core                     :as hugsql]
+            [minimily.utils.database         :as db]
+            [minimily.documents.model.folder :as folder-model]
+            [amazonica.aws.s3                :as s3]
+            [config.core                     :refer [env]]))
 
 ; Datastore definitions
 (hugsql/def-sqlvec-fns "minimily/documents/model/sql/document.sql")
@@ -17,14 +16,14 @@
            :endpoint   (or (:AWS_ENDPOINT env) (System/getenv "AWS_ENDPOINT"))})
 
 (defn find-by-folder [folder-id]
-  (db/find-records ["select * from document where folder = ?" folder-id]))
+  (db/find-records (documents-by-folder {:folder-id folder-id)))
 
 (defn count-documents [folder-id]
-  (:count (first (db/find-records ["select count(*) from document where folder = ?" folder-id]))))
+  (:count (first (db/find-records (documents-count-in-folder {:folder-id folder-id})))))
 
 (defn count-siblings [profile-id folder-id]
   (let [num-folders (folder-model/count-children profile-id folder-id)
-        num-documents (:count (first (db/find-records ["select count(*) from document where folder = ?" folder-id])))]
+        num-documents (:count (first (db/find-records (documents-count-in-folder {:folder-id folder-id}))))]
     (+ num-folders num-documents)))
 
 (defn get-it [profile-id id]
