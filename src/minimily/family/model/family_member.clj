@@ -10,5 +10,5 @@
 (defn list-family-organizers [profile-id]
   (let [organizers (find-organizers-same-family profile-id)]
     (if (empty? organizers)
-      profile-id
+      [profile-id]
       (map #(:user_profile %) organizers))))

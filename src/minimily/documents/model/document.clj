@@ -16,14 +16,15 @@
            :endpoint   (or (:AWS_ENDPOINT env) (System/getenv "AWS_ENDPOINT"))})
 
 (defn find-by-folder [folder-id]
-  (db/find-records (documents-by-folder-sqlvec {:folder-id folder-id)))
+  (db/find-records (documents-by-folder-sqlvec {:folder-id folder-id})))
 
 (defn count-documents [folder-id]
   (:count (first (db/find-records (documents-count-in-folder-sqlvec {:folder-id folder-id})))))
 
 (defn count-siblings [profile-id folder-id]
   (let [num-folders (folder-model/count-children profile-id folder-id)
-        num-documents (:count (first (db/find-records (documents-count-in-folder-sqlvec {:folder-id folder-id}))))]
+        num-documents (:count (first (db/find-records 
+                                (documents-count-in-folder-sqlvec {:folder-id folder-id}))))]
     (+ num-folders num-documents)))
 
 (defn get-it [profile-id id]

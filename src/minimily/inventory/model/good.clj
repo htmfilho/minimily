@@ -8,10 +8,16 @@
 (def table :good)
 
 (defn find-by-location [profile-id location-id]
-  (db/find-records ["select * from good where profile = ? and location = ?" profile-id location-id]))
+  (db/find-records 
+    (goods-by-location-sqlvec 
+      {:profile-ids (family-member-model/list-family-organizers profile-id)
+       :location-id location-id})))
 
 (defn find-by-collection [profile-id collection-id]
-  (db/find-records ["select * from good where profile = ? and collection = ?" profile-id collection-id]))
+  (db/find-records 
+    (goods-by-collection-sqlvec 
+      {:profile-ids (family-member-model/list-family-organizers profile-id)
+       :collection-id collection-id})))
 
 (defn find-by-criteria [profile-id location-id collection-id]
   (let [location?   (not (empty? location-id))
@@ -22,16 +28,13 @@
                       (when (and location? collection?) " and ")
                       (when collection? (str "collection = " collection-id)))]
         (db/find-records query))
-      []))
-  )
+      [])))
 
 (defn get-it [profile-id id]
-  (let [goods (db/find-records ["select g.id, g.name, g.description, g.quantity, g.value, 
-                                        l.id as location_id, l.name as location, 
-                                        c.id as collection_id, c.name as collection 
-                                 from good g left join location l on g.location = l.id
-                                             left join collection c on g.collection = c.id
-                                 where g.id = ? and g.profile = ?" id profile-id])]
+  (let [goods (db/find-records
+                (good-sqlvec 
+                  {:id id
+                   :profile-ids (family-member-model/list-family-organizers profile-id)}))]
     (if (empty? goods)
       nil
       (first goods))))
