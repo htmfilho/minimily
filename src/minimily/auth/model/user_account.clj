@@ -1,22 +1,17 @@
 (ns minimily.auth.model.user-account
-  (:require [minimily.utils.database :as db]))
+  (:require [hugsql.core             :as hugsql]
+            [minimily.utils.database :as db]))
+
+(hugsql/def-sqlvec-fns "minimily/auth/model/sql/user_account.sql")
 
 (def table :user_account)
 
 (defn save [user-account]
   (db/save-record table user-account))
 
-(defn authenticate
-  "Returns some reference data about the authenticated user or nil if the user
-   is not authenticated."
-  [username password]
+(defn authenticate [username password]
   (let [auth_user (db/find-records
-                    [(str "select p.id as id, first_name, last_name from "
-                          (name table)
-                          " u left join user_profile p" 
-                          " on u.id = p.user_account"
-                          " where u.username = ? and u.password = ?")
-                     username password])]
+                    (authenticated-user-profile-sqlvec {:username username :password password}))]
     (if (empty? auth_user)
       nil
       (first auth_user))))
