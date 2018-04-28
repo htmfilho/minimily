@@ -1,18 +1,15 @@
 (ns minimily.accounting.model.account
-  (:require [hugsql.core                       :as hugsql]
-            [minimily.utils.database           :as db]
-            [minimily.core.model.family-member :as family-member-model]))
+  (:require [hugsql.core                         :as hugsql]
+            [minimily.utils.database             :as db]
+            [minimily.family.model.family-member :as family-member-model]))
 
 (hugsql/def-sqlvec-fns "minimily/accounting/model/sql/account.sql")
 
 (def table :account)
 
 (defn find-all [holder]
-  (let [family-members (map #(:user_profile %) 
-                       (family-member-model/find-members-same-family holder))]
-    (if (empty? family-members)
-      (db/find-records (accounts-by-holder-sqlvec {:holder holder}))
-      (db/find-records (accounts-by-family-holders-sqlvec {:ids (reduce #(str %1 "," %2) family-members)})))))
+  (let [family-members (family-member-model/list-family-organizers holder)]
+    (db/find-records (accounts-by-family-holders-sqlvec {:ids family-members}))))
 
 (defn find-all-except [holder except-id]
   (filter #(not= (:id %) except-id) 
