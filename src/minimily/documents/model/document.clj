@@ -1,10 +1,16 @@
 (ns minimily.documents.model.document
-  (:require [minimily.utils.database         :as db]
-            [minimily.documents.model.folder :as folder-model]
-            [amazonica.aws.s3                :as s3]
-            [config.core                     :refer [env]]))
+  (:require [hugsql.core                         :as hugsql]
+            [minimily.utils.database             :as db]
+            [minimily.documents.model.folder     :as folder-model]
+            [minimily.family.model.family-member :as family-member-model]
+            [amazonica.aws.s3                    :as s3]
+            [config.core                         :refer [env]]))
 
+; Datastore definitions
+(hugsql/def-sqlvec-fns "minimily/documents/model/sql/document.sql")
 (def table  :document)
+
+; Filestore definitions
 (def bucket (or (:AWS_S3_BUCKET_NAME env) (System/getenv "AWS_S3_BUCKET_NAME")))
 (def cred {:access-key (or (:AWS_ACCESS_KEY_ID env) (System/getenv "AWS_ACCESS_KEY_ID"))
            :secret-key (or (:AWS_SECRET_ACCESS_KEY env) (System/getenv "AWS_SECRET_ACCESS_KEY"))

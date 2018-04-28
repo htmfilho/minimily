@@ -1,5 +1,9 @@
 (ns minimily.inventory.model.good
-  (:require [minimily.utils.database :as db]))
+  (:require [hugsql.core                         :as hugsql]
+            [minimily.utils.database             :as db]
+            [minimily.family.model.family-member :as family-member-model]))
+
+(hugsql/def-sqlvec-fns "minimily/inventory/model/sql/good.sql")
 
 (def table :good)
 

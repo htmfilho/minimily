@@ -1,7 +1,11 @@
 (ns minimily.family.model.family-member
-  (:require [minimily.utils.database :as db]))
+  (:require [hugsql.core                         :as hugsql]
+            [minimily.utils.database             :as db]
+            [minimily.family.model.family-member :as family-member-model]))
 
-(defn find-organizers-same-family [profile-id]
+(hugsql/def-sqlvec-fns "minimily/family/model/sql/family_member.sql")
+
+(defn- find-organizers-same-family [profile-id]
   (db/find-records ["select * 
                      from family_member 
                      where organizer is true and 
