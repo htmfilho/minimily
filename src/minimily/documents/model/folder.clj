@@ -10,16 +10,16 @@
 
 (defn find-parents [profile-id]
   (db/find-records 
-    (folders-by-profile 
+    (folders-by-profile-sqlvec 
       {:profile-ids 
           (family-member-model/list-family-organizers profile-id)})))
 
 (defn find-children [profile-id parent-id]
-  (db/find-records (folders-children {:profile-ids (family-member-model/list-family-organizers profile-id)
-                                      :parent-id   parent-id})))
+  (db/find-records (folders-children-sqlvec {:profile-ids (family-member-model/list-family-organizers profile-id)
+                                             :parent-id   parent-id})))
 
 (defn count-children [profile-id parent-id]
-  (:count (first (db/find-records (folders-count-children 
+  (:count (first (db/find-records (folders-count-children-sqlvec 
                                      {:profile-ids (family-member-model/list-family-organizers profile-id)
                                       :parent-id   parent-id})))))
 

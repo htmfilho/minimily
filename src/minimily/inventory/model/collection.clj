@@ -8,7 +8,9 @@
 (def table :collection)
 
 (defn find-all [profile-id]
-  (db/find-records ["select * from collection where profile = ? order by name" profile-id]))
+  (db/find-records 
+    (collections-by-profile-sqlvec
+      {:profile-ids (family-member-model/list-family-organizers profile-id)})))
 
 (defn get-it [profile-id id]
   (db/get-record table id profile-id))
