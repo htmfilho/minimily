@@ -1,8 +1,10 @@
 (ns minimily.auth.web.routing
   (:require [ring.util.response               :refer [redirect]]
             [compojure.core                   :as core]
+            [minimily.web.ui.layout           :refer [layout]]
+            [minimily.utils.web.wrapper       :refer [http-headers]]
             [minimily.auth.web.ui.signup      :refer [signup-page]]
-            [minimily.auth.web.ui.signin      :refer [signin-page]]
+            [minimily.auth.web.ui.signin      :refer [signin-content]]
             [minimily.auth.model.user-account :as user-account]
             [minimily.auth.model.user-profile :as user-profile]))
 
@@ -15,13 +17,18 @@
                         :email        (:email params)})
     (redirect "/signin")))
 
+(defn signin-page []
+  (http-headers 
+    (layout nil "Sign In"
+      (signin-content))))
+
 (defn signin [params session]
   (let [auth-user (user-account/authenticate (:username params) 
                                              (:password params))]
     (if auth-user
       (let [session {:full-name (user-profile/full-name auth-user)
                      :user-id   (:id auth-user)}]
-        (-> (redirect "/")
+        (-> (redirect (:forward params))
             (assoc :session session))))))
 
 (defn signin-fail []

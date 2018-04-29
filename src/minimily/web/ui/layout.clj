@@ -1,5 +1,6 @@
 (ns minimily.web.ui.layout
-  (:require [hiccup.page :as page]))
+  (:require [hiccup.page                 :as page]
+            [minimily.auth.web.ui.signin :as signin]))
 
 (defn layout [session title & content]
   (page/html5 {:lang "en"}
@@ -38,8 +39,11 @@
                 [:a {:class "nav-link  my-2 my-sm-0" :href "/signout"} "Sign Out"]]])]]
       
       [:div {:class "container"}
-        (when title [:div {:class "page-title"} title])
-        content
+        (when (and title (not (empty? session))) 
+          [:div {:class "page-title"} title])
+        (if (empty? session)
+          (signin/signin-content)
+          content)
         [:br]
         [:br]
         [:br]]
