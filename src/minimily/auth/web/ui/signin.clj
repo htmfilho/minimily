@@ -14,7 +14,7 @@
           (label "password" "Password")
           (password-field {:class "form-control" :id "password" 
                            :autocomplete "off"} "password")]
-        (hidden-field "forward" "/")
+        (hidden-field {:id "forward"} "forward" "/")
         (submit-button {:class "btn btn-primary"} "Submit")
         (str "&nbsp;")
         [:a {:class "btn btn-outline-secondary" :href "/"} "Cancel"]))
