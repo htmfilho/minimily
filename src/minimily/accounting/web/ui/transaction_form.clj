@@ -17,7 +17,7 @@
           [:br]
           [:span {:id "acc" :class "read-only"} (:name account)]]
         [:div {:class "row"}
-          [:div {:class "col-md-2"}
+          [:div {:class "col-md-3"}
             [:div {:class "form-group"}
               (label "type" "Type")
               [:br]
@@ -38,7 +38,7 @@
               (label "amount" "Amount")
               (text-field {:class "form-control" :id "amount"} 
                           "amount")]]
-          [:div {:class "col-md-8"}
+          [:div {:class "col-md-7"}
             [:div {:class "form-group"}
               (label "description" "Description")
               (text-field {:class "form-control" :id "description"} 

@@ -51,6 +51,6 @@
       [:nav {:class "navbar fixed-bottom navbar-light bg-light"}
         [:a {:class "nav-link" :href "http://www.minimily.com"} "Help"]]
       
-      (page/include-js "/js/jquery-3.2.1.slim.min.js"
+      (page/include-js "/js/jquery-3.3.1.slim.min.js"
                        "/js/bootstrap.bundle.min.js"
                        "/js/minimily.js")]))
