@@ -1,0 +1,4 @@
+{:up   
+  ["alter table good alter column description type text;"]
+ :down 
+  ["alter table good alter column description type varchar(300);"]}
