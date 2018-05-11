@@ -1,7 +1,5 @@
 (ns minimily.auth.web.ui.signin
-  (:require [hiccup.form                :refer [email-field form-to label 
-                                                password-field hidden-field
-                                                submit-button]]))
+  (:require [hiccup.form :refer :all]))
 
 (defn signin-content []
   (form-to [:post "/account/login"]

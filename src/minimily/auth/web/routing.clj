@@ -25,10 +25,12 @@
 (defn signin [params session]
   (let [auth-user (user-account/authenticate (:username params) 
                                              (:password params))]
+    (println auth-user)
     (if auth-user
       (let [session {:full-name (user-profile/full-name auth-user)
-                     :user-id   (:id auth-user)}]
-        (-> (redirect (:forward params))
+                     :user-id   (:id auth-user)}
+            forward (:forward params)]
+        (-> (redirect (if (.equals forward "/signin") "/" forward))
             (assoc :session session))))))
 
 (defn signin-fail []
