@@ -27,7 +27,21 @@
                   :aria-label "Toggle navigation"}
           [:span {:class "navbar-toggler-icon"}]]
         [:div {:class "collapse navbar-collapse" :id "navbarSupportedContent"}
-          [:ul {:class "navbar-nav mr-auto"}]
+          [:div {:class "container"}
+            [:ul {:class "navbar-nav mr-auto"}
+              [:li {:class "nav-item"}
+                [:a {:class "nav-link" :href "/accounts"} "Accounts"]]
+              [:li {:class "nav-item"}
+                [:a {:class "nav-link" :href "/folders"} "Documents"]]
+              
+              [:li {:class "nav-item dropdown"}
+                [:a {:class "nav-link dropdown-toggle" :href "/inventory" :id "navbarDropdown" 
+                     :role "button" :data-toggle "dropdown" :aria-haspopup "true" :aria-expanded "false"}
+                  "Inventory"]
+                [:div {:class "dropdown-menu" :aria-labelledby "navbarDropdown"}
+                  [:a {:class "dropdown-item" :href "/inventory/goods"} "Goods"]
+                  [:a {:class "dropdown-item" :href "/inventory/locations"} "Locations"]
+                  [:a {:class "dropdown-item" :href "/inventory/collections"} "Collections"]]]]]
           (if (empty? session)
             [:ul {:class "navbar-nav my-2 my-lg-0"}
               ;[:li {:class "nav-item"}
