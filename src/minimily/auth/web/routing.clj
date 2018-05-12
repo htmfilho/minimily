@@ -37,7 +37,7 @@
 
 (defn signout [session]
   (-> (redirect "/")
-      (assoc :session {})))
+      (assoc :session nil)))
 
 (defn routes []
   (core/routes

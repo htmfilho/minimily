@@ -1,6 +1,19 @@
 (ns minimily.web.ui.layout
   (:require [hiccup.page                 :as page]
-            [minimily.auth.web.ui.signin :as signin]))
+            [minimily.auth.web.ui.signin :as signin]
+            [minimily.web.model.menu     :refer [menu-items]]))
+
+(defn menu-bar-template [menu-item]
+  (if (contains? menu-item :submenu)
+    [:li {:class "nav-item dropdown"}
+         [:a {:class "nav-link dropdown-toggle" :href (:link menu-item) :id "navbarDropdown" 
+              :role "button" :data-toggle "dropdown" :aria-haspopup "true" :aria-expanded "false"}
+          (:label menu-item)]
+         [:div {:class "dropdown-menu" :aria-labelledby "navbarDropdown"}
+          (map #(vector :a {:class "dropdown-item" :href (:link %)} (:label %)) 
+               (:submenu menu-item))]]
+    [:li {:class "nav-item"}
+         [:a {:class "nav-link" :href (:link menu-item)} (:label menu-item)]]))
 
 (defn layout [session title & content]
   (page/html5 {:lang "en"}
@@ -30,18 +43,7 @@
           [:div {:class "container"}
             (if (not (empty? session))
               [:ul {:class "navbar-nav mr-auto"}
-                [:li {:class "nav-item"}
-                  [:a {:class "nav-link" :href "/accounts"} "Accounts"]]
-                [:li {:class "nav-item"}
-                  [:a {:class "nav-link" :href "/folders"} "Documents"]]
-                [:li {:class "nav-item dropdown"}
-                  [:a {:class "nav-link dropdown-toggle" :href "/inventory" :id "navbarDropdown" 
-                      :role "button" :data-toggle "dropdown" :aria-haspopup "true" :aria-expanded "false"}
-                    "Inventory"]
-                  [:div {:class "dropdown-menu" :aria-labelledby "navbarDropdown"}
-                    [:a {:class "dropdown-item" :href "/inventory/goods"} "Goods"]
-                    [:a {:class "dropdown-item" :href "/inventory/locations"} "Locations"]
-                    [:a {:class "dropdown-item" :href "/inventory/collections"} "Collections"]]]]
+                (map menu-bar-template menu-items)]
               [:ul {:class "navbar-nav mr-auto"}])]
           (if (empty? session)
             [:ul {:class "navbar-nav my-2 my-lg-0"}
