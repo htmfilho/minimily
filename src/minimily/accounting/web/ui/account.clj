@@ -24,33 +24,50 @@
             [:div {:class "col-md-4"} (show-field "Number"  account :number)]
             [:div {:class "col-md-4"} (show-field "Balance" account :balance)]]]]
       [:br]
-      [:div {:class "card"}
-        [:div {:class "card-header"}
-          [:div {:class "btn-group" :role "group"}
-            [:button {:id "btnGroupDrop" :type "button" :class "btn btn-secondary dropdown-toggle" :data-toggle "dropdown" :aria-haspopup "true" :aria-expanded "false"}
-              "New"]
-            [:div {:class "dropdown-menu" :aria-labelledby "btnGroupDrop"}
-              [:a {:href (str "/accounts/" (:id account) "/transactions/new") 
-                   :class "dropdown-item"} "Transaction"]
-              [:a {:href (str "/accounts/" (:id account) "/transfer") 
-                   :class "dropdown-item"} "Transfer"]]]]
-        [:table {:class "table table-striped"}
-          [:thead
-            [:tr 
-              [:th "Description"]
-              [:th "Type"]
-              [:th "Amount"]
-              [:th "Date"]
-              [:th {:style "text-align: right;"} "Balance"]
-              [:th ""]]]
-          [:tbody 
-            (map #(vector :tr [:td [:a {:href (str "/accounts/" (:id account) "/transactions/" (:id %))} 
-                                       (:description %)]]
-                              [:td (if (> (:type %) 0) "Credit" "Debit")]
-                              [:td {:style "text-align: right;"}
-                                    (if (< (:type %) 0) 
-                                      [:span {:class "debit"} (:amount %)]
-                                      [:span {:class "credit"} (:amount %)])]
-                              [:td (to-string (:date_transaction %) "MMM dd, yyyy - HH:mm")]
-                              [:td {:style "text-align: right;"} (:balance %)]
-                              [:td (when (:account_transfer %) [:a {:href (str "/accounts/" (:account_transfer %))} [:i {:class "fas fa-link"}]])]) transactions)]]])))
+
+      [:ul {:class "nav nav-tabs" :id "account-tabs" :role "tablist"}
+        [:li {:class "nav-item"}
+          [:a {:class "nav-link active" :id "transactions-tab" :data-toggle "tab" 
+               :href "#transactions-panel" :role "tab" :aria-controls "transactions-panel" 
+               :aria-selected "true"} "Transactions"]]
+        [:li {:class "nav-item" }
+          [:a {:class "nav-link" :id "history-tab" :data-toggle "tab" 
+               :href "#history-panel" :role "tab" :aria-controls "history-panel" 
+               :aria-selected "false"} "History"]]]
+  
+      [:div {:class "tab-content" :id "myTabContent"}
+        [:div {:class "tab-pane fade show active" :id "transactions-panel" :role "tabpanel" 
+               :aria-labelledby "transactions-tab"}
+          [:div {:class "card"}
+            [:div {:class "card-header"}
+              [:div {:class "btn-group" :role "group"}
+                [:button {:id "btnGroupDrop" :type "button" :class "btn btn-secondary dropdown-toggle" :data-toggle "dropdown" :aria-haspopup "true" :aria-expanded "false"}
+                  "New"]
+                [:div {:class "dropdown-menu" :aria-labelledby "btnGroupDrop"}
+                  [:a {:href (str "/accounts/" (:id account) "/transactions/new") 
+                      :class "dropdown-item"} "Transaction"]
+                  [:a {:href (str "/accounts/" (:id account) "/transfer") 
+                      :class "dropdown-item"} "Transfer"]]]]
+            [:table {:class "table table-striped"}
+              [:thead
+                [:tr 
+                  [:th "Description"]
+                  [:th "Type"]
+                  [:th "Amount"]
+                  [:th "Date"]
+                  [:th {:style "text-align: right;"} "Balance"]
+                  [:th ""]]]
+              [:tbody 
+                (map #(vector :tr [:td [:a {:href (str "/accounts/" (:id account) "/transactions/" (:id %))} 
+                                          (:description %)]]
+                                  [:td (if (> (:type %) 0) "Credit" "Debit")]
+                                  [:td {:style "text-align: right;"}
+                                        (if (< (:type %) 0) 
+                                          [:span {:class "debit"} (:amount %)]
+                                          [:span {:class "credit"} (:amount %)])]
+                                  [:td (to-string (:date_transaction %) "MMM dd, yyyy - HH:mm")]
+                                  [:td {:style "text-align: right;"} (:balance %)]
+                                  [:td (when (:account_transfer %) [:a {:href (str "/accounts/" (:account_transfer %))} [:i {:class "fas fa-link"}]])]) transactions)]]]]
+
+        [:div {:class "tab-pane fade show" :id "history-panel" :role "tabpanel" 
+               :aria-labelledby "history-tab"}]])))
