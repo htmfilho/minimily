@@ -18,10 +18,18 @@
             (hidden-field "id" (:id transaction))
             (submit-button {:id "bt_delete" :class "btn btn-danger"} "Delete"))]
         [:div {:class "card-body"}
-          (show-field "Account" account :name)
-          (show-field "Description" transaction :description)
-          [:p 
-            [:span {:class "label"} "Type"]
-            [:br]
-            (if (> (:type transaction) 0) "Credit" "Debit")]
-          (show-field "Amount" transaction :amount)]])))
+          [:div {:class "row"}
+            [:div {:class "col-md-3"}
+              (show-field "Account" account :name)]
+            [:div {:class "col-md-9"}
+              (show-field "Balance" transaction :balance)]]
+          [:div {:class "row"}
+            [:div {:class "col-md-3"}
+              [:p
+                [:span {:class "label"} "Type"]
+                [:br]
+                (if (> (:type transaction) 0) "Credit" "Debit")]]
+            [:div {:class "col-md-3"}
+              (show-field "Amount" transaction :amount)]
+            [:div {:class "col-md-6"}
+              (show-field "Description" transaction :description)]]]])))

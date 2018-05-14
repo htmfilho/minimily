@@ -12,10 +12,17 @@
   (http-headers
     (layout session "Transaction"
       (form-to [:post (str "/accounts/" (:id account) "/transactions/add")]
-        [:div {:class "form-group"}
-          (label "acc" "Account")
-          [:br]
-          [:span {:id "acc" :class "read-only"} (:name account)]]
+        [:div {:class "row"}
+          [:div {:class "col-md-3"}
+            [:div {:class "form-group"}
+              (label "acc" "Account")
+              [:br]
+              [:span {:id "acc" :class "read-only"} (:name account)]]]
+          [:div {:class "col-md-9"}
+            [:div {:class "form-group"}
+              (label "balace" "Balance")
+              [:br]
+              [:span {:id "balance" :class "read-only"} (:balance account)]]]]
         [:div {:class "row"}
           [:div {:class "col-md-3"}
             [:div {:class "form-group"}
