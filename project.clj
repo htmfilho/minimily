@@ -25,7 +25,9 @@
                  
                  ; Extra dependencies
                  [yogthos/config            "1.1.1"  ]  ; manage environment variables
-                 [amazonica                 "0.3.121"]]
+                 [amazonica                 "0.3.121"]  ; access to amazon web services
+                 [org.clojure/data.json     "0.2.6"  ]  ; data structures to json
+                ]
   :min-lein-version "2.0.0"
   :main ^:ship-aot minimily.app
   :uberjar-name "minimily-standalone.jar"

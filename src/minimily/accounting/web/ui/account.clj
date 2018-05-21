@@ -70,4 +70,5 @@
                                   [:td (when (:account_transfer %) [:a {:href (str "/accounts/" (:account_transfer %))} [:i {:class "fas fa-link"}]])]) transactions)]]]]
 
         [:div {:class "tab-pane fade show" :id "history-panel" :role "tabpanel" 
-               :aria-labelledby "history-tab"}]])))
+               :aria-labelledby "history-tab"}
+          [:div {:id "balance-history-chart" :style "width: 800px;height:400px;"}]]])))
