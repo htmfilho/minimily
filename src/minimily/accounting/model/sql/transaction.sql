@@ -7,4 +7,7 @@ order by date_transaction desc
 select type, amount from transaction where account = :account-id
 
 -- :name transactions-balance-history :? :*
-select description, balance, date_transaction from transaction where account = :account-id
+select description, balance, date_transaction 
+from transaction 
+where account = :account-id
+order by date_transaction asc
