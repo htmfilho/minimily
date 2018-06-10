@@ -1,11 +1,9 @@
 (ns minimily.app
-  (:require [clojure.java.io         :as io]
-            [ring.middleware.reload  :refer [wrap-reload]]
+  (:require [ring.middleware.reload  :refer [wrap-reload]]
             [ring.middleware.session :refer [wrap-session]]
             [ring.adapter.jetty      :as jetty]
-            [compojure.core          :refer [defroutes GET PUT POST DELETE ANY]]
+            [compojure.core          :refer :all]
             [compojure.handler       :as handler]
-            [compojure.route         :as route]
             [config.core             :refer [env]]
             [minimily.web.routing    :as routing]
             [minimily.utils.database :as db])
@@ -14,7 +12,8 @@
 (defonce server (atom nil))
 
 (defn start-server [port]
-  (let [routing-app (wrap-session (handler/site #'routing/app))]
+  (let [routing-app (-> (handler/site #'routing/app)
+                        wrap-session)]
     (reset! server (jetty/run-jetty (if (env :reload)
                                       (wrap-reload routing-app)
                                       routing-app) 
