@@ -4,7 +4,7 @@
                                                 text-field
                                                 hidden-field
                                                 radio-button]]
-            [minimily.utils.date        :refer [to-string]]
+            [minimily.utils.date        :refer [to-string today]]
             [minimily.web.ui.layout     :refer [layout]]
             [minimily.web.ui.bootstrap  :refer [show-field]]
             [minimily.utils.web.wrapper :refer [http-headers]]))
@@ -53,7 +53,8 @@
           [:div {:class "col-md-2"}
            [:div {:class "form-group"}
             (label "date_transaction" "Date")
-            [:input {:type "date" :id "date_transaction" :name "date_transaction" :class "form-control"}]]]]
+            [:input {:type "date" :id "date_transaction" :name "date_transaction" :class "form-control"
+                     :value (to-string (today) "yyyy-MM-dd")}]]]]
                
         (submit-button {:class "btn btn-primary"} "Submit")
         (str "&nbsp;")

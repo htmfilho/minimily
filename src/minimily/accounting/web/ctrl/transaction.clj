@@ -24,16 +24,15 @@
   (let [account-id  (Integer/parseInt (:account params))
         type        (Integer/parseInt (:type params))
         amount      (BigDecimal. (:amount params))
-        balance     (account-model/update-balance account-id
-                                                  (+ (* type amount) 
-                                                     (transaction-model/calculate-balance account-id)))
         transaction (-> params
                         (conj {:account account-id})
                         (conj {:type (Integer/parseInt (:type params))})
                         (conj {:amount (BigDecimal. (:amount params))})
-                        (conj {:balance balance})
                         (conj {:date_transaction (to-timestamp (:date_transaction params) "yyyy-MM-dd")})
                         (conj {:profile (:user-id session)}))]
+    (account-model/update-balance account-id
+                                  (+ (* type amount)
+                                     (transaction-model/calculate-balance account-id)))
     (transaction-model/save transaction)
     (redirect (str "/accounts/" (:account transaction)))))
 

@@ -9,5 +9,13 @@
     val))
 
 (defn balance-history [session account-id]
-  (json/write-str (transaction-model/find-balance-history account-id)
+  (json/write-str (reduce #(conj %1
+                                 (conj %2
+                                       {:balance (+ (* (:amount %2)
+                                                       (:type %2))
+                                                    (if (last %1)
+                                                      (:balance (last %1))
+                                                      0))}))
+                          []
+                          (transaction-model/find-balance-history account-id))
                   :value-fn date-to-string))

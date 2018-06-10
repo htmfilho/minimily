@@ -53,9 +53,8 @@
                 [:tr
                   [:th "Description"]
                   [:th "Type"]
-                  [:th "Amount"]
+                  [:th {:style "text-align: right;"} "Amount"]
                   [:th "Date"]
-                  [:th {:style "text-align: right;"} "Balance"]
                   [:th ""]]]
               [:tbody
                 (map #(vector :tr [:td [:a {:href (str "/accounts/" (:id account) "/transactions/" (:id %))}
@@ -66,7 +65,6 @@
                                           [:span {:class "debit"} (:amount %)]
                                           [:span {:class "credit"} (:amount %)])]
                                   [:td (to-string (:date_transaction %) "MMM dd, yyyy")]
-                                  [:td {:style "text-align: right;"} (:balance %)]
                                   [:td (when (:account_transfer %) [:a {:href (str "/accounts/" (:account_transfer %))} [:i {:class "fas fa-link"}]])]) transactions)]]]]
 
         [:div {:class "tab-pane fade show" :id "history-panel" :role "tabpanel"

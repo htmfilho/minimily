@@ -23,11 +23,13 @@
             [:div {:class "col-md-3"}
               (show-field "Account" account :name)]
             [:div {:class "col-md-9"}
-              (show-field "Balance" transaction :balance)]]
+              (show-field "Balance" account :balance)]]
           [:div {:class "row"}
-            [:div {:class "col-md-3"}
+            [:div {:class "col-md-1"}
               (show-field "Type" transaction :type "Credit" "Debit")]
-            [:div {:class "col-md-3"}
+            [:div {:class "col-md-2"}
               (show-field "Amount" transaction :amount)]
-            [:div {:class "col-md-6"}
-              (show-field "Description" transaction :description)]]]])))
+            [:div {:class "col-md-7"}
+              (show-field "Description" transaction :description)]
+            [:div {:class "col-md-2"}
+              (show-value "Date" (to-string (:date_transaction transaction) "MMM dd, yyyy"))]]]])))
