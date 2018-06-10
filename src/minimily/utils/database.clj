@@ -5,8 +5,7 @@
             [clojure.java.io   :as io]
             [config.core       :refer [env reload-env]]
             [ragtime.jdbc      :as migration]
-            [ragtime.repl      :as repl])
-  (:import (org.postgresql.util PSQLException)))
+            [ragtime.repl      :as repl]))
 
 (defn copy-file [source-path dest-path]
   (io/copy (io/file source-path) 

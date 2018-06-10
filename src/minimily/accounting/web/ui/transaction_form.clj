@@ -4,6 +4,7 @@
                                                 text-field
                                                 hidden-field
                                                 radio-button]]
+            [minimily.utils.date        :refer [to-string]]
             [minimily.web.ui.layout     :refer [layout]]
             [minimily.web.ui.bootstrap  :refer [show-field]]
             [minimily.utils.web.wrapper :refer [http-headers]]))
@@ -16,23 +17,22 @@
           (label "acc" "Account")
           [:br]
           [:span {:id "acc" :class "read-only"} (:name account)]]
+        [:div {:class "form-group"}
+          (label "type" "Type")
+          [:br]
+          [:div {:class "form-check form-check-inline"}
+            (radio-button {:class "form-check-input" :id "credit"}
+                          "type"
+                          false
+                          1)
+            [:span {:class "form-check-label"} "Credit"]]
+          [:div {:class "form-check form-check-inline"}
+            (radio-button {:class "form-check-input" :id "debit"}
+                          "type"
+                          false
+                          -1)
+            [:span {:class "form-check-label"} "Debit"]]]
         [:div {:class "row"}
-          [:div {:class "col-md-2"}
-            [:div {:class "form-group"}
-              (label "type" "Type")
-              [:br]
-              [:div {:class "form-check form-check-inline"}
-                (radio-button {:class "form-check-input" :id "credit"} 
-                              "type"
-                              false
-                              1)
-                [:span {:class "form-check-label"} "Credit"]]
-              [:div {:class "form-check form-check-inline"}
-                (radio-button {:class "form-check-input" :id "debit"}
-                              "type" 
-                              false
-                              -1)
-                [:span {:class "form-check-label"} "Debit"]]]]
           [:div {:class "col-md-2"}
             [:div {:class "form-group"}
               (label "amount" "Amount")
@@ -42,7 +42,11 @@
             [:div {:class "form-group"}
               (label "description" "Description")
               (text-field {:class "form-control" :id "description"} 
-                          "description")]]]
+                          "description")]]
+          [:div {:class "col-md-2"}
+           [:div {:class "form-group"}
+            (label "date_transaction" "Date")
+            [:input {:type "date" :id "date_transaction" :name "date_transaction" :class "form-control"}]]]]
                
         (submit-button {:class "btn btn-primary"} "Submit")
         (str "&nbsp;")
@@ -55,19 +59,22 @@
         (hidden-field "id" (:id transaction))
         (show-field "Account" account :name)
         [:div {:class "row"}
-          [:div {:class "col-md-2"}
+          [:div {:class "col-md-1"}
             [:div {:class "form-group"}
-              (label "type" "Type")
-              [:br]
-              (if (> (:type transaction) 0) "Credit" "Debit")]]
+              (show-field "Type" transaction :type "Credit" "Debit")]]
           [:div {:class "col-md-2"}
             (show-field "Amount" transaction :amount)]
-          [:div {:class "col-md-8"}
+          [:div {:class "col-md-7"}
             [:div {:class "form-group"}
               (label "description" "Description")
               (text-field {:class "form-control" :id "description"} 
                           "description" 
-                          (:description transaction))]]]
+                          (:description transaction))]]
+          [:div {:class "col-md-2"}
+            [:div {:class "form-group"}
+              (label "date_transaction" "Date")
+              [:input {:type "date" :id "date_transaction" :name "date_transaction" :class "form-control"
+                       :value (to-string (:date_transaction transaction) "yyyy-MM-dd")}]]]]
                
         (submit-button {:class "btn btn-primary"} "Submit")
         (str "&nbsp;")

@@ -7,7 +7,7 @@
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure       "1.9.0"  ]  ; recent version of Clojure
-                 
+
                  ; Database dependencies
                  [org.clojure/java.jdbc     "0.7.0"  ]  ; jdbc api
                  [org.postgresql/postgresql "42.1.4" ]  ; db driver
@@ -20,12 +20,14 @@
                  [compojure                 "1.6.0"  ]  ; routing library
                  [hiccup                    "1.0.5"  ]  ; html template library
                  [ring/ring-core            "1.6.3"  ]  ; web application library
-                 [ring/ring-jetty-adapter   "1.6.3"  ]  ; web server library 
+                 [ring/ring-jetty-adapter   "1.6.3"  ]  ; web server library
                  [ring/ring-devel           "1.6.3"  ]
-                 
+
                  ; Extra dependencies
                  [yogthos/config            "1.1.1"  ]  ; manage environment variables
-                 [amazonica                 "0.3.121"]]
+                 [amazonica                 "0.3.121"]  ; access to amazon web services
+                 [org.clojure/data.json     "0.2.6"  ]  ; data structures to json
+                 [clj-time                  "0.14.0" ]]
   :min-lein-version "2.0.0"
   :main ^:ship-aot minimily.app
   :uberjar-name "minimily-standalone.jar"

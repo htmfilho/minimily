@@ -1,5 +1,6 @@
 (ns minimily.accounting.web.ctrl.transaction
   (:require [ring.util.response                          :refer [redirect]]
+            [minimily.utils.date                         :refer [to-timestamp]]
             [minimily.accounting.web.ui.transaction-form :as form]
             [minimily.accounting.web.ui.transaction      :refer [transaction-page]]
             [minimily.accounting.model.account           :as account-model]
@@ -31,6 +32,7 @@
                         (conj {:type (Integer/parseInt (:type params))})
                         (conj {:amount (BigDecimal. (:amount params))})
                         (conj {:balance balance})
+                        (conj {:date_transaction (to-timestamp (:date_transaction params) "yyyy-MM-dd")})
                         (conj {:profile (:user-id session)}))]
     (transaction-model/save transaction)
     (redirect (str "/accounts/" (:account transaction)))))
@@ -38,6 +40,7 @@
 (defn save-transaction [session params]
   (let [transaction (-> params
                         (conj {:account (Integer/parseInt (:account params))})
+                        (conj {:date_transaction (to-timestamp (:date_transaction params) "yyyy-MM-dd")})
                         (conj {:profile (:user-id session)}))]
     (transaction-model/save transaction)
     (redirect (str "/accounts/" (:account transaction) "/transactions/" (:id transaction)))))

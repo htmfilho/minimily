@@ -48,6 +48,6 @@
                                     (if (< (:type %) 0) 
                                       [:span {:class "debit"} (:amount %)]
                                       [:span {:class "credit"} (:amount %)])]
-                              [:td (to-string (:date_transaction %) "MMM dd, yyyy - HH:mm")]
+                              [:td (to-string (:date_transaction %) "MMM dd, yyyy")]
                               [:td {:style "text-align: right;"} (:balance %)]
                               [:td (when (:account_transfer %) [:a {:href (str "/accounts/" (:account_transfer %))} [:i {:class "fas fa-link"}]])]) transactions)]]])))
