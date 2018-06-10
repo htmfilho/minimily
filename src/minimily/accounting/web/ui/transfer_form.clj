@@ -6,16 +6,20 @@
             [minimily.utils.web.wrapper :refer [http-headers]]))
 
 (defn transfer-form-page [session account to-accounts]
-  (println session)
-  (println account)
-  (println to-accounts)
   (http-headers
     (layout session "Transfer"
       (form-to [:post (str "/accounts/" (:id account) "/transfer/perform")]
-        [:div {:class "form-group"}
-          (label "from" "From Account")
-          [:br]
-          [:span {:id "from" :class "read-only"} (:name account)]]
+        [:div {:class "row"}
+          [:div {:class "col-md-3"}
+            [:div {:class "form-group"}
+              (label "from" "From Account")
+              [:br]
+              [:span {:id "from" :class "read-only"} (:name account)]]]
+          [:div {:class "col-md-9"}
+            [:div {:class "form-group"}
+              (label "balance" "Balance")
+              [:br]
+              [:span {:id "balance" :class "read-only"} (:balance account)]]]]
         [:div {:class "row"}
           [:div {:class "col-md-10"}
             [:div {:class "form-group"}

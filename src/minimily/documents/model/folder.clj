@@ -1,17 +1,27 @@
 (ns minimily.documents.model.folder
-  (:require [minimily.utils.database :as db]
-            [minimily.utils.string   :as s]))
+  (:require [hugsql.core                         :as hugsql]
+            [minimily.utils.database             :as db]
+            [minimily.utils.string               :as s]
+            [minimily.family.model.family-member :as family-member-model]))
+
+(hugsql/def-sqlvec-fns "minimily/documents/model/sql/folder.sql")
 
 (def table :folder)
 
 (defn find-parents [profile-id]
-  (db/find-records ["select * from folder where profile = ? parent is null" profile-id]))
+  (db/find-records 
+    (folders-by-profile-sqlvec 
+      {:profile-ids 
+          (family-member-model/list-family-organizers profile-id)})))
 
 (defn find-children [profile-id parent-id]
-  (db/find-records ["select * from folder where profile = ? parent = ?" profile-id parent-id]))
+  (db/find-records (folders-children-sqlvec {:profile-ids (family-member-model/list-family-organizers profile-id)
+                                             :parent-id   parent-id})))
 
 (defn count-children [profile-id parent-id]
-  (:count (first (db/find-records ["select count(*) from folder where profile = ? parent = ?" profile-id parent-id]))))
+  (:count (first (db/find-records (folders-count-children-sqlvec 
+                                     {:profile-ids (family-member-model/list-family-organizers profile-id)
+                                      :parent-id   parent-id})))))
 
 (defn get-it [profile-id id]
   (db/get-record table id profile-id))
@@ -27,7 +37,7 @@
                   path []]
               (if (nil? (:parent folder))
                 (conj path folder)
-                (let [parent (get-it (:parent folder))]
+                (let [parent (get-it profile-id (:parent folder))]
                   (recur parent 
                         (conj path folder)))))))
 

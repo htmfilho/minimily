@@ -11,15 +11,17 @@
     (locations-page session locations)))
 
 (defn view-location [session id]
-  (let [location (location-model/get-it (:user-id session) id)
-        goods     (good-model/find-by-location (:user-id session) id)]
+  (let [location-id (Integer/parseInt id)
+        location    (location-model/get-it (:user-id session) location-id)
+        goods       (good-model/find-by-location (:user-id session) location-id)]
     (location-page session location goods)))
 
 (defn new-location [session]
   (location-form-page session))
 
 (defn edit-location [session id]
-  (let [location (location-model/get-it (:user-id session) id)]
+  (let [location-id (Integer/parseInt id)
+        location    (location-model/get-it (:user-id session) location-id)]
     (location-form-page session location)))
 
 (defn save-location [session params]

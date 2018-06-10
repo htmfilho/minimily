@@ -1,11 +1,9 @@
 (ns minimily.auth.web.ui.signin
-  (:require [minimily.web.ui.layout     :refer [layout]]
-            [minimily.utils.web.wrapper :refer [http-headers]]
-            [hiccup.form                :refer [email-field form-to label 
-                                                password-field submit-button]]))
+  (:require [hiccup.form :refer :all]))
 
 (defn signin-content []
   (form-to [:post "/account/login"]
+        [:div {:class "page-title"} "Sign In"]
         [:div {:class "form-group"}
           (label "username" "Email address")
           (email-field {:class "form-control" :id "username" 
@@ -14,11 +12,7 @@
           (label "password" "Password")
           (password-field {:class "form-control" :id "password" 
                            :autocomplete "off"} "password")]
+        (hidden-field {:id "forward"} "forward" "/")
         (submit-button {:class "btn btn-primary"} "Submit")
         (str "&nbsp;")
         [:a {:class "btn btn-outline-secondary" :href "/"} "Cancel"]))
-
-(defn signin-page []
-  (http-headers 
-    (layout nil "Sign In"
-      (signin-content))))

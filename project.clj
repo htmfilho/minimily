@@ -10,8 +10,8 @@
 
                  ; Database dependencies
                  [org.clojure/java.jdbc     "0.7.0"  ]  ; jdbc api
-                 [org.postgresql/postgresql "42.1.4" ]  ; db driver
-                 [honeysql                  "0.9.0"  ]  ; sql abstraction
+                 [org.postgresql/postgresql "42.2.0" ]  ; db driver
+                 [com.layerware/hugsql      "0.4.8"  ]  ; sql abstraction
                  [hikari-cp                 "1.8.1"  ]  ; connection pool
                  [ragtime                   "0.7.1"  ]  ; migration
                  [org.slf4j/slf4j-nop       "1.7.13" ]  ; hikari-cp's dependency

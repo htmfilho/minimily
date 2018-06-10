@@ -1,15 +1,23 @@
 (ns minimily.accounting.model.transaction
-  (:require [minimily.utils.database :as db]))
+  (:require [hugsql.core                         :as hugsql]
+            [minimily.utils.database             :as db]
+            [minimily.family.model.family-member :as family-member-model]))
+
+(hugsql/def-sqlvec-fns "minimily/accounting/model/sql/transaction.sql")
 
 (def table :transaction)
 
 (defn find-by-account [profile-id account-id]
-  (db/find-records ["select * from transaction 
-                     where profile = ? and account = ? 
-                     order by date_transaction desc" profile-id (Integer/parseInt account-id)]))
+  (let [family-members (family-member-model/list-family-organizers profile-id)]
+    (db/find-records (transactions-by-profile-account-sqlvec {:profile-ids family-members 
+                                                              :account-id (Integer/parseInt account-id)}))))
+
+(defn find-balance-history [account-id]
+  (db/find-records 
+    (transactions-balance-history-sqlvec {:account-id (Integer/parseInt account-id)})))
 
 (defn calculate-balance [account-id]
-  (let [transactions (db/find-records ["select type, amount from transaction where account = ?" account-id])
+  (let [transactions (db/find-records (transactions-by-account-sqlvec {:account-id account-id}))
         amounts      (map #(* (:type %) (:amount %)) transactions)]
     (reduce + amounts)))
 

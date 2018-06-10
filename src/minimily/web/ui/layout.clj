@@ -1,5 +1,19 @@
 (ns minimily.web.ui.layout
-  (:require [hiccup.page :as page]))
+  (:require [hiccup.page                 :as page]
+            [minimily.auth.web.ui.signin :as signin]
+            [minimily.web.model.menu     :refer [menu-items]]))
+
+(defn menu-bar-template [menu-item]
+  (if (contains? menu-item :submenu)
+    [:li {:class "nav-item dropdown"}
+         [:a {:class "nav-link dropdown-toggle" :href (:link menu-item) :id "navbarDropdown" 
+              :role "button" :data-toggle "dropdown" :aria-haspopup "true" :aria-expanded "false"}
+          (:label menu-item)]
+         [:div {:class "dropdown-menu" :aria-labelledby "navbarDropdown"}
+          (map #(vector :a {:class "dropdown-item" :href (:link %)} (:label %)) 
+               (:submenu menu-item))]]
+    [:li {:class "nav-item"}
+         [:a {:class "nav-link" :href (:link menu-item)} (:label menu-item)]]))
 
 (defn layout [session title & content]
   (page/html5 {:lang "en"}
@@ -26,7 +40,11 @@
                   :aria-label "Toggle navigation"}
           [:span {:class "navbar-toggler-icon"}]]
         [:div {:class "collapse navbar-collapse" :id "navbarSupportedContent"}
-          [:ul {:class "navbar-nav mr-auto"}]
+          [:div {:class "container"}
+            (if (not (empty? session))
+              [:ul {:class "navbar-nav mr-auto"}
+                (map menu-bar-template menu-items)]
+              [:ul {:class "navbar-nav mr-auto"}])]
           (if (empty? session)
             [:ul {:class "navbar-nav my-2 my-lg-0"}
               ;[:li {:class "nav-item"}
@@ -38,8 +56,11 @@
                 [:a {:class "nav-link  my-2 my-sm-0" :href "/signout"} "Sign Out"]]])]]
       
       [:div {:class "container"}
-        (when title [:div {:class "page-title"} title])
-        content
+        (when (and title (not (empty? session))) 
+          [:div {:class "page-title"} title])
+        (if (empty? session)
+          (signin/signin-content)
+          content)
         [:br]
         [:br]
         [:br]]
@@ -47,6 +68,7 @@
       [:nav {:class "navbar fixed-bottom navbar-light bg-light"}
         [:a {:class "nav-link" :href "http://www.minimily.com"} "Help"]]
       
-      (page/include-js "/js/jquery-3.2.1.slim.min.js"
+      (page/include-js "/js/jquery-3.3.1.min.js"
                        "/js/bootstrap.bundle.min.js"
+                       "/js/echarts.min.js"
                        "/js/minimily.js")]))
