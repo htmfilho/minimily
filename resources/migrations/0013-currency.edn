@@ -1,0 +1,19 @@
+{:up   
+  ["create table currency (
+    acronym varchar(3)    primary key,
+    name    varchar(100)  not null
+  );
+
+  insert into currency values ('BRL', 'Brazilian Real');
+  insert into currency values ('CAD', 'Canada Dolar');
+  insert into currency values ('EUR', 'Euro');
+  insert into currency values ('USD', 'US Dolar');
+
+  alter table account add column currency varchar(3) references currency (acronym) on delete restrict;"]
+ :down 
+  ["alter table account drop column currency;
+  delete from currency where acronym = 'BRL';
+  delete from currency where acronym = 'CAD';
+  delete from currency where acronym = 'EUR';
+  delete from currency where acronym = 'USD';
+  drop table currency;"]}

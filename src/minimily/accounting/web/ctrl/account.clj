@@ -4,11 +4,13 @@
             [minimily.accounting.web.ui.account-form :refer [account-form-page]]
             [minimily.accounting.web.ui.account      :refer [account-page]]
             [minimily.accounting.model.account       :as account-model]
-            [minimily.accounting.model.transaction   :as transaction-model]))
+            [minimily.accounting.model.transaction   :as transaction-model]
+            [minimily.accounting.model.currency      :as currency-model]))
 
 (defn view-accounts [session]
-  (let [accounts (account-model/find-all (:user-id session))]
-    (accounts-page session accounts)))
+  (let [accounts   (account-model/find-all (:user-id session))
+        currencies (currency-model/find-all)]
+    (accounts-page session accounts currencies)))
 
 (defn view-account [session id]
   (let [account (account-model/get-it (:user-id session) id)
@@ -16,11 +18,13 @@
     (account-page session account transactions)))
 
 (defn new-account [session]
-  (account-form-page session))
+  (let [currencies (currency-model/find-all)]
+    (account-form-page session currencies)))
 
 (defn edit-account [session id]
-  (let [account (account-model/get-it (:user-id session) id)]
-    (account-form-page session account)))
+  (let [account    (account-model/get-it (:user-id session) id)
+        currencies (currency-model/find-all)]
+    (account-form-page session currencies account)))
 
 (defn save-account [session params]
   (let [account (assoc params :holder (:user-id session))

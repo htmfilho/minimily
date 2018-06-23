@@ -2,6 +2,7 @@
   (:require [hiccup.form                :refer [form-to label submit-button
                                                 text-field hidden-field 
                                                 select-options]]
+            [minimily.utils.date        :refer [to-string today]]
             [minimily.web.ui.layout     :refer [layout]]
             [minimily.utils.web.wrapper :refer [http-headers]]))
 
@@ -21,7 +22,7 @@
               [:br]
               [:span {:id "balance" :class "read-only"} (:balance account)]]]]
         [:div {:class "row"}
-          [:div {:class "col-md-10"}
+          [:div {:class "col-md-8"}
             [:div {:class "form-group"}
               (label "to" "To Account")
               [:select {:name "to" :class "form-control" :id "to"}
@@ -29,7 +30,12 @@
           [:div {:class "col-md-2"}
             [:div {:class "form-group"}
               (label "amount" "Amount")
-              (text-field {:class "form-control" :id "amount"} "amount")]]]
+              (text-field {:class "form-control" :id "amount"} "amount")]]
+          [:div {:class "col-md-2"}
+           [:div {:class "form-group"}
+            (label "date_transaction" "Date")
+            [:input {:type "date" :id "date_transaction" :name "date_transaction" :class "form-control"
+                     :value (to-string (today) "yyyy-MM-dd")}]]]]
         
         (submit-button {:class "btn btn-primary"} "Submit")
         (str "&nbsp;")

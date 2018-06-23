@@ -21,7 +21,7 @@
               [:span {:id "acc" :class "read-only"} (:name account)]]]
           [:div {:class "col-md-9"}
             [:div {:class "form-group"}
-              (label "balance" "Balance")
+              (label "balance" (str "Balance (" (:currency account) ")"))
               [:br]
               [:span {:id "balance" :class "read-only"} (:balance account)]]]]
         [:div {:class "form-group"}
@@ -42,7 +42,7 @@
         [:div {:class "row"}
           [:div {:class "col-md-2"}
             [:div {:class "form-group"}
-              (label "amount" "Amount")
+              (label "amount" (str "Amount (" (:currency account) ")"))
               (text-field {:class "form-control" :id "amount"} 
                           "amount")]]
           [:div {:class "col-md-7"}
@@ -71,7 +71,7 @@
             [:div {:class "form-group"}
               (show-field "Type" transaction :type "Credit" "Debit")]]
           [:div {:class "col-md-2"}
-            (show-field "Amount" transaction :amount)]
+            (show-field (str "Amount (" (:currency account) ")") transaction :amount)]
           [:div {:class "col-md-7"}
             [:div {:class "form-group"}
               (label "description" "Description")

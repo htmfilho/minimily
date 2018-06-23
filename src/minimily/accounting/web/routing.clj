@@ -8,7 +8,7 @@
 (defn routes []
   (url/routes
     (url/context "/accounts" []
-      (url/GET  "/"         {session :session} 
+      (url/GET  "/"         {session :session {currency :currency} :params}
                             (account-ctrl/view-accounts session))
       (url/GET  "/new"      {session :session} 
                             (account-ctrl/new-account session))

@@ -23,12 +23,12 @@
             [:div {:class "col-md-3"}
               (show-field "Account" account :name)]
             [:div {:class "col-md-9"}
-              (show-field "Balance" account :balance)]]
+              (show-field (str "Balance (" (:currency account) ")") account :balance)]]
           [:div {:class "row"}
             [:div {:class "col-md-1"}
               (show-field "Type" transaction :type "Credit" "Debit")]
             [:div {:class "col-md-2"}
-              (show-field "Amount" transaction :amount)]
+              (show-field (str "Amount (" (:currency account) ")") transaction :amount)]
             [:div {:class "col-md-7"}
               (show-field "Description" transaction :description)]
             [:div {:class "col-md-2"}
