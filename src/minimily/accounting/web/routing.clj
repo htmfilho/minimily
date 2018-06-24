@@ -3,6 +3,7 @@
             [minimily.accounting.web.ctrl.account     :as account-ctrl]
             [minimily.accounting.web.ctrl.transaction :as transaction-ctrl]
             [minimily.accounting.web.ctrl.transfer    :as transfer-ctrl]
+            [minimily.accounting.web.api.account      :as account-api]
             [minimily.accounting.web.api.transaction  :as transaction-api]))
 
 (defn routes []
@@ -44,4 +45,7 @@
     (url/context "/api/accounts" []
       (url/GET "/:account/balance/history" 
                {session :session {account :account} :params}
-               (transaction-api/balance-history session account)))))
+               (transaction-api/get-balance-history session account))
+      (url/GET "/:account/currency"
+               {session :session {account :account} :params}
+               (account-api/get-currency session account)))))

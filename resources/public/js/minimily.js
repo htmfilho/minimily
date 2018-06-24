@@ -21,7 +21,7 @@ function getValuesBalanceHistory(balanceHistory) {
 }
 
 $(document).ready(function() {
-    $.getJSON("/api" + window.location.pathname + "/balance/history", function(data, status){
+    $.getJSON("/api" + window.location.pathname + "/balance/history", function(data, status) {
         balanceHistory = data;
         // charts
         var balanceHistoryChart = echarts.init(document.getElementById('balance-history-chart'));

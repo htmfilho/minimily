@@ -71,4 +71,5 @@
       (page/include-js "/js/jquery-3.3.1.min.js"
                        "/js/bootstrap.bundle.min.js"
                        "/js/echarts.min.js"
-                       "/js/minimily.js")]))
+                       "/js/minimily.js"
+                       "/js/minimily-accounting.js")]))

@@ -11,26 +11,47 @@
     (layout session "Transfer"
       (form-to [:post (str "/accounts/" (:id account) "/transfer/perform")]
         [:div {:class "row"}
-          [:div {:class "col-md-3"}
+          [:div {:class "col-md-4"}
             [:div {:class "form-group"}
               (label "from" "From Account")
               [:br]
               [:span {:id "from" :class "read-only"} (:name account)]]]
-          [:div {:class "col-md-9"}
+          [:div {:class "col-md-2"}
             [:div {:class "form-group"}
               (label "balance" "Balance")
               [:br]
-              [:span {:id "balance" :class "read-only"} (:balance account)]]]]
+              [:span {:id "balance" :class "read-only"} (:balance account)]]]
+          [:div {:class "col-md-2"}
+            [:div {:class "form-group"}
+              (label "currency" "Currency")
+              [:br]
+              [:span {:id "currency" :class "read-only"} (:currency account)]]]
+          [:div {:class "col-md-4"}
+            [:div {:class "form-group"}
+              (label "final_balance" "Final Balance")
+              [:br]
+              [:span {:id "final_balance" :class "read-only"} (:balance account)]]]]
+
         [:div {:class "row"}
-          [:div {:class "col-md-8"}
+          [:div {:class "col-md-4"}
             [:div {:class "form-group"}
               (label "to" "To Account")
               [:select {:name "to" :class "form-control" :id "to"}
-                (map #(vector :option {:value (:id %)} (:name %)) to-accounts)]]]
+                (conj (map #(vector :option {:value (:id %)} (str (:name %) " (" (:currency %) ")")) to-accounts)
+                      [:option {:value ""} "Select..."])]]]
           [:div {:class "col-md-2"}
             [:div {:class "form-group"}
-              (label "amount" "Amount")
+              (label "amount" (str "Amount From"))
               (text-field {:class "form-control" :id "amount"} "amount")]]
+          [:div {:class "col-md-2"}
+            [:div {:class "form-group"}
+              [:label {:for "rate" :id "rate_label"} "Rate"]
+              (text-field {:class "form-control" :id "rate" :disabled "disabled"} "rate")]]
+          [:div {:class "col-md-2"}
+            [:div {:class "form-group"}
+              [:label {:for "amount_to" :id "amount_to_label"} "Amount To"]
+              [:span {:class "form-control" :id "amount_to_view"} "0"]
+              (hidden-field {:id "amount_to"} "amount_to")]]
           [:div {:class "col-md-2"}
            [:div {:class "form-group"}
             (label "date_transaction" "Date")

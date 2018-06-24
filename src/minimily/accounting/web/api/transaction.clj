@@ -8,7 +8,7 @@
     (dt/to-string val "yyyy-MM-dd")
     val))
 
-(defn balance-history [session account-id]
+(defn get-balance-history [session account-id]
   (json/write-str (reduce #(conj %1
                                  (conj %2
                                        {:balance (+ (* (:amount %2)

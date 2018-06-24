@@ -10,7 +10,7 @@
 (defn to-string [date format]
   (.format (SimpleDateFormat. format) date))
 
-(defn to-timestamp [str-date format]
+(defn to-date [str-date format]
   (->> str-date
        (timef/parse (timef/formatter format))
-       (timec/to-timestamp)))
+       (timec/to-sql-date)))
