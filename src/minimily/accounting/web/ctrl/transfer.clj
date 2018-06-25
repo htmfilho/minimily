@@ -17,10 +17,11 @@
         to               (account-model/get-it (:user-id session) (:to transfer))
         amount-from      (BigDecimal. (:amount transfer))
         amount-to        (BigDecimal. (:amount_to transfer))
+        fee              (if (contains? transfer :fee) (BigDecimal. (:fee transfer)) 0)
         date-transaction (to-date (:date_transaction transfer) "yyyy-MM-dd")
         transaction-from {:account (:id from) 
                           :type -1
-                          :amount amount-from
+                          :amount (.add amount-from fee)
                           :description (str "Transfer to " (:name to))
                           :account_transfer (:id to)
                           :date_transaction date-transaction
