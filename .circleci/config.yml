@@ -13,6 +13,10 @@ jobs:
       # CircleCI maintains a library of pre-built images
       # documented at https://circleci.com/docs/2.0/circleci-images/
       - image: circleci/postgres:10.4-alpine-ram
+        environment:
+          POSTGRES_USER: minimily
+          POSTGRES_PASSWORD: secret
+          POSTGRES_DB: minimily
 
     working_directory: ~/repo
 

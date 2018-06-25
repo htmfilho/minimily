@@ -56,10 +56,6 @@ $("#fee").change(function() {
     calculateAmountTo();
 });
 
-$("#to").change(function() {
-    getCurrencySelectedAccount();
-});
+$("#to").change(getCurrencySelectedAccount);
 
-$(document).ready(function() {
-    getCurrencySelectedAccount();
-});
+$(document).ready(getCurrencySelectedAccount);
