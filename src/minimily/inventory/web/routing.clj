@@ -47,7 +47,7 @@
           (core/POST "/save"     {session :session params :params} 
                                  (good-ctrl/save-good session params))
           (core/POST "/delete"   {session :session params :params}
-                                 (good-ctrl/delete-good params))
+                                 (good-ctrl/delete-good session params))
           (core/GET  "/:id"      {session :session {id :id} :params}
                                  (good-ctrl/view-good session id))
           (core/GET  "/:id/edit" {session :session {id :id} :params}
