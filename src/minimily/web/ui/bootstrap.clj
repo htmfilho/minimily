@@ -41,3 +41,11 @@
     [:i {:class "fas fa-ban"}]
     (str "&nbsp;")
     "Cancel"])
+
+(defn checkbox [id label checked]
+  (let [params {:type "checkbox" :class "form-check-input" :id id :name id}]
+    [:div {:class "form-group form-check checkbox-top-space"}
+      [:input (if checked
+                  (assoc params :checked "checked")
+                  params)]
+      [:label {:for id :class "form-check-label"} label]]))

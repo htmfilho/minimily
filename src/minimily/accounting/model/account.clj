@@ -7,13 +7,17 @@
 
 (def table :account)
 
-(defn find-all [holder]
+(defn find-actives [holder]
   (let [family-members (family-member-model/list-family-organizers holder)]
-    (db/find-records (accounts-by-family-holders-sqlvec {:ids family-members}))))
+    (db/find-records (active-accounts-sqlvec {:ids family-members}))))
 
-(defn find-all-except [holder except-id]
+(defn find-inactives [holder]
+  (let [family-members (family-member-model/list-family-organizers holder)]
+    (db/find-records (inactive-accounts-sqlvec {:ids family-members}))))
+
+(defn find-actives-except [holder except-id]
   (filter #(not= (:id %) except-id) 
-          (find-all holder)))
+          (find-actives holder)))
 
 (defn get-it [holder id]
   (db/get-record table id))

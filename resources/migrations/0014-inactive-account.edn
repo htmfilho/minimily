@@ -1,0 +1,4 @@
+{:up   
+  ["alter table account add column active boolean default true;"]
+ :down 
+  ["alter table account drop column active;"]}

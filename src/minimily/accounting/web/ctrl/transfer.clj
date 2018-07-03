@@ -8,8 +8,8 @@
 
 (defn new-transfer [session account]
   (let [account (account-model/get-it (:user-id session) account)
-        to-accounts (account-model/find-all-except (:user-id session) 
-                                                   (:id account))]
+        to-accounts (account-model/find-actives-except (:user-id session) 
+                                                       (:id account))]
     (form/transfer-form-page session account to-accounts)))
 
 (defn perform-transfer [session transfer]

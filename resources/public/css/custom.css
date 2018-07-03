@@ -15,6 +15,10 @@ label {
     font-weight: bold;
 }
 
+.checkbox-top-space {
+    margin-top: 38px;
+}
+
 .credit {
     color: #00c200;
 }
