@@ -2,11 +2,13 @@
 select * from good 
 where profile in (:v*:profile-ids) and 
       location = :location-id
+order by name
 
 -- :name goods-by-collection :? :*
 select * from good 
 where profile in (:v*:profile-ids) and 
       collection = :collection-id
+order by name
 
 -- :name good :? :*
 select g.id, g.name, g.description, g.quantity, g.value, 

@@ -2,7 +2,7 @@
   (:require [hiccup.form                :refer [form-to submit-button 
                                                 hidden-field]]
             [minimily.web.ui.layout     :refer [layout]]
-            [minimily.web.ui.bootstrap  :refer [show-field back-button edit-button]]
+            [minimily.web.ui.bootstrap  :refer [show-field show-field-link back-button edit-button]]
             [minimily.utils.date        :refer [to-string]]
             [minimily.utils.web.wrapper :refer [http-headers]]))
 
@@ -25,6 +25,5 @@
             [:div {:class "col-md-3"} (show-field "Value"    good :value)]]
           (show-field "Description" good :description)
           [:div {:class "row"}
-            [:div {:class "col-md-6"} (show-field "Location" good :location)]
-            [:div {:class "col-md-6"} (show-field "Collection" good :collection)]]
-          ]])))
+            [:div {:class "col-md-6"} (show-field-link "Location" good :location (str "/inventory/locations/" (:location_id good)))]
+            [:div {:class "col-md-6"} (show-field-link "Collection" good :collection (str "/inventory/collections/" (:collection_id good)))]]]])))
