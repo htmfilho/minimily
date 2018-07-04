@@ -30,6 +30,6 @@
     (redirect "/inventory/locations")))
 
 (defn delete-location [session params]
-  (let [id (:id params)]
+  (let [id (Integer/parseInt (:id params))]
     (location-model/delete-it (:user-id session) id)
     (redirect "/inventory/locations")))
