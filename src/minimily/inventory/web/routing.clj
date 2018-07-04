@@ -19,7 +19,7 @@
         (core/POST "/save"     {session :session params :params} 
                                (location-ctrl/save-location session params))
         (core/POST "/delete"   {session :session params :params}
-                               (location-ctrl/delete-location params))
+                               (location-ctrl/delete-location session params))
         (core/GET  "/:id"      {session :session {id :id} :params}
                                (location-ctrl/view-location session id))
         (core/GET  "/:id/edit" {session :session {id :id} :params}
