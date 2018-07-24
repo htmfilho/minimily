@@ -49,8 +49,8 @@
               (label "collection" "Collections")
               [:select {:name "collection" :class "form-control" :id "collection"}
                 (map #(vector :option (if (:selected %) 
-                                      {:value (:id %) :selected "true"}
-                                      {:value (:id %)}) (:name %)) collections)]]]]
+                                        {:value (:id %) :selected "true"}
+                                        {:value (:id %)}) (:name %)) collections)]]]]
         (submit-button {:class "btn btn-primary"} "Submit")
         (str "&nbsp;")
         [:a {:class "btn btn-outline-secondary" :href (str "/inventory/goods/" (:id good))} "Cancel"]))))

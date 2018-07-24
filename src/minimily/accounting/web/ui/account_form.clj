@@ -18,7 +18,7 @@
                       "name" 
                       (:name account))]
         [:div {:class "row"}
-          [:div {:class "col-md-6"}
+          [:div {:class "col-md-4"}
             [:div {:class "form-group"}
               (label "number" "Number")
               (text-field {:class "form-control" :id "number" :maxlength "30"}
@@ -28,7 +28,15 @@
             [:div {:class "form-group"}
               (label "currency" "Currency")
               [:select {:name "currency" :class "form-control" :id "currency"}
-                       (map #(vector :option {:value (:acronym %)} (str (:acronym %) " (" (:name %) ")")) currencies)]]]
+                       (map #(vector :option (if (:selected %) 
+                                               {:value (:acronym %) :selected "true"}
+                                               {:value (:acronym %)}) (str (:acronym %) " (" (:name %) ")")) currencies)]]]
+          [:div {:class "col-md-2"}
+            [:div {:class "form-group"}
+              (label "debit_limit" "Debit Limit")
+              (text-field {:class "form-control" :id "debit_limit"}
+                          "debit_limit"
+                          (:debit_limit account))]]
           [:div {:class "col-md-2"}
             (bootstrap/checkbox "active" "Active" (:active account))]]
         (submit-button {:class "btn btn-primary"} "Submit")

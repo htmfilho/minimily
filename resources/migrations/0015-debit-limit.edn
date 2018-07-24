@@ -1,0 +1,4 @@
+{:up   
+  ["alter table account add column debit_limit decimal(8, 2);"]
+ :down 
+  ["alter table account drop column debit_limit;"]}

@@ -24,14 +24,19 @@
 
 (defn edit-account [session id]
   (let [account    (account-model/get-it (:user-id session) id)
-        currencies (currency-model/find-all)]
+        currencies (map #(if (= (:acronym %) (:currency account))
+                           (conj % {:selected true})
+                           (conj % {:selected false})) 
+                        (currency-model/find-all))]
     (account-form-page session currencies account)))
 
 (defn save-account [session params]
-  (let [account (assoc params :holder (:user-id session))
-        account (if (contains? account :active)
-                  (assoc account :active true)
-                  (assoc account :active false))
+  (let [account (-> params 
+                    (assoc :holder (:user-id session))
+                    (assoc :debit_limit (if (empty? (:debit_limit params))
+                                            0
+                                            (BigDecimal. (:debit_limit params))))
+                    (assoc :active (contains? params :active)))
         id      (account-model/save account)]
     (redirect (str "/accounts/" id))))
 

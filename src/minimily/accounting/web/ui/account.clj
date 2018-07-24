@@ -20,10 +20,11 @@
             (submit-button {:id "bt_delete" :class "btn btn-danger"} "Delete"))]
         [:div {:class "card-body"}
           [:div {:class "row"}
-            [:div {:class "col-md-3"} (show-field "Name"    account :name)]
-            [:div {:class "col-md-3"} (show-field "Number"  account :number)]
-            [:div {:class "col-md-3"} (show-field "Balance" account :balance)]
-            [:div {:class "col-md-3"} (show-field "Currency" account :currency)]]]]
+            [:div {:class "col-md-3"} (show-field "Name" account :name)]
+            [:div {:class "col-md-3"} (show-field "Number" account :number)]
+            [:div {:class "col-md-2"} (show-field "Balance" account :balance)]
+            [:div {:class "col-md-2"} (show-field "Currency" account :currency)]
+            [:div {:class "col-md-2"} (show-field "Debit Limit" account :debit_limit)]]]]
       [:br]
 
       [:ul {:class "nav nav-tabs" :id "account-tabs" :role "tablist"}

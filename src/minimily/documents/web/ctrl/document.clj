@@ -3,7 +3,7 @@
                                                              file-response 
                                                              header
                                                              content-type]]
-            [minimily.documents.web.ui.document-form :refer [document-form-page]]
+            [minimily.documents.web.ui.document-form :refer :all]
             [minimily.documents.web.ui.document      :refer [document-page]]
             [minimily.documents.model.folder         :as folder-model]
             [minimily.documents.model.document       :as document-model]
@@ -18,12 +18,12 @@
 
 (defn new-document [session folder-id]
   (let [folder (folder-model/get-it (:user-id session) folder-id)]
-    (document-form-page session folder)))
+    (document-form-add session folder)))
 
 (defn edit-document [session id]
   (let [document (document-model/get-it (:user-id session) id)
         folder   (folder-model/get-it (:user-id session) (:folder document))]
-    (document-form-page session folder document)))
+    (document-form-edit session folder document)))
 
 (defn save-document [session params]
   (let [folder (Integer/parseInt (:folder params))
