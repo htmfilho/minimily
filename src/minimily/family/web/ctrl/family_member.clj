@@ -1,4 +1,4 @@
-(ns minimily.family.web.ctrl.family
+(ns minimily.family.web.ctrl.family-member
   (:require [ring.util.response                  :refer [redirect]]
             [minimily.family.web.ui.family       :refer [family-page]]
             [minimily.family.web.ui.family-form  :refer [family-form-page]]
