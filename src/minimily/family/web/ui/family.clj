@@ -6,7 +6,7 @@
             [minimily.utils.date        :refer [to-string]]
             [minimily.utils.web.wrapper :refer [http-headers]]))
 
-(defn family-page [session & [transactions]]
+(defn family-page [session account & [transactions]]
   (http-headers
     (layout session "Account"
       [:div {:class "card"}
