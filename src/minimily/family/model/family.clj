@@ -4,5 +4,5 @@
 
 (hugsql/def-sqlvec-fns "minimily/family/model/sql/family.sql")
 
-(defn- find-family-organizer [profile-id]
+(defn find-family-organizer [profile-id]
   (first (db/find-records (family-of-organizer-sqlvec {:profile-id profile-id}))))
