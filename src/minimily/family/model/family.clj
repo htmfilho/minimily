@@ -11,3 +11,9 @@
 
 (defn find-family-organizer [profile-id]
   (first (db/find-records (family-of-organizer-sqlvec {:profile-id profile-id}))))
+
+(defn save [family]
+  (db/save-record table family))
+
+(defn delete-it [holder id]
+  (db/delete-record table id holder))
