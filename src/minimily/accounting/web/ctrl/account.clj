@@ -15,6 +15,9 @@
 
 (defn view-account [session id]
   (let [account (account-model/get-it (:user-id session) id)
+        account (assoc account 
+                       :percentage-used-credit 
+                       (account-model/percentage-used-credit account))
         transactions (transaction-model/find-by-account (:user-id session) id)]
     (account-page session account transactions)))
 

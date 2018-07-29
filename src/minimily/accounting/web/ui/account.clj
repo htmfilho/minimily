@@ -24,7 +24,18 @@
             [:div {:class "col-md-3"} (show-field "Number" account :number)]
             [:div {:class "col-md-2"} (show-field "Balance" account :balance)]
             [:div {:class "col-md-2"} (show-field "Currency" account :currency)]
-            [:div {:class "col-md-2"} (show-field "Debit Limit" account :debit_limit)]]]]
+            [:div {:class "col-md-2"} (show-field "Debit Limit" account :debit_limit)]]
+          (let [percentage-used-credit (:percentage-used-credit account)
+                severity (cond (< percentage-used-credit 30) "bg-success"
+                               (and (>= percentage-used-credit 30) (< percentage-used-credit 50)) "bg-info"
+                               (and (>= percentage-used-credit 50) (< percentage-used-credit 80)) "bg-warning"
+                               :else "bg-danger")]
+            (when (> percentage-used-credit 0)
+              [:div {:class "progress"}
+                [:div {:class (format "progress-bar %s" severity) :role "progressbar" 
+                      :style (format "width: %d%%" percentage-used-credit) 
+                      :aria-valuenow (format "%d" percentage-used-credit) 
+                      :aria-valuemin "0" :aria-valuemax "100"} (format "%d%%" percentage-used-credit)]]))]]
       [:br]
 
       [:ul {:class "nav nav-tabs" :id "account-tabs" :role "tablist"}
