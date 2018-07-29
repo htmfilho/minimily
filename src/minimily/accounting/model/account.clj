@@ -33,7 +33,7 @@
 (defn percentage-used-credit [account]
   (let [balance     (:balance account)
         debit-limit (:debit_limit account)]
-    (if (>= (.intValue balance) 0)
+    (if (or (>= (.intValue balance) 0) (nil? debit-limit))
       0
       (Math/abs (.intValue (.divide (.multiply balance (BigDecimal. 100)) 
                                     debit-limit
