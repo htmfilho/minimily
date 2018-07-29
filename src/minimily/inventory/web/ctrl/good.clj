@@ -58,6 +58,8 @@
     (redirect (str "/inventory/goods?location=" (:location params) "&collection=" (:collection params)))))
 
 (defn delete-good [session params]
-  (let [id (Integer/parseInt (:id params))]
+  (let [id         (Integer/parseInt (:id params))
+        location   (Integer/parseInt (:location params))
+        collection (Integer/parseInt (:collection params))]
     (good-model/delete-it (:user-id session) id)
-    (redirect "/inventory/goods")))
+    (redirect (format "/inventory/goods?location=%d&collection=%d" location collection))))

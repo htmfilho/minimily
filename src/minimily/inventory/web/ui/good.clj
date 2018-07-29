@@ -17,6 +17,8 @@
             (edit-button (str "/inventory/goods/" (:id good) "/edit"))
             (str "&nbsp;")
             (hidden-field "id" (:id good))
+            (hidden-field "location" (:location_id good))
+            (hidden-field "collection" (:collection_id good))
             (submit-button {:id "bt_delete" :class "btn btn-danger"} "Delete"))]
         [:div {:class "card-body"}
           [:div {:class "row"}
