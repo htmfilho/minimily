@@ -1,8 +1,14 @@
 (ns minimily.web.model.menu)
 
-(def menu-items [{:label "Accounts" 
-                  :link "/accounts" 
-                  :description "Building awareness of your incomes and spendings is the best way to add value to your money."}
+(def menu-items [{:label "Accounting" 
+                  :link "/accounting" 
+                  :description "Building awareness of your incomes and spendings is the best way to add value to your money."
+                  :submenu [{:label "Accounts"
+                             :link "/accounting/accounts"
+                             :description "Accounts where money is managed."}
+                            {:label "Categories"
+                             :link "/accounting/categories"
+                             :description "Categories of incomes and expenses."}]}
 
                  {:label "Documents" 
                   :link "/folders" 

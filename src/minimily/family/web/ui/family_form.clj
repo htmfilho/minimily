@@ -10,7 +10,7 @@
 (defn family-form-page [session & [account]]
   (http-headers
     (layout session "Account"
-      (form-to [:post "/accounts/save"]
+      (form-to [:post "/accounting/accounts/save"]
         (when account (hidden-field "id" (:id account)))
         [:div {:class "form-group"}
           (label "name" "Name")
@@ -34,4 +34,4 @@
             (bootstrap/checkbox "active" "Active" (:active account))]]
         (submit-button {:class "btn btn-primary"} "Submit")
         (str "&nbsp;")
-        [:a {:class "btn btn-outline-secondary" :href (str "/accounts/" (:id account))} "Cancel"]))))
+        [:a {:class "btn btn-outline-secondary" :href (str "/accounting/accounts/" (:id account))} "Cancel"]))))

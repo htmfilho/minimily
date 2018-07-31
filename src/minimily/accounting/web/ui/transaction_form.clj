@@ -12,7 +12,7 @@
 (defn transaction-form-add [session account]
   (http-headers
     (layout session "Transaction"
-      (form-to [:post (str "/accounts/" (:id account) "/transactions/add")]
+      (form-to [:post (str "/accounting/accounts/" (:id account) "/transactions/add")]
         [:div {:class "row"}
           [:div {:class "col-md-3"}
             [:div {:class "form-group"}
@@ -58,12 +58,12 @@
                
         (submit-button {:class "btn btn-primary"} "Submit")
         (str "&nbsp;")
-        [:a {:class "btn btn-outline-secondary" :href (str "/accounts/" (:id account))} "Cancel"]))))
+        [:a {:class "btn btn-outline-secondary" :href (str "/accounting/accounts/" (:id account))} "Cancel"]))))
 
 (defn transaction-form-edit [session account transaction]
   (http-headers
     (layout session "Transaction"
-      (form-to [:post (str "/accounts/" (:id account) "/transactions/save")]
+      (form-to [:post (str "/accounting/accounts/" (:id account) "/transactions/save")]
         (hidden-field "id" (:id transaction))
         (show-field "Account" account :name)
         [:div {:class "row"}
@@ -86,4 +86,4 @@
                
         (submit-button {:class "btn btn-primary"} "Submit")
         (str "&nbsp;")
-        [:a {:class "btn btn-outline-secondary" :href (str "/accounts/" (:id account))} "Cancel"]))))
+        [:a {:class "btn btn-outline-secondary" :href (str "/accounting/accounts/" (:id account))} "Cancel"]))))

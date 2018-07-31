@@ -41,9 +41,9 @@
                                             (BigDecimal. (:debit_limit params))))
                     (assoc :active (contains? params :active)))
         id      (account-model/save account)]
-    (redirect (str "/accounts/" id))))
+    (redirect (str "/accounting/accounts/" id))))
 
 (defn delete-account [session params]
   (let [id (:id params)]
     (account-model/delete-it (:user-id session) id)
-    (redirect "/accounts")))
+    (redirect "/accounting/accounts")))

@@ -9,7 +9,7 @@
 (defn transfer-form-page [session account to-accounts]
   (http-headers
     (layout session "Transfer"
-      (form-to [:post (str "/accounts/" (:id account) "/transfer/perform")]
+      (form-to [:post (str "/accounting/accounts/" (:id account) "/transfer/perform")]
         [:div {:class "card"}
           [:div {:class "card-header"} "From"]
           [:div {:class "card-body"}
@@ -74,4 +74,4 @@
         [:br]
         (submit-button {:class "btn btn-primary"} "Submit")
         (str "&nbsp;")
-        [:a {:class "btn btn-outline-secondary" :href (str "/accounts/" (:id account))} "Cancel"]))))
+        [:a {:class "btn btn-outline-secondary" :href (str "/accounting/accounts/" (:id account))} "Cancel"]))))

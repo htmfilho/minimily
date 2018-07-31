@@ -45,4 +45,4 @@
                                      (transaction-model/calculate-balance (:account transaction-to))))
     (transaction-model/save transaction-to)
     
-    (redirect (str "/accounts/" (:id from)))))
+    (redirect (str "/accounting/accounts/" (:id from)))))

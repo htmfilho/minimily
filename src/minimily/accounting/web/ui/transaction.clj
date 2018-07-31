@@ -11,10 +11,10 @@
     (layout session "Transaction"
       [:div {:class "card"}
         [:div {:class "card-header"}
-          (form-to {:id "frm_delete"} [:post (str "/accounts/" (:id account) "/transactions/delete")]
-            (back-button (str "/accounts/" (:id account)))
+          (form-to {:id "frm_delete"} [:post (str "/accounting/accounts/" (:id account) "/transactions/delete")]
+            (back-button (str "/accounting/accounts/" (:id account)))
             (str "&nbsp;")
-            (edit-button (str "/accounts/" (:id account) "/transactions/" (:id transaction) "/edit"))
+            (edit-button (str "/accounting/accounts/" (:id account) "/transactions/" (:id transaction) "/edit"))
             (str "&nbsp;")
             (hidden-field "id" (:id transaction))
             (submit-button {:id "bt_delete" :class "btn btn-danger"} "Delete"))]

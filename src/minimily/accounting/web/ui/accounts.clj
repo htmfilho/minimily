@@ -13,9 +13,9 @@
             [:div {:class "col-md-8"}
              (back-button "/")
              (str "&nbsp;")
-             [:a {:href "/accounts/new" :class "btn btn-secondary"} "New Account"]]
+             [:a {:href "/accounting/accounts/new" :class "btn btn-secondary"} "New Account"]]
             [:div {:class "col-md-4"}
-              (form-to [:get "/accounts"]
+              (form-to [:get "/accounting/accounts"]
                 [:select {:name "currency" :class "form-control" :id "currency" :onchange "this.form.submit()"}
                   (map #(vector :option {:value (:acronym %)} (str (:acronym %) " (" (:name %) ")")) currencies)])]]]
         [:table {:class "table table-striped"}
@@ -26,7 +26,7 @@
               [:th {:style "text-align: right;"} "Balance"]
               [:th "Currency"]]]
           [:tbody 
-            (map #(vector :tr [:td [:a {:href (str "/accounts/" (:id %))} 
+            (map #(vector :tr [:td [:a {:href (str "/accounting/accounts/" (:id %))} 
                                        (:name %)]]
                               [:td (:number %)]
                               [:td {:style "text-align: right;"} (:balance %)]
@@ -48,7 +48,7 @@
               [:th {:style "text-align: right;"} "Balance"]
               [:th "Currency"]]]
           [:tbody 
-            (map #(vector :tr [:td [:a {:href (str "/accounts/" (:id %))} 
+            (map #(vector :tr [:td [:a {:href (str "/accounting/accounts/" (:id %))} 
                                        (:name %)]]
                               [:td (:number %)]
                               [:td {:style "text-align: right;"} (:balance %)]

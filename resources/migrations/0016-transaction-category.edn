@@ -1,0 +1,12 @@
+{:up   
+  ["create table transaction_category (
+    id          serial        primary key,
+    name        varchar(100)  not null,
+    description varchar(300),
+    parent      integer       references transaction_category
+  );
+  
+  alter table transaction add column category integer references transaction_category on delete restrict;"]
+ :down 
+  ["alter table transaction drop column category;
+  drop table transaction_category;"]}

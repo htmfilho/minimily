@@ -34,7 +34,7 @@
                                   (+ (* type amount)
                                      (transaction-model/calculate-balance account-id)))
     (transaction-model/save transaction)
-    (redirect (str "/accounts/" (:account transaction)))))
+    (redirect (str "/accounting/accounts/" (:account transaction)))))
 
 (defn save-transaction [session params]
   (let [transaction (-> params
@@ -42,7 +42,7 @@
                         (conj {:date_transaction (to-date (:date_transaction params) "yyyy-MM-dd")})
                         (conj {:profile (:user-id session)}))]
     (transaction-model/save transaction)
-    (redirect (str "/accounts/" (:account transaction) "/transactions/" (:id transaction)))))
+    (redirect (str "/accounting/accounts/" (:account transaction) "/transactions/" (:id transaction)))))
 
 (defn delete-transaction [session params]
   (let [account-id  (Integer/parseInt (:account params))
@@ -52,4 +52,4 @@
                                   (- (transaction-model/calculate-balance account-id)
                                      (* (:type transaction) (:amount transaction))))
     (transaction-model/delete-it (:user-id session) id)
-    (redirect (str "/accounts/" account-id))))
+    (redirect (str "/accounting/accounts/" account-id))))
