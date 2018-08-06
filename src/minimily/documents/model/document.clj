@@ -24,7 +24,7 @@
 (defn count-siblings [profile-id folder-id]
   (let [num-folders (folder-model/count-children profile-id folder-id)
         num-documents (:count (first (db/find-records 
-                                (documents-count-in-folder-sqlvec {:folder-id folder-id}))))]
+                                       (documents-count-in-folder-sqlvec {:folder-id folder-id}))))]
     (+ num-folders num-documents)))
 
 (defn get-it [profile-id id]
