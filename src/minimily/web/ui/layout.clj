@@ -19,14 +19,14 @@
   (page/html5 {:lang "en"}
     [:head
       [:meta {:charset "utf-8"}]
-      [:meta {:name "viewport" 
+      [:meta {:name "viewport"
               :content "width=device-width, initial-scale=1, shrink-to-fit=no"}]
       [:title "Minimily"]
       (page/include-css "/css/bootstrap.min.css"
                         "/css/custom.css")
       [:link {:href "https://fonts.googleapis.com/css?family=Caveat|Montserrat|Pacifico" :rel "stylesheet"}]
-      [:script {:src "https://use.fontawesome.com/releases/v5.0.9/js/all.js" 
-                :integrity "sha384-8iPTk2s/jMVj81dnzb/iFR2sdA7u06vHJyyLlAd4snFpCl/SnyUjRrbdJsw1pGIl" 
+      [:script {:src "https://use.fontawesome.com/releases/v5.2.0/js/all.js" 
+                :integrity "sha384-4oV5EgaV02iISL2ban6c/RmotsABqE4yZxZLcYMAdG7FAPsyHYAPpywE9PJo+Khy" 
                 :crossorigin "anonymous"}]]
     [:body 
       [:nav {:class "navbar navbar-expand-lg fixed-top navbar-dark bg-dark"}
