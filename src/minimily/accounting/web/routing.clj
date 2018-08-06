@@ -1,6 +1,7 @@
 (ns minimily.accounting.web.routing
   (:require [compojure.core                           :as url]
             [minimily.accounting.web.ctrl.account     :as account-ctrl]
+            [minimily.accounting.web.ctrl.category    :as category-ctrl]
             [minimily.accounting.web.ctrl.transaction :as transaction-ctrl]
             [minimily.accounting.web.ctrl.transfer    :as transfer-ctrl]
             [minimily.accounting.web.ctrl.accounting  :as accounting-ctrl]
@@ -46,6 +47,20 @@
                                 (transaction-ctrl/view-transaction session account id))
           (url/GET  "/:id/edit" {session :session {account :account id :id} :params}
                                 (transaction-ctrl/edit-transaction session account id))))
+
+      (url/context "/categories" []
+        (url/GET  "/"         {session :session} 
+                              (category-ctrl/view-parent-categories session))
+        (url/GET  "/new"      {session :session {parent :parent} :params} 
+                              (category-ctrl/new-category session parent))
+        (url/POST "/save"     {session :session params :params} 
+                              (category-ctrl/save-category session params))
+        (url/POST "/delete"   {session :session params :params} 
+                              (category-ctrl/delete-category session params))
+        (url/GET  "/:id"      {session :session {id :id} :params}
+                              (category-ctrl/view-category session id))
+        (url/GET  "/:id/edit" {session :session {id :id} :params}
+                              (category-ctrl/edit-category session id)))
     
       (url/context "/api/accounts" []
         (url/GET "/:account/balance/history" 

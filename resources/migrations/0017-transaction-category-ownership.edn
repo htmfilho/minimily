@@ -1,0 +1,4 @@
+{:up   
+  ["alter table transaction_category add column profile integer references user_profile;"]
+ :down 
+  ["alter table transaction_category drop column profile;"]}
