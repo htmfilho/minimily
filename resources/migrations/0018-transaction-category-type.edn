@@ -1,0 +1,8 @@
+{:up   
+  ["alter table transaction_category add column transaction_type smallint not null default 1;
+    alter table transaction_category add column amount_minimum decimal(8, 2);
+    alter table transaction_category add column amount_maximum decimal(8, 2);"]
+ :down 
+  ["alter table transaction_category drop column amount_maximum;
+    alter table transaction_category drop column amount_minimum;
+    alter table transaction_category drop column transaction_type;"]}
