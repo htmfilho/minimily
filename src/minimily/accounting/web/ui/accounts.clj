@@ -11,7 +11,7 @@
         [:div {:class "card-header"}
           [:div {:class "row"}
             [:div {:class "col-md-8"}
-             (back-button "/")
+             (back-button "/accounting")
              (str "&nbsp;")
              [:a {:href "/accounting/accounts/new" :class "btn btn-secondary"} "New Account"]]
             [:div {:class "col-md-4"}

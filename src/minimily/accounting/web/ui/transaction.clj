@@ -22,13 +22,24 @@
           [:div {:class "row"}
             [:div {:class "col-md-3"}
               (show-field "Account" account :name)]
-            [:div {:class "col-md-9"}
-              (show-field (str "Balance (" (:currency account) ")") account :balance)]]
+            [:div {:class "col-md-3"}
+              (show-field (str "Balance" (if (:currency account) 
+                                            (str " (" (:currency account) ")")
+                                            "")) account :balance)]
+            [:div {:class "col-md-6"}
+              (show-field "Category" transaction :category)]]
           [:div {:class "row"}
             [:div {:class "col-md-1"}
-              (show-field "Type" transaction :type "Credit" "Debit")]
+              [:p 
+                [:span {:class "label"} "Type"]
+                [:br]
+                (if (> (:type transaction) 0)
+                  "Credit"
+                  "Debit")]]
             [:div {:class "col-md-2"}
-              (show-field (str "Amount (" (:currency account) ")") transaction :amount)]
+              (show-field (str "Amount" (if (:currency account) 
+                                          (str " (" (:currency account) ")")
+                                          "")) transaction :amount)]
             [:div {:class "col-md-7"}
               (show-field "Description" transaction :description)]
             [:div {:class "col-md-2"}

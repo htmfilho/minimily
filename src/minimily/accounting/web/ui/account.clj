@@ -66,7 +66,9 @@
                 [:tr
                   [:th "Description"]
                   [:th "Type"]
-                  [:th {:style "text-align: right;"} (str "Amount" " (" (:currency account) ")")]
+                  [:th {:style "text-align: right;"} (str "Amount" (if (:currency account) 
+                                                                     (str " (" (:currency account) ")")
+                                                                     ""))]
                   [:th "Date"]
                   [:th ""]]]
               [:tbody

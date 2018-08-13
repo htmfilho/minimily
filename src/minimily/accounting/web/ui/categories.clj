@@ -8,7 +8,7 @@
     (layout session "Categories"
       [:div {:class "card"}
         [:div {:class "card-header"}
-          (back-button "/")
+          (back-button "/accounting")
           (str "&nbsp;")
           [:a {:href "/accounting/categories/new" :class "btn btn-secondary"} "New Category"]]
         [:table {:class "table table-striped"}
