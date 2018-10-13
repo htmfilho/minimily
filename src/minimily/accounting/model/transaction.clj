@@ -6,6 +6,8 @@
 (hugsql/def-sqlvec-fns "minimily/accounting/model/sql/transaction.sql")
 
 (def table :transaction)
+(def DEBIT -1)
+(def CREDIT 1)
 
 (defn find-by-account [profile-id account-id]
   (let [family-members (family-member-model/list-family-organizers profile-id)]

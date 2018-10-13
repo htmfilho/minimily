@@ -19,11 +19,16 @@
               (label "acc" "Account")
               [:br]
               [:span {:id "acc" :class "read-only"} (:name account)]]]
-          [:div {:class "col-md-9"}
+          [:div {:class "col-md-3"}
             [:div {:class "form-group"}
               (label "balance" (str "Balance (" (:currency account) ")"))
               [:br]
-              [:span {:id "balance" :class "read-only"} (:balance account)]]]]
+              [:span {:id "balance" :class "read-only"} (:balance account)]]]
+          [:div {:class "col-md-6"}
+            [:div {:class "form-group"}
+              (label "category" "Category")
+              [:select {:name "category" :class "form-control" :id "category"}
+                       [:option {:value ""} "Select..."]]]]]
         [:div {:class "form-group"}
           (label "type" "Type")
           [:br]
@@ -60,18 +65,29 @@
         (str "&nbsp;")
         [:a {:class "btn btn-outline-secondary" :href (str "/accounting/accounts/" (:id account))} "Cancel"]))))
 
-(defn transaction-form-edit [session account transaction]
+(defn transaction-form-edit [session account transaction categories]
   (http-headers
     (layout session "Transaction"
       (form-to [:post (str "/accounting/accounts/" (:id account) "/transactions/save")]
         (hidden-field "id" (:id transaction))
-        (show-field "Account" account :name)
+        [:div {:class "row"}
+          [:div {:class "col-md-6"}
+            (show-field "Account" account :name)]
+          [:div {:class "col-md-6"}
+            [:div {:class "form-group"}
+              (label "category" "Category")
+              [:select {:name "category" :class "form-control" :id "category"}
+                       (map #(vector :option (if (:selected %) 
+                                               {:value (:id %) :selected "true"}
+                                               {:value (:id %)}) (:name %)) categories)]]]]
         [:div {:class "row"}
           [:div {:class "col-md-1"}
             [:div {:class "form-group"}
               (show-field "Type" transaction :type "Credit" "Debit")]]
           [:div {:class "col-md-2"}
-            (show-field (str "Amount (" (:currency account) ")") transaction :amount)]
+            (show-field (str "Amount" (if (:currency account) 
+                                        (str " (" (:currency account) ")")
+                                        "")) transaction :amount)]
           [:div {:class "col-md-7"}
             [:div {:class "form-group"}
               (label "description" "Description")

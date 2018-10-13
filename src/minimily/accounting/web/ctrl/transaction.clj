@@ -4,7 +4,8 @@
             [minimily.accounting.web.ui.transaction-form :as form]
             [minimily.accounting.web.ui.transaction      :refer [transaction-page]]
             [minimily.accounting.model.account           :as account-model]
-            [minimily.accounting.model.transaction       :as transaction-model]))
+            [minimily.accounting.model.transaction       :as transaction-model]
+            [minimily.accounting.model.category          :as category-model]))
 
 (defn view-transaction [session account id]
   (let [account     (account-model/get-it (:user-id session) account)
@@ -16,9 +17,14 @@
     (form/transaction-form-add session account)))
 
 (defn edit-transaction [session account id]
-  (form/transaction-form-edit session 
-                              (account-model/get-it (:user-id session) account) 
-                              (transaction-model/get-it (:user-id session) id)))
+  (let [profile-id  (:user-id session)
+        transaction (transaction-model/get-it profile-id id)]
+    (form/transaction-form-edit session 
+                                (account-model/get-it (:user-id session) account) 
+                                transaction
+                                (if (= (:type transaction) transaction-model/DEBIT)
+                                  (category-model/find-debit-categories profile-id)
+                                  (category-model/find-credit-categories profile-id)))))
 
 (defn add-transaction [session params]
   (let [account-id  (Integer/parseInt (:account params))
