@@ -83,7 +83,12 @@
         [:div {:class "row"}
           [:div {:class "col-md-1"}
             [:div {:class "form-group"}
-              (show-field "Type" transaction :type "Credit" "Debit")]]
+              [:p 
+                [:span {:class "label"} "Type"]
+                [:br]
+                (if (> (:type transaction) 0)
+                  "Credit"
+                  "Debit")]]]
           [:div {:class "col-md-2"}
             (show-field (str "Amount" (if (:currency account) 
                                         (str " (" (:currency account) ")")
