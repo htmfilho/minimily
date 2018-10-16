@@ -8,7 +8,7 @@ select * from transaction_category where profile in (:v*:profile-ids) and parent
 select count(*) from transaction_category where profile in (:v*:profile-ids) and parent = :parent-id
 
 -- :name debit-categories :? :*
-select * from transaction_category where profile in (:v*:profile-ids) and transaction_type = -1 order by parent, name
+select * from transaction_category where profile in (:v*:profile-ids) and transaction_type = -1 order by name
 
 -- :name credit-categories :? :*
-select * from transaction_category where profile in (:v*:profile-ids) and transaction_type = 1 order by parent, name
+select * from transaction_category where profile in (:v*:profile-ids) and transaction_type = 1 order by name

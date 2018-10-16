@@ -19,43 +19,47 @@
               (label "acc" "Account")
               [:br]
               [:span {:id "acc" :class "read-only"} (:name account)]]]
-          [:div {:class "col-md-3"}
+          [:div {:class "col-md-9"}
             [:div {:class "form-group"}
               (label "balance" (str "Balance (" (:currency account) ")"))
               [:br]
-              [:span {:id "balance" :class "read-only"} (:balance account)]]]
-          [:div {:class "col-md-6"}
+              [:span {:id "balance" :class "read-only"} (:balance account)]]]]
+        
+        [:div {:class "row"}
+          [:div {:class "col-md-3"}
+            [:div {:class "form-group"}
+              (label "type" "Type")
+              [:br]
+              [:div {:class "form-check form-check-inline"}
+                (radio-button {:class "form-check-input" :id "credit"}
+                              "type"
+                              false
+                              1)
+                [:span {:class "form-check-label"} "Credit"]]
+              [:div {:class "form-check form-check-inline"}
+                (radio-button {:class "form-check-input" :id "debit"}
+                              "type"
+                              false
+                              -1)
+                [:span {:class "form-check-label"} "Debit"]]]]
+          [:div {:class "col-md-9"}
             [:div {:class "form-group"}
               (label "category" "Category")
               [:select {:name "category" :class "form-control" :id "category"}
                        [:option {:value ""} "Select..."]]]]]
-        [:div {:class "form-group"}
-          (label "type" "Type")
-          [:br]
-          [:div {:class "form-check form-check-inline"}
-            (radio-button {:class "form-check-input" :id "credit"}
-                          "type"
-                          false
-                          1)
-            [:span {:class "form-check-label"} "Credit"]]
-          [:div {:class "form-check form-check-inline"}
-            (radio-button {:class "form-check-input" :id "debit"}
-                          "type"
-                          false
-                          -1)
-            [:span {:class "form-check-label"} "Debit"]]]
+        
         [:div {:class "row"}
-          [:div {:class "col-md-2"}
+          [:div {:class "col-md-3"}
             [:div {:class "form-group"}
               (label "amount" (str "Amount (" (:currency account) ")"))
               (text-field {:class "form-control" :id "amount"} 
                           "amount")]]
-          [:div {:class "col-md-7"}
+          [:div {:class "col-md-6"}
             [:div {:class "form-group"}
               (label "description" "Description")
               (text-field {:class "form-control" :id "description"} 
                           "description")]]
-          [:div {:class "col-md-2"}
+          [:div {:class "col-md-3"}
            [:div {:class "form-group"}
             (label "date_transaction" "Date")
             [:input {:type "date" :id "date_transaction" :name "date_transaction" :class "form-control"
@@ -71,13 +75,13 @@
       (form-to [:post (str "/accounting/accounts/" (:id account) "/transactions/save")]
         (hidden-field "id" (:id transaction))
         [:div {:class "row"}
-          [:div {:class "col-md-6"}
+          [:div {:class "col-md-3"}
             (show-field "Account" account :name)]
-          [:div {:class "col-md-6"}
+          [:div {:class "col-md-9"}
             [:div {:class "form-group"}
               (label "category" "Category")
               [:select {:name "category" :class "form-control" :id "category"}
-                       (map #(vector :option (if (:selected %) 
+                       (map #(vector :option (if (:selected %)
                                                {:value (:id %) :selected "true"}
                                                {:value (:id %)}) (:name %)) categories)]]]]
         [:div {:class "row"}

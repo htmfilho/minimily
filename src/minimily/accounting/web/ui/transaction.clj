@@ -3,7 +3,7 @@
                                                 hidden-field]]
             [minimily.utils.date        :refer [to-string]]
             [minimily.web.ui.layout     :refer [layout]]
-            [minimily.web.ui.bootstrap  :refer [show-field show-value back-button edit-button]]
+            [minimily.web.ui.bootstrap  :refer [show-field show-field-link show-value back-button edit-button]]
             [minimily.utils.web.wrapper :refer [http-headers]]))
 
 (defn transaction-page [session account transaction]
@@ -21,7 +21,7 @@
         [:div {:class "card-body"}
           [:div {:class "row"}
             [:div {:class "col-md-3"}
-              (show-field "Account" account :name)]
+              (show-field-link "Account" account :name (str "/accounting/accounts/" (:id account)))]
             [:div {:class "col-md-3"}
               (show-field (str "Balance" (if (:currency account) 
                                             (str " (" (:currency account) ")")

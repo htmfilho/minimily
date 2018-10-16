@@ -19,7 +19,7 @@ function calculateAmountTo() {
 
 function getCurrencySelectedAccount() {
     var toAccount = $("#to").val();
-    $.getJSON("/api/accounts/" + toAccount + "/currency", function(toCurrency, status) {
+    $.getJSON("/accounting/api/accounts/" + toAccount + "/currency", function(toCurrency, status) {
         var fromCurrency = $("#currency").text();
         if (toCurrency != fromCurrency) {
             $("#rate").prop("disabled", false);
@@ -59,3 +59,25 @@ $("#fee").change(function() {
 $("#to").change(getCurrencySelectedAccount);
 
 $(document).ready(getCurrencySelectedAccount);
+
+$("#credit").change(function() {
+    $.getJSON("/accounting/api/categories/credit", function(categories, status) {
+        var selectCategory = $("#category");
+        selectCategory.empty();
+        selectCategory.append($("<option></option>").attr("value", "").text("Select..."));
+        categories.forEach(function(category) {
+            selectCategory.append($("<option></option>").attr("value", category.id).text(category.name));
+        });
+    });
+});
+
+$("#debit").change(function() {
+    $.getJSON("/accounting/api/categories/debit", function(categories, status) {
+        var selectCategory = $("#category");
+        selectCategory.empty();
+        selectCategory.append($("<option></option>").attr("value", "").text("Select..."));
+        categories.forEach(function(category) {
+            selectCategory.append($("<option></option>").attr("value", category.id).text(category.name));
+        });
+    });
+});

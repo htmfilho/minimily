@@ -6,7 +6,8 @@
             [minimily.accounting.web.ctrl.transfer    :as transfer-ctrl]
             [minimily.accounting.web.ctrl.accounting  :as accounting-ctrl]
             [minimily.accounting.web.api.account      :as account-api]
-            [minimily.accounting.web.api.transaction  :as transaction-api]))
+            [minimily.accounting.web.api.transaction  :as transaction-api]
+            [minimily.accounting.web.api.category     :as category-api]))
 
 (defn routes []
   (url/routes
@@ -62,10 +63,18 @@
         (url/GET  "/:id/edit" {session :session {id :id} :params}
                               (category-ctrl/edit-category session id)))
     
-      (url/context "/api/accounts" []
-        (url/GET "/:account/balance/history" 
-                {session :session {account :account} :params}
-                (transaction-api/get-balance-history session account))
-        (url/GET "/:account/currency"
-                {session :session {account :account} :params}
-                (account-api/get-currency session account))))))
+      (url/context "/api" []
+        (url/context "/accounts" []
+          (url/GET "/:account/balance/history" 
+                   {session :session {account :account} :params}
+                   (transaction-api/get-balance-history session account))
+          (url/GET "/:account/currency"
+                   {session :session {account :account} :params}
+                   (account-api/get-currency session account)))
+        (url/context "/categories" []
+          (url/GET "/credit"
+                   {session :session}
+                   (category-api/list-credit-categories session))
+          (url/GET "/debit"
+                   {session :session}
+                   (category-api/list-debit-categories session)))))))
