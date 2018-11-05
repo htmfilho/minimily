@@ -27,8 +27,12 @@
     (category-form-edit session category)))
 
 (defn save-category [session category]
-  (let [parent   (when (:parent category) (Integer/parseInt (:parent category)))
-        category (conj category {:parent parent :profile (:user-id session)})
+  (println category)
+  (let [parent           (when (:parent category) (Integer/parseInt (:parent category)))
+        transaction_type (Integer/parseInt (:transaction_type category))
+        category         (conj category {:parent parent 
+                                         :profile (:user-id session)
+                                         :transaction_type transaction_type})
         id (category-model/save category)]
     (redirect (str "/accounting/categories/" (if (nil? parent) id parent)))))
 
