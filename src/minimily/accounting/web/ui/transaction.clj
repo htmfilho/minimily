@@ -27,7 +27,7 @@
                                             (str " (" (:currency account) ")")
                                             "")) account :balance)]
             [:div {:class "col-md-6"}
-              (show-field "Category" transaction :category)]]
+              (show-field "Category" (:category transaction) :name)]]
           [:div {:class "row"}
             [:div {:class "col-md-1"}
               [:p 

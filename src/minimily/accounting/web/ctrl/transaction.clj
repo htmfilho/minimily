@@ -9,8 +9,12 @@
 
 (defn view-transaction [session account id]
   (let [account     (account-model/get-it (:user-id session) account)
-        transaction (transaction-model/get-it (:user-id session) id)]
-    (transaction-page session account transaction)))
+        transaction (transaction-model/get-it (:user-id session) id)
+        category    (category-model/get-it (:user-id session) (:category transaction))]
+    (transaction-page session 
+                      account 
+                      (conj transaction {:category {:id   (:id category)
+                                                    :name (:name category)}}))))
 
 (defn new-transaction [session account]
   (let [account (account-model/get-it (:user-id session) account)]
@@ -45,6 +49,7 @@
 (defn save-transaction [session params]
   (let [transaction (-> params
                         (conj {:account (Integer/parseInt (:account params))})
+                        (conj {:category (Integer/parseInt (:category params))})
                         (conj {:date_transaction (to-date (:date_transaction params) "yyyy-MM-dd")})
                         (conj {:profile (:user-id session)}))]
     (transaction-model/save transaction)
