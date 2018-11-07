@@ -22,13 +22,16 @@
 
 (defn edit-transaction [session account id]
   (let [profile-id  (:user-id session)
-        transaction (transaction-model/get-it profile-id id)]
+        transaction (transaction-model/get-it profile-id id)
+        categories  (if (= (:type transaction) transaction-model/DEBIT)
+                                  (category-model/find-debit-categories profile-id)
+                                  (category-model/find-credit-categories profile-id))]
     (form/transaction-form-edit session 
                                 (account-model/get-it (:user-id session) account) 
                                 transaction
-                                (if (= (:type transaction) transaction-model/DEBIT)
-                                  (category-model/find-debit-categories profile-id)
-                                  (category-model/find-credit-categories profile-id)))))
+                                (map #(if (= (:id %) (:category transaction))
+                                        (conj % {:selected true})
+                                        (conj % {:selected false})) categories))))
 
 (defn add-transaction [session params]
   (let [account-id  (Integer/parseInt (:account params))
