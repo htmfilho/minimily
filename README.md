@@ -54,6 +54,31 @@ environment variable named DATABASE_URL.
 
 ## Code Conventions
 
+The application is organized in decoupled modules. They are:
+
+- _accounting_: manages the finances of the family
+- _documents_: manages digitalized and phisical copies of documents
+- _family_: define the family, its members and the relationship between them
+- _inventory_: manages all objects in the house
+- _auth_: manages the authentification of users
+
+Each module contains two basic folders:
+
+1. _model_: contains the code that access sources of data to add, search, retrieve, modify and delete records
+2. _web_: contains the code renders the web user interface to enable all possible data operations
+
+The model is divided in two parts:
+
+1. _sql_: a collection of sql queries organized by entity, keeping them separated from the model logic.
+2. _model workspace_: the model that manages the data of the entities.
+
+The web is divided in four parts:
+
+1. _routing_: associates urls with controller functions that return web content.
+2. _controller_: functions that receive requests from web clients and interact with the model to generate responses expected by the clients.
+3. _ui_:
+4. _api_:
+
 ### Functions
 
 1. The prefix `get-` indicates the function returns a single value or record.
@@ -62,7 +87,7 @@ environment variable named DATABASE_URL.
 
 ## License
 
-Copyright © 2017 Hildeberto Mendonca
+Copyright © 2017-2018 Hildeberto Mendonca
 
 Distributed under the Eclipse Public License either version 1.0 or (at
 your option) any later version.

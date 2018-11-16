@@ -39,6 +39,7 @@
         amount      (BigDecimal. (:amount params))
         transaction (-> params
                         (conj {:account account-id})
+                        (conj {:category (Integer/parseInt (:category params))})
                         (conj {:type (Integer/parseInt (:type params))})
                         (conj {:amount (BigDecimal. (:amount params))})
                         (conj {:date_transaction (to-date (:date_transaction params) "yyyy-MM-dd")})
