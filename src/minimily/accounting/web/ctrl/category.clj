@@ -40,3 +40,8 @@
   (let [category-id (Integer/parseInt (:id params))]
     (category-model/delete-it (:user-id session) category-id)
     (redirect "/accounting/categories")))
+
+; take the list of categories from the database
+; loop through the list, looking for items to add to the tree
+; If item added to the tree then remove from the list
+; To add an element to the tree we have to check whether its parent is in the tree

@@ -49,11 +49,11 @@
 (defn find-path [profile-id id]
   (reverse (loop [category (get-it profile-id id)
                   path []]
-              (if (nil? (:parent category))
-                (conj path category)
-                (let [parent (get-it profile-id (:parent category))]
-                  (recur parent 
+             (if (nil? (:parent category))
+               (conj path category)
+               (let [parent (get-it profile-id (:parent category))]
+                 (recur parent
                         (conj path category)))))))
 
 (defn path [profile-id id]
-  (reduce #(str %1 "/" %2) (map #(s/tech (:name %)) (find-path profile-id id))))
+  (reduce #(str %1 "/" %2) (find-path profile-id id)))
