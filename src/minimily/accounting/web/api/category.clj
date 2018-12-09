@@ -2,9 +2,6 @@
   (:require [minimily.accounting.model.category :as category-model]
             [clojure.data.json                  :as json]))
 
-;(defn print-tree-branches [tree-categories]
-;  )
-
 (defn list-tree-branches [categories]
   (loop [categories categories
          remaining  categories
@@ -14,10 +11,10 @@
       (if (empty? tree)
         ; Initialize the tree with the parents.
         (let [parents    (filter #(nil? (:parent %)) categories)
-              remaining  (filter #(not (nil? (:parent %))) categories)]
+              remaining  (filter #(some? (:parent %)) categories)]
           (recur remaining 
                  remaining 
-                 parents))
+                 parents)) ; the tree is initialized with the parents.
         ; Deals with the branches.
         (let [category (first categories)
               parent   (first (filter #(= (:id %) (:parent category)) tree))]
@@ -27,14 +24,14 @@
             (recur (rest categories) 
                    remaining
                    tree)
-            ; It found the parent in the tree, replace the parent of the 
+            ; If the parent is in the tree, replace the parent of the 
             ; category with the parent found, add the category to the tree, and 
             ; remove the category from the remaining.
             (let [node      (conj category {:parent parent})
-                  remaining (remove category remaining)]
+                  remaining (filter #(not= (:id %) (:id category)) remaining)]
               (recur remaining
                      remaining
-                     (conj tree node)))))))))
+                     (conj (vec tree) node)))))))))
 
 (defn list-credit-categories [session]
   (json/write-str (category-model/find-credit-categories (:user-id session))))
