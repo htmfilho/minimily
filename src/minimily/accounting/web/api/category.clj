@@ -2,7 +2,8 @@
   (:require [minimily.accounting.model.category :as category-model]
             [clojure.data.json                  :as json]))
 
-(defn list-tree-branches [categories]
+(defn list-tree-branches
+  [categories]
   (loop [categories categories
          remaining  categories
          tree []]
@@ -33,10 +34,35 @@
                      remaining
                      (conj (vec tree) node)))))))))
 
+(defn filter-tree-leafs
+  "List of branches where the ids are not in the list of parents of the categories,
+   characterizing then as leafs"
+  [tree categories]
+  (let [parent-ids (set (filter #(some? %) (map #(:parent %) categories)))]
+    (filter #(not (contains? parent-ids (:id %))) tree)))
+
+(defn flatten-branch-name
+  [branch]
+  (if (nil? (:parent branch))
+    (:name branch)
+    (str (flatten-branch-name (:parent branch)) "/" (:name branch))))
+
+(defn flatten-tree-branch-names
+  "Iterates over the branches and create a new list with ids and names only"
+  [branches]
+  (map #(zipmap [:id :name] [(:id %) (flatten-branch-name %)]) branches))
+
+(defn list-categories [categories]
+  (let [branches   (-> categories
+                       (list-tree-branches)
+                       (filter-tree-leafs categories)
+                       (flatten-tree-branch-names))]
+    (json/write-str branches)))
+
 (defn list-credit-categories [session]
-  (json/write-str (category-model/find-credit-categories (:user-id session))))
+  (let [categories (category-model/find-credit-categories (:user-id session))]
+    (list-categories categories)))
 
 (defn list-debit-categories [session]
-  (let [categories (category-model/find-debit-categories (:user-id session))
-        tree       (list-tree-branches categories)]
-    (json/write-str categories)))
+  (let [categories (category-model/find-debit-categories (:user-id session))]
+    (list-categories categories)))
