@@ -68,7 +68,7 @@
 
 (deftest test-flatten-branch-name
   (testing "Print a branch"
-    (is (= (flatten-branch-name {:id 4 :name "three" :parent {:id 2 :name "two" :parent {:id 1 :name "one" :parent nil}}})
+    (is (= (flatten-branch-name {:id 4 :name "three" :parent {:id 2 :name "two" :parent {:id 1 :name "one" :parent nil}}} "/")
            "one/two/three"))))
 
 (deftest test-flatten-tree-branch-names
@@ -77,7 +77,7 @@
                                        {:id 4 :name "three" :parent {:id 2 :name "two" :parent {:id 1 :name "one" :parent nil}}}
                                        {:id 6 :name "two" :parent {:id 5 :name "one" :parent nil}}
                                        {:id 7 :name "two" :parent {:id 5 :name "one" :parent nil}}])
-           [{:id 3 :name "one/two"}
-            {:id 4 :name "one/two/three"}
-            {:id 6 :name "one/two"}
-            {:id 7 :name "one/two"}]))))
+           [{:id 3 :name "one > two"}
+            {:id 4 :name "one > two > three"}
+            {:id 6 :name "one > two"}
+            {:id 7 :name "one > two"}]))))

@@ -42,15 +42,15 @@
     (filter #(not (contains? parent-ids (:id %))) tree)))
 
 (defn flatten-branch-name
-  [branch]
+  [branch separator]
   (if (nil? (:parent branch))
     (:name branch)
-    (str (flatten-branch-name (:parent branch)) "/" (:name branch))))
+    (str (flatten-branch-name (:parent branch) separator) separator (:name branch))))
 
 (defn flatten-tree-branch-names
   "Iterates over the branches and create a new list with ids and names only"
   [branches]
-  (map #(zipmap [:id :name] [(:id %) (flatten-branch-name %)]) branches))
+  (map #(zipmap [:id :name] [(:id %) (flatten-branch-name % " > ")]) branches))
 
 (defn list-categories [categories]
   (let [branches   (-> categories
