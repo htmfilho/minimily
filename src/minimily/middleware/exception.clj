@@ -1,0 +1,8 @@
+(ns minimily.middleware.exception)
+
+(defn wrap-exception [handler]
+  (fn [request]
+    (try (handler request)
+         (catch Exception e
+           {:status 500
+            :body (str "Exception caught: " e)}))))

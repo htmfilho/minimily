@@ -1,12 +1,13 @@
 (ns minimily.app
-  (:require [ring.middleware.reload  :refer [wrap-reload]]
-            [ring.middleware.session :refer [wrap-session]]
-            [ring.adapter.jetty      :as jetty]
-            [compojure.core          :refer :all]
-            [compojure.handler       :as handler]
-            [config.core             :refer [env]]
-            [minimily.web.routing    :as routing]
-            [minimily.utils.database :as db])
+  (:require [ring.middleware.reload        :refer [wrap-reload]]
+            [ring.middleware.session       :refer [wrap-session]]
+            [minimily.middleware.exception :refer [wrap-exception]]
+            [ring.adapter.jetty            :as jetty]
+            [compojure.core                :refer :all]
+            [compojure.handler             :as handler]
+            [config.core                   :refer [env]]
+            [minimily.web.routing          :as routing]
+            [minimily.utils.database       :as db])
   (:gen-class))
 
 (defonce server (atom nil))
@@ -16,7 +17,8 @@
       the session and the auto-reload."
   [port]
   (let [routing-app (-> (handler/site #'routing/app)
-                        wrap-session)]
+                        wrap-session
+                        wrap-exception)]
     (reset! server (jetty/run-jetty (if (env :reload)
                                       (wrap-reload routing-app)
                                       routing-app) 
@@ -31,5 +33,5 @@
   "1. Entry point that migrates the database and start the server at port 5000."
   [& [port]]
   (db/migrate)
-  (let [port (Integer. (or port (env :port) 5000))]
+  (let [port (or port (Integer. (env :port)) 5000)]
     (start-server port)))
