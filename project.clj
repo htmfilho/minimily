@@ -17,7 +17,7 @@
                  [org.slf4j/slf4j-nop       "1.7.13" ]  ; hikari-cp's dependency
 
                  ; Web dependencies
-                 [compojure                 "1.6.0"  ]  ; routing library
+                 [compojure                 "1.6.1"  ]  ; routing library
                  [hiccup                    "1.0.5"  ]  ; html template library
                  [ring/ring-core            "1.6.3"  ]  ; web application library
                  [ring/ring-jetty-adapter   "1.6.3"  ]  ; web server library
