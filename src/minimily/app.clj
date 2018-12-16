@@ -11,7 +11,10 @@
 
 (defonce server (atom nil))
 
-(defn start-server [port]
+(defn start-server
+  "2. Start the server at the designated port and associate the routing, wrap 
+      the session and the auto-reload."
+  [port]
   (let [routing-app (-> (handler/site #'routing/app)
                         wrap-session)]
     (reset! server (jetty/run-jetty (if (env :reload)
@@ -24,7 +27,9 @@
   (.stop @server)
   (reset! server nil))
 
-(defn -main [& [port]]
+(defn -main
+  "1. Entry point that migrates the database and start the server at port 5000."
+  [& [port]]
   (db/migrate)
   (let [port (Integer. (or port (env :port) 5000))]
     (start-server port)))

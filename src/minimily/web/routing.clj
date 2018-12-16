@@ -13,6 +13,7 @@
     (core/GET "/" {session :session} (home-page session))))
 
 (core/defroutes app
+  "3. Group all routes from all modules."
   (routes)
   (auth/routes)
   (accounting/routes)

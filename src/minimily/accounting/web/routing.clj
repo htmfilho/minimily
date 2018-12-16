@@ -12,8 +12,8 @@
 (defn routes []
   (url/routes
     (url/context "/accounting" []
-      (url/GET  "/"         {session :session} 
-                             (accounting-ctrl/view-accounting session))
+      (url/GET  "/" {session :session} 
+                    (accounting-ctrl/view-accounting session))
 
       (url/context "/accounts" []
         (url/GET  "/"         {session :session {currency :currency} :params}
@@ -31,9 +31,9 @@
         
         (url/context "/:account/transfer" []
           (url/GET  "/"        {session :session {account :account} :params}
-                              (transfer-ctrl/new-transfer session account))
+                               (transfer-ctrl/new-transfer session account))
           (url/POST "/perform" {session :session params :params}
-                              (transfer-ctrl/perform-transfer session params)))
+                               (transfer-ctrl/perform-transfer session params)))
 
         (url/context "/:account/transactions" []
           (url/GET  "/new"      {session :session {account :account} :params}
@@ -58,23 +58,19 @@
                               (category-ctrl/save-category session params))
         (url/POST "/delete"   {session :session params :params} 
                               (category-ctrl/delete-category session params))
-        (url/GET  "/:id"      {session :session {id :id} :params}
+        (url/GET "/:id"       {session :session {id :id} :params} 
                               (category-ctrl/view-category session id))
         (url/GET  "/:id/edit" {session :session {id :id} :params}
                               (category-ctrl/edit-category session id)))
     
       (url/context "/api" []
         (url/context "/accounts" []
-          (url/GET "/:account/balance/history" 
-                   {session :session {account :account} :params}
-                   (transaction-api/get-balance-history session account))
-          (url/GET "/:account/currency"
-                   {session :session {account :account} :params}
-                   (account-api/get-currency session account)))
+          (url/GET "/:account/balance/history" {session :session {account :account} :params}
+                                               (transaction-api/get-balance-history session account))
+          (url/GET "/:account/currency"        {session :session {account :account} :params}
+                                               (account-api/get-currency session account)))
         (url/context "/categories" []
-          (url/GET "/credit"
-                   {session :session}
-                   (category-api/list-credit-categories session))
-          (url/GET "/debit"
-                   {session :session}
-                   (category-api/list-debit-categories session)))))))
+          (url/GET "/credit" {session :session}
+                             (category-api/list-credit-categories session))
+          (url/GET "/debit"  {session :session}
+                             (category-api/list-debit-categories session)))))))
