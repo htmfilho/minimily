@@ -1,5 +1,5 @@
 (ns minimily.accounting.web.api.category-test
-  (:require [clojure.test :refer                  :all]
+  (:require [clojure.test                         :refer :all]
             [minimily.accounting.web.api.category :refer :all]))
 
 (deftest test-list-tree-branches

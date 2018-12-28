@@ -47,8 +47,8 @@
               [:ul {:class "navbar-nav mr-auto"}])]
           (if (empty? session)
             [:ul {:class "navbar-nav my-2 my-lg-0"}
-              ;[:li {:class "nav-item"}
-              ;  [:a {:class "nav-link my-2 my-sm-0" :href "/signup"} "Sign Up"]]
+              [:li {:class "nav-item"}
+                [:a {:class "nav-link my-2 my-sm-0" :href "/signup"} "Sign Up"]]
               [:li {:class "nav-item"}
                 [:a {:class "nav-link  my-2 my-sm-0" :href "/signin"} "Sign In"]]]
             [:ul {:class "navbar-nav my-2 my-lg-0"}
@@ -56,11 +56,8 @@
                 [:a {:class "nav-link  my-2 my-sm-0" :href "/signout"} "Sign Out"]]])]]
       
       [:div {:class "container"}
-        (when (and title (not (empty? session))) 
-          [:div {:class "page-title"} title])
-        (if (empty? session)
-          (signin/signin-content)
-          content)
+        [:div {:class "page-title"} title]
+        content
         [:br]
         [:br]
         [:br]]
