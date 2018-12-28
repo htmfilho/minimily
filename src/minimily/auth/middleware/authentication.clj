@@ -3,17 +3,29 @@
             [minimily.web.ui.layout      :refer [layout]]
             [minimily.utils.web.wrapper  :refer [http-headers]]))
 
-(def public-pages [""
-                   "/"
-                   "/account/new"
-                   "/account/login"
-                   "/account/login/fail"
-                   "/request"
-                   "/signin"
-                   "/signup"])
+(def public-uris [""
+                  "/"
+                  "/account/new"
+                  "/account/login"
+                  "/account/login/fail"
+                  "/css/bootstrap.min.css"
+                  "/css/bootstrap.min.css.map"
+                  "/css/custom.css"
+                  "/js/jquery-3.3.1.min.js"
+                  "/js/bootstrap.bundle.min.js"
+                  "/js/bootstrap.bundle.min.js.map"
+                  "/js/echarts.min.js"
+                  "/js/minimily.js"
+                  "/js/minimily-accounting.js"
+                  "/request"
+                  "/signin"
+                  "/signup"])
+
+(defn is-public-uri? [uri]
+  (>= (.indexOf public-uris uri) 0))
 
 (defn is-protected? [uri session]
-  (if (>= (.indexOf public-pages uri) 0)
+  (if (is-public-uri? uri)
     false
     (empty? session)))
 
