@@ -3,7 +3,6 @@
 
 (defn signin-content []
   (form-to [:post "/account/login"]
-        [:div {:class "page-title"} "Sign In"]
         [:div {:class "form-group"}
           (label "username" "Email address")
           (email-field {:class "form-control" :id "username" 

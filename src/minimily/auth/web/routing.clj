@@ -42,9 +42,9 @@
 (defn routes []
   (core/routes
     (core/GET  "/signin"        [] (signin-page))
-    ;(core/GET  "/signup"        [] (signup-page))
+    (core/GET  "/signup"        [] (signup-page))
     (core/GET  "/signout"       {session :session} (signout session))
-    ;(core/POST "/account/new"   {params :params} (new-account params))
+    (core/POST "/account/new"   {params :params} (new-account params))
     (core/POST "/account/login" {params :params session :session} 
                                 (signin params session))
     (core/GET  "/account/login/fail" [] (signin-fail))))

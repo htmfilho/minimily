@@ -1,13 +1,14 @@
 (ns minimily.app
-  (:require [ring.middleware.reload        :refer [wrap-reload]]
-            [ring.middleware.session       :refer [wrap-session]]
-            [minimily.middleware.exception :refer [wrap-exception]]
-            [ring.adapter.jetty            :as jetty]
-            [compojure.core                :refer :all]
-            [compojure.handler             :as handler]
-            [config.core                   :refer [env]]
-            [minimily.web.routing          :as routing]
-            [minimily.utils.database       :as db])
+  (:require [ring.middleware.reload                  :refer [wrap-reload]]
+            [ring.middleware.session                 :refer [wrap-session]]
+            [minimily.middleware.exception           :refer [wrap-exception]]
+            [minimily.auth.middleware.authentication :refer [wrap-authentication]]
+            [ring.adapter.jetty                      :as jetty]
+            [compojure.core                          :refer :all]
+            [compojure.handler                       :as handler]
+            [config.core                             :refer [env]]
+            [minimily.web.routing                    :as routing]
+            [minimily.utils.database                 :as db])
   (:gen-class))
 
 (defonce server (atom nil))
@@ -18,6 +19,7 @@
   [port]
   (let [routing-app (-> (handler/site #'routing/app)
                         wrap-session
+                        wrap-authentication
                         wrap-exception)]
     (reset! server (jetty/run-jetty (if (env :reload)
                                       (wrap-reload routing-app)
