@@ -1,5 +1,6 @@
 (ns minimily.auth.middleware.authentication
-  (:require [minimily.auth.web.ui.signin :as signin]
+  (:require [ring.util.response          :refer [redirect]]
+            [minimily.auth.web.ui.signin :as signin]
             [minimily.web.ui.layout      :refer [layout]]
             [minimily.utils.web.wrapper  :refer [http-headers]]))
 
@@ -11,6 +12,7 @@
                   "/css/bootstrap.min.css"
                   "/css/bootstrap.min.css.map"
                   "/css/custom.css"
+                  "/favicon.ico"
                   "/js/jquery-3.3.1.min.js"
                   "/js/bootstrap.bundle.min.js"
                   "/js/bootstrap.bundle.min.js.map"
@@ -33,9 +35,7 @@
   (fn [request]
     (let [session (:session request)
           uri     (:uri request)]
-      (println uri)
+      (println (str (when session (:user-id session)) " - " uri))
       (if (is-protected? uri session)
-        (http-headers
-          (layout session "Sign In"
-            (signin/signin-content)))
+        (redirect (str "/signin?forward=" uri))
         (handler request)))))
