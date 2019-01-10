@@ -29,7 +29,7 @@
     false
     (empty? session)))
 
-(defn wrap-authentication [handler]
+(defn authorized? [handler]
   (fn [request]
     (let [session (:session request)
           uri     (:uri request)]
@@ -39,3 +39,6 @@
           (layout session "Sign In"
             (signin/signin-content)))
         (handler request)))))
+
+(defn wrap-auth [args func]
+  (func args))

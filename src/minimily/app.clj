@@ -2,7 +2,6 @@
   (:require [ring.middleware.reload                  :refer [wrap-reload]]
             [ring.middleware.session                 :refer [wrap-session]]
             [minimily.middleware.exception           :refer [wrap-exception]]
-            [minimily.auth.middleware.authentication :refer [wrap-authentication]]
             [ring.adapter.jetty                      :as jetty]
             [compojure.core                          :refer :all]
             [compojure.handler                       :as handler]
@@ -18,9 +17,8 @@
       the session and the auto-reload."
   [port]
   (let [routing-app (-> (handler/site #'routing/app)
-                        wrap-session
-                        wrap-authentication
-                        wrap-exception)]
+                        wrap-exception
+                        wrap-session)]
     (reset! server (jetty/run-jetty (if (env :reload)
                                       (wrap-reload routing-app)
                                       routing-app) 

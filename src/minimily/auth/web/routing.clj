@@ -6,7 +6,8 @@
             [minimily.auth.web.ui.signup      :refer [signup-page]]
             [minimily.auth.web.ui.signin      :refer [signin-content]]
             [minimily.auth.model.user-account :as user-account]
-            [minimily.auth.model.user-profile :as user-profile]))
+            [minimily.auth.model.user-profile :as user-profile]
+            [minimily.auth.middleware.authentication :refer [authorized?]]))
 
 (defn new-account [params]
   (let [user-account-id (user-account/save {:username (:email params)
@@ -47,4 +48,5 @@
     (core/POST "/account/new"   {params :params} (new-account params))
     (core/POST "/account/login" {params :params session :session} 
                                 (signin params session))
-    (core/GET  "/account/login/fail" [] (signin-fail))))
+    (core/GET  "/account/login/fail" [] (signin-fail))
+    (core/GET  "/request" req (str req))))
