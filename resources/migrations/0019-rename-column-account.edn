@@ -1,0 +1,4 @@
+{:up   
+  ["alter table account rename column holder to profile;"]
+ :down 
+  ["alter table account rename column profile to holder;"]}

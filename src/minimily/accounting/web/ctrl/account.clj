@@ -44,6 +44,6 @@
     (redirect (str "/accounting/accounts/" id))))
 
 (defn delete-account [session params]
-  (let [id (:id params)]
+  (let [id (Integer/parseInt (:id params))]
     (account-model/delete-it (:user-id session) id)
     (redirect "/accounting/accounts")))
