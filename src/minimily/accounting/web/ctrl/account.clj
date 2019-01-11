@@ -35,7 +35,7 @@
 
 (defn save-account [session params]
   (let [account (-> params 
-                    (assoc :holder (:user-id session))
+                    (assoc :profile (:user-id session))
                     (assoc :debit_limit (if (empty? (:debit_limit params))
                                             0
                                             (BigDecimal. (:debit_limit params))))
