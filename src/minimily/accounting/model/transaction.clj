@@ -1,7 +1,8 @@
 (ns minimily.accounting.model.transaction
   (:require [hugsql.core                         :as hugsql]
             [minimily.utils.database             :as db]
-            [minimily.family.model.family-member :as family-member-model]))
+            [minimily.family.model.family-member :as family-member-model]
+            [minimily.accounting.model.account   :as account-model]))
 
 (hugsql/def-sqlvec-fns "minimily/accounting/model/sql/transaction.sql")
 
@@ -28,6 +29,13 @@
 
 (defn save [transaction]
   (db/save-record table transaction))
+
+(defn add [transaction]
+  (account-model/update-balance (:account transaction)
+                                (+ (* (:type transaction) 
+                                      (:amount transaction))
+                                   (calculate-balance (:account transaction))))
+  (save transaction))
 
 (defn delete-it [profile-id id]
   (db/delete-record table id profile-id))

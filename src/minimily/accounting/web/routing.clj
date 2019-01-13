@@ -36,18 +36,20 @@
                                (transfer-ctrl/perform-transfer session params)))
 
         (url/context "/:account/transactions" []
-          (url/GET  "/new"      {session :session {account :account} :params}
-                                (transaction-ctrl/new-transaction session account))
-          (url/POST "/add"      {session :session params :params}
-                                (transaction-ctrl/add-transaction session params))
-          (url/POST "/save"     {session :session params :params}
-                                (transaction-ctrl/save-transaction session params))
-          (url/POST "/delete"   {session :session params :params}
-                                (transaction-ctrl/delete-transaction session params))
-          (url/GET  "/:id"      {session :session {account :account id :id} :params}
-                                (transaction-ctrl/view-transaction session account id))
-          (url/GET  "/:id/edit" {session :session {account :account id :id} :params}
-                                (transaction-ctrl/edit-transaction session account id))))
+          (url/GET  "/new"       {session :session {account :account} :params}
+                                 (transaction-ctrl/new-transaction session account))
+          (url/POST "/add"       {session :session params :params}
+                                 (transaction-ctrl/add-transaction session params))
+          (url/POST "/addandnew" {session :session params :params}
+                                 (transaction-ctrl/add-and-new-transaction session params))
+          (url/POST "/save"      {session :session params :params}
+                                 (transaction-ctrl/save-transaction session params))
+          (url/POST "/delete"    {session :session params :params}
+                                 (transaction-ctrl/delete-transaction session params))
+          (url/GET  "/:id"       {session :session {account :account id :id} :params}
+                                 (transaction-ctrl/view-transaction session account id))
+          (url/GET  "/:id/edit"  {session :session {account :account id :id} :params}
+                                 (transaction-ctrl/edit-transaction session account id))))
 
       (url/context "/categories" []
         (url/GET  "/"         {session :session} 

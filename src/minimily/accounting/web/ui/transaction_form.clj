@@ -65,7 +65,11 @@
             [:input {:type "date" :id "date_transaction" :name "date_transaction" :class "form-control"
                      :value (to-string (today) "yyyy-MM-dd")}]]]]
                
-        (submit-button {:class "btn btn-primary"} "Submit")
+        (submit-button {:class "btn btn-primary"
+                        :formaction (str "/accounting/accounts/" (:id account) "/transactions/add")} "Save")
+        (str "&nbsp;")
+        (submit-button {:class "btn btn-primary"
+                        :formaction (str "/accounting/accounts/" (:id account) "/transactions/addandnew")} "Save and New")
         (str "&nbsp;")
         [:a {:class "btn btn-outline-secondary" :href (str "/accounting/accounts/" (:id account))} "Cancel"]))))
 

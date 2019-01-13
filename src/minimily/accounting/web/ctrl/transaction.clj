@@ -33,22 +33,24 @@
                                         (conj % {:selected true})
                                         (conj % {:selected false})) categories))))
 
+(defn create-transaction [session params]
+  (-> params
+      (conj {:account (Integer/parseInt (:account params))})
+      (conj {:category (Integer/parseInt (:category params))})
+      (conj {:type (Integer/parseInt (:type params))})
+      (conj {:amount (BigDecimal. (:amount params))})
+      (conj {:date_transaction (to-date (:date_transaction params) "yyyy-MM-dd")})
+      (conj {:profile (:user-id session)})))
+
 (defn add-transaction [session params]
-  (let [account-id  (Integer/parseInt (:account params))
-        type        (Integer/parseInt (:type params))
-        amount      (BigDecimal. (:amount params))
-        transaction (-> params
-                        (conj {:account account-id})
-                        (conj {:category (Integer/parseInt (:category params))})
-                        (conj {:type (Integer/parseInt (:type params))})
-                        (conj {:amount (BigDecimal. (:amount params))})
-                        (conj {:date_transaction (to-date (:date_transaction params) "yyyy-MM-dd")})
-                        (conj {:profile (:user-id session)}))]
-    (account-model/update-balance account-id
-                                  (+ (* type amount)
-                                     (transaction-model/calculate-balance account-id)))
-    (transaction-model/save transaction)
+  (let [transaction (create-transaction session params)]
+    (transaction-model/add transaction)
     (redirect (str "/accounting/accounts/" (:account transaction)))))
+
+(defn add-and-new-transaction [session params]
+  (let [transaction (create-transaction session params)]
+    (transaction-model/add transaction)
+    (redirect (str "/accounting/accounts/" (:account transaction) "/transactions/new"))))
 
 (defn save-transaction [session params]
   (let [transaction (-> params
