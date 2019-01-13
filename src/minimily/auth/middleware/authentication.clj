@@ -35,7 +35,6 @@
   (fn [request]
     (let [session (:session request)
           uri     (:uri request)]
-      (println (str (when session (:user-id session)) " - " uri))
       (if (is-protected? uri session)
         (http-headers
           (layout session "Sign In"

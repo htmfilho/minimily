@@ -30,7 +30,7 @@
       (let [session {:full-name (user-profile/full-name auth-user)
                      :user-id   (:id auth-user)}
             forward (:forward params)]
-        (-> (redirect (if (.equals forward "/signin") "/" forward))
+        (-> (redirect (if (or (.isEmpty forward) (.equals forward "/signin")) "/" forward))
             (assoc :session session))))))
 
 (defn signin-fail []

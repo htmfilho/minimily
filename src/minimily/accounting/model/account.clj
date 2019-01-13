@@ -8,19 +8,19 @@
 
 (def table :account)
 
-(defn find-actives [holder]
-  (let [family-members (family-member-model/list-family-organizers holder)]
+(defn find-actives [profile]
+  (let [family-members (family-member-model/list-family-organizers profile)]
     (db/find-records (active-accounts-sqlvec {:ids family-members}))))
 
-(defn find-inactives [holder]
-  (let [family-members (family-member-model/list-family-organizers holder)]
+(defn find-inactives [profile]
+  (let [family-members (family-member-model/list-family-organizers profile)]
     (db/find-records (inactive-accounts-sqlvec {:ids family-members}))))
 
-(defn find-actives-except [holder except-id]
+(defn find-actives-except [profile except-id]
   (filter #(not= (:id %) except-id) 
-          (find-actives holder)))
+          (find-actives profile)))
 
-(defn get-it [holder id]
+(defn get-it [profile id]
   (db/get-record table id))
 
 (defn save [account]
@@ -40,5 +40,5 @@
                                     debit-limit
                                     RoundingMode/HALF_UP))))))
 
-(defn delete-it [holder id]
-  (db/delete-record table id holder))
+(defn delete-it [profile id]
+  (db/delete-record table id profile))

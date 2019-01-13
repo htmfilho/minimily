@@ -6,6 +6,7 @@
   (testing "Check division by 0"
     (let [zero (BigDecimal. 0)
           one  (BigDecimal. 1)])
+    (is (= (percentage-used-credit {:balance nil :debit_limit nil}) 0))
     (is (= (percentage-used-credit {:balance (BigDecimal. 0) :debit_limit (BigDecimal. 0)}) 0))
     (is (= (percentage-used-credit {:balance (BigDecimal. -1) :debit_limit (BigDecimal. 0)}) 0))
     (is (= (percentage-used-credit {:balance (BigDecimal. 0) :debit_limit (BigDecimal. -1)}) 0))
