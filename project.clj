@@ -17,12 +17,13 @@
                  [org.slf4j/slf4j-nop       "1.7.13" ]  ; hikari-cp's dependency
 
                  ; Web dependencies
+                 [buddy                     "2.0.0"  ]  ; web security
                  [compojure                 "1.6.1"  ]  ; routing library
                  [hiccup                    "1.0.5"  ]  ; html template library
                  [ring/ring-core            "1.6.3"  ]  ; web application library
                  [ring/ring-jetty-adapter   "1.6.3"  ]  ; web server library
-                 [ring/ring-devel           "1.6.3"  ]
-
+                 [ring/ring-devel           "1.6.3"  ]  ; web development facilities
+                 
                  ; Extra dependencies
                  [yogthos/config            "1.1.1"  ]  ; manage environment variables
                  [amazonica                 "0.3.121"]  ; access to amazon web services
