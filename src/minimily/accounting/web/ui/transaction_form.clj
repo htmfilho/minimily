@@ -85,9 +85,10 @@
             [:div {:class "form-group"}
               (label "category" "Category")
               [:select {:name "category" :class "form-control" :id "category"}
-                       (map #(vector :option (if (:selected %)
-                                               {:value (:id %) :selected "true"}
-                                               {:value (:id %)}) (:name %)) categories)]]]]
+                       (conj (map #(vector :option (if (:selected %)
+                                                     {:value (:id %) :selected "true"}
+                                                     {:value (:id %)}) (:name %)) categories)
+                             [:option {:value ""} "Select..."])]]]]
         [:div {:class "row"}
           [:div {:class "col-md-1"}
             [:div {:class "form-group"}

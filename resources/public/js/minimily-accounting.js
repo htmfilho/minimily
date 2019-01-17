@@ -93,6 +93,15 @@ function loadChart(account) {
     });
 }
 
+function loadCategories(categories, status) {
+    var selectCategory = $("#category");
+    selectCategory.empty();
+    selectCategory.append($("<option></option>").attr("value", "").text("Select..."));
+    categories.forEach(function(category) {
+        selectCategory.append($("<option></option>").attr("value", category.id).text(category.name));
+    });
+}
+
 $("#amount").change(function() {
     var amount = $(this).val() ? $(this).val() : 0;
     $(this).val(parseFloat(amount).toFixed(2));
@@ -114,25 +123,11 @@ $("#fee").change(function() {
 $("#to").change(getCurrencySelectedAccount);
 
 $("#credit").change(function() {
-    $.getJSON("/accounting/api/categories/credit", function(categories, status) {
-        var selectCategory = $("#category");
-        selectCategory.empty();
-        selectCategory.append($("<option></option>").attr("value", "").text("Select..."));
-        categories.forEach(function(category) {
-            selectCategory.append($("<option></option>").attr("value", category.id).text(category.name));
-        });
-    });
+    $.getJSON("/accounting/api/categories/credit", loadCategories);
 });
 
 $("#debit").change(function() {
-    $.getJSON("/accounting/api/categories/debit", function(categories, status) {
-        var selectCategory = $("#category");
-        selectCategory.empty();
-        selectCategory.append($("<option></option>").attr("value", "").text("Select..."));
-        categories.forEach(function(category) {
-            selectCategory.append($("<option></option>").attr("value", category.id).text(category.name));
-        });
-    });
+    $.getJSON("/accounting/api/categories/debit", loadCategories);
 });
 
 $(document).ready(getCurrencySelectedAccount);

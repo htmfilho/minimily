@@ -5,7 +5,8 @@
             [minimily.accounting.web.ui.transaction      :refer [transaction-page]]
             [minimily.accounting.model.account           :as account-model]
             [minimily.accounting.model.transaction       :as transaction-model]
-            [minimily.accounting.model.category          :as category-model]))
+            [minimily.accounting.model.category          :as category-model]
+            [minimily.accounting.web.ctrl.category       :as category-ctrl]))
 
 (defn view-transaction [session account id]
   (let [account     (account-model/get-it (:user-id session) account)
@@ -31,12 +32,15 @@
                                 transaction
                                 (map #(if (= (:id %) (:category transaction))
                                         (conj % {:selected true})
-                                        (conj % {:selected false})) categories))))
+                                        (conj % {:selected false})) 
+                                     (category-ctrl/list-categories categories)))))
 
 (defn create-transaction [session params]
   (-> params
       (conj {:account (Integer/parseInt (:account params))})
-      (conj {:category (Integer/parseInt (:category params))})
+      (conj {:category (if (empty? (:category params)) 
+                         nil
+                         (Integer/parseInt (:category params)))})
       (conj {:type (Integer/parseInt (:type params))})
       (conj {:amount (BigDecimal. (:amount params))})
       (conj {:date_transaction (to-date (:date_transaction params) "yyyy-MM-dd")})
@@ -55,7 +59,9 @@
 (defn save-transaction [session params]
   (let [transaction (-> params
                         (conj {:account (Integer/parseInt (:account params))})
-                        (conj {:category (Integer/parseInt (:category params))})
+                        (conj {:category (if (empty? (:category params)) 
+                                           nil
+                                           (Integer/parseInt (:category params)))})
                         (conj {:date_transaction (to-date (:date_transaction params) "yyyy-MM-dd")})
                         (conj {:profile (:user-id session)}))]
     (transaction-model/save transaction)
