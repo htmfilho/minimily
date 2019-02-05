@@ -61,9 +61,12 @@
               [:li {:class "nav-item"}
                 [:a {:class "nav-link  my-2 my-sm-0" :href "/signin"} "Sign In"]]]
             [:ul {:class "navbar-nav my-2 my-lg-0"}
-              [:li {:class "nav-item"}
-                [:a {:class "nav-link  my-2 my-sm-0" :href "/signout"} "Sign Out"]]])]]
-      
+              [:li {:class "nav-item dropdown"}
+                [:a {:class "nav-link dropdown-toggle my-2 my-sm-0" :href "#" :id "profileDropdown" :role "button" :data-toggle "dropdown" 
+                     :aria-haspopup "true" :aria-expanded "false"} (:full-name session)]
+                [:div {:class "dropdown-menu" :aria-labelledby "profileDropdown"}
+                  [:a {:class "dropdown-item" :href "/signout"} "Sign Out"]
+                  [:a {:class "dropdown-item" :href "/account/pswd/change"} "Change Password"]]]])]]      
       [:div {:class "container"}
         [:div {:class "page-title"} title]
         content

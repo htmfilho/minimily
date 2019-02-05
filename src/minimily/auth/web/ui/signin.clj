@@ -3,6 +3,8 @@
 
 (defn signin-content []
   (form-to [:post "/account/login"]
+    [:div {:class "row"}
+      [:div {:class "col-md-4"}
         [:div {:class "form-group"}
           (label "username" "Email address")
           (email-field {:class "form-control" :id "username" 
@@ -14,4 +16,6 @@
         (hidden-field {:id "forward"} "forward" "/")
         (submit-button {:class "btn btn-primary"} "Submit")
         (str "&nbsp;")
-        [:a {:class "btn btn-outline-secondary" :href "/"} "Cancel"]))
+        [:a {:class "btn btn-outline-secondary" :href "/"} "Cancel"]
+        [:br][:br]
+        [:p [:a {:href "/account/pswd/reset/request"} "Forgot Password?"]]]]))
