@@ -2,6 +2,8 @@
 
 Minimily is an application designed to help you keeping your life as simple as possible. We will help you to make decisions taking into account the impact on your health, family, living place, community and environment.
 
+[![CircleCI](https://circleci.com/gh/htmfilho/minimily.svg?style=svg)](https://circleci.com/gh/htmfilho/minimily)
+
 ## Requirements
 
 Minimily is a web application and it has 3 requirements:
