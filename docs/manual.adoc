@@ -1,1 +1,0 @@
- A Ring handler is something that receives the request and returns a response and the response is a hashmap.
