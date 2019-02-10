@@ -1,6 +1,6 @@
 (ns minimily.accounting.web.api.category-test
-  (:require [clojure.test                         :refer :all]
-            [minimily.accounting.web.api.category :refer :all]))
+  (:require [clojure.test                          :refer :all]
+            [minimily.accounting.web.ctrl.category :refer :all]))
 
 (deftest test-list-tree-branches
   (testing "Empty category"
