@@ -4,7 +4,7 @@
 (defn signin-content []
   (form-to [:post "/account/login"]
     [:div {:class "row"}
-      [:div {:class "col-md-4"}
+      [:div {:class "col-md-5"}
         [:div {:class "form-group"}
           (label "username" "Email address")
           (email-field {:class "form-control" :id "username" 

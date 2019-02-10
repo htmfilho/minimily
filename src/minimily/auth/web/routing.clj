@@ -50,14 +50,20 @@
                                                     (signin params session))
     (core/GET  "/account/login/fail"                [] 
                                                     (signin-fail))
-    (core/GET  "/account/pswd/reset/request"        {session :session}
-                                                    (user-account-ctrl/request-change-password session))
-    (core/GET  "/account/pswd/reset/request/verify" {params :params session :session}
-                                                    (user-account-ctrl/verify-request-change-password params session))
-    (core/GET  "/account/pswd/change"               {params :params session :session}
+    (core/GET  "/account/pswd/reset/request"        [] 
+                                                    (user-account-ctrl/request-reset-password))
+    (core/POST "/account/pswd/reset/request"        {params :params}
+                                                    (user-account-ctrl/send-request-reset-password params))
+    (core/GET  "/account/pswd/reset/request/verify" {params :params}
+                                                    (user-account-ctrl/verify-request-reset-password params))
+    (core/POST "/account/pswd/reset/request/verify" {params :params}
+                                                    (user-account-ctrl/check-code-reset-password params))
+    (core/GET  "/account/pswd/change"               {session :session}
+                                                    (user-account-ctrl/changing-password session))
+    (core/POST "/account/pswd/change"               {params :params session :session}
                                                     (user-account-ctrl/change-password params session))
-    (core/GET  "/account/pswd/change/confirmation"  {session :session}
-                                                    (user-account-ctrl/confirm-change-password session))
-    (core/POST "/account/new"                       {params :params} 
+    (core/GET  "/account/pswd/change/confirmation"  []
+                                                    (user-account-ctrl/confirm-change-password))
+    (core/POST "/account/new"                       {params :params}
                                                     (new-account params))
     (core/GET  "/request"                           req (str req))))
