@@ -75,7 +75,8 @@
         [:br]]
 
       [:nav {:class "navbar fixed-bottom navbar-light bg-light"}
-        [:a {:class "nav-link" :href "http://www.minimily.com"} "Help"]]
+        [:a {:class "nav-link" :href "http://www.minimily.com"} "Website"]
+        [:a {:class "nav-link" :href "https://github.com/htmfilho/minimily/issues"} "Report Issue"]]
       
       (page/include-js "/js/jquery-3.3.1.min.js"
                        "/js/bootstrap.bundle.min.js"

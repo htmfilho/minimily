@@ -22,7 +22,7 @@ title: Blog
     <div class="section-title">
         <h2><span>All Stories</span></h2>
     </div>
-    
+
     <div class="row listrecent">
         {% for post in paginator.posts %}
             {% if post.featured == false %}
@@ -37,4 +37,12 @@ title: Blog
     <span class="navigation" role="navigation">
         {% include pagination.html %}
     </span>
+</div>
+
+<div class="container">
+    <div class="d-md-flex h-100">
+        {% for category in site.categories %}
+            <a href="{{site.baseurl}}/categories#{{ category[0] | downcase | url_escape | strip | replace: ' ', '-' }}">{{ category[0] | camelcase }} ({{ category[1].size }})</a>&nbsp;&nbsp;
+        {% endfor %}
+    </div>
 </div>
