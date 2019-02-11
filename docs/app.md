@@ -1,20 +1,14 @@
 ---
 layout: page
 title: App
-description: Description
+description: We developed an app to pursuit our new life style vision
 permalink: /app/
 ---
 
-This is the base Jekyll theme. You can find out more info about customizing your 
-Jekyll theme, as well as basic Jekyll usage documentation at [jekyllrb.com](https://jekyllrb.com/)
+Minimalizing your life style doesn't necessarily mean simplifying it. It means less things to do and own, but what is left must be well cared with discipline and mindfulness.
 
-You can find the source code for Minima at GitHub:
-[jekyll][jekyll-organization] /
-[minima](https://github.com/jekyll/minima)
+We believe one way to achieve that is having a full control of ownership, managing everything we own, the acquisition of new goods and how cash is employed. No doubt this control can be done using a spreadsheet or even a paper journal, but it must be done.
 
-You can find the source code for Jekyll at GitHub:
-[jekyll][jekyll-organization] /
-[jekyll](https://github.com/jekyll/jekyll)
+In our case, we decided to develop a [app][app] to better structure our data, enable notifications and automate some repetitive tasks to reduce our overall effort. These are things a spreadsheet can't do for you. The good news is we have designed it to be used by everybody else interested in minimalism!
 
-
-[jekyll-organization]: https://github.com/jekyll
+<a class="btn btn-primary" href="https://app.minimily.com" target="_blank" role="button">Open the App</a>
