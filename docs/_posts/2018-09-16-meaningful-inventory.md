@@ -2,7 +2,7 @@
 layout: post
 title:  "Meaningfull Inventory"
 author: john
-categories: [ Jekyll, tutorial ]
+categories: [ Minimalism ]
 featured: false
 image: assets/images/3.jpg
 ---

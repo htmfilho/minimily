@@ -2,7 +2,7 @@
 layout: post
 title:  "Financial Awareness"
 author: sal
-categories: [ Jekyll, tutorial ]
+categories: [ Minimalism ]
 featured: false
 image: assets/images/15.jpg
 ---

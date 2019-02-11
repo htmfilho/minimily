@@ -2,7 +2,7 @@
 layout: post
 title:  "Becoming Minimalists"
 author: sal
-categories: [ Jekyll, tutorial ]
+categories: [ Minimalism, Testimony ]
 featured: true
 image: assets/images/17.jpg
 ---

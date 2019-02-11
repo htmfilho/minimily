@@ -222,7 +222,9 @@ License: https://www.wowthemes.net/freebies-license/
      margin-right:5px;
 }
  .mainheading h1.sitetitle {
-     font-family:Righteous;
+     font-size: 48pt;
+     font-family:Caveat;
+     color:#db9b10
 }
  .mainheading h1.posttitle {
      font-weight:700;

@@ -2,7 +2,7 @@
 layout: post
 title:  "A Radical Move"
 author: sal
-categories: [ Jekyll, tutorial ]
+categories: [ Testimony ]
 featured: true
 image: assets/images/16.jpg
 ---

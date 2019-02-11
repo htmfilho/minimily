@@ -1,8 +1,8 @@
 ---
 layout: page
-title: About
-description: About
-permalink: /about/
+title: App
+description: Description
+permalink: /app/
 ---
 
 This is the base Jekyll theme. You can find out more info about customizing your 

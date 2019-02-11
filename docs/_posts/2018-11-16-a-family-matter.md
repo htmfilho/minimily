@@ -2,7 +2,7 @@
 layout: post
 title:  "A Family Matter"
 author: sal
-categories: [ Jekyll ]
+categories: [ Minimalism ]
 featured: false
 image: assets/images/2.jpg
 ---
