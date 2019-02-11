@@ -25,7 +25,9 @@ title: Home
     
     <div class="row listrecent">
         {% for post in paginator.posts %}
-            {% include postbox.html %}          
+            {% if post.featured == false %}
+                {% include postbox.html %}
+            {% endif %}
         {% endfor %}
     </div>
 </section>

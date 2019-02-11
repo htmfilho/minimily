@@ -1,8 +1,9 @@
 ---
 layout: post
-title:  "Accumulated experience of social living"
+title:  "Financial Awareness"
 author: sal
 categories: [ Jekyll, tutorial ]
+featured: false
 image: assets/images/15.jpg
 ---
 The die cut has also been employed in the non-juvenile sphere as well, a recent example being Jonathan Safran Foer’s ambitious Tree of Codes. 
