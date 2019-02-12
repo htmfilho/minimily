@@ -15,3 +15,7 @@
     (if (empty? auth_user)
       nil
       (first auth_user))))
+
+(defn username-exists [username]
+  (let [username (db/find-records (existing-username-sqlvec {:username username}))]
+    (not (empty? username))))

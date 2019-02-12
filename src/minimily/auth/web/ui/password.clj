@@ -3,10 +3,11 @@
             [minimily.web.ui.layout     :refer [layout]]
             [minimily.utils.web.wrapper :refer [http-headers]]))
 
-(defn password-reset-request-page []
+(defn password-reset-request-page [message]
   (http-headers 
     (layout nil "Request to Reset Password"
       (form-to [:post "/account/pswd/reset/request"]
+        (when message [:div {:class "alert alert-warning" :role "alert"} message])
         [:p "Inform your email address. If we find it in our records, we will 
              send a message with instructions to reset the password."]
         [:div {:class "form-group"}
@@ -29,7 +30,7 @@
           (text-field {:class "form-control" :id "secret_code"} "secret_code")]
         (submit-button {:class "btn btn-primary"} "Submit")
         (str "&nbsp;")
-        [:a {:class "btn btn-outline-secondary" :href "/"} "Cancel"]))))
+        [:a {:class "btn btn-outline-secondary" :href "/signin"} "Cancel"]))))
 
 (defn password-change-page [session]
   (http-headers 
@@ -47,7 +48,7 @@
                               :autocomplete "off"} "password_confirm")]]]
         (submit-button {:class "btn btn-primary"} "Submit")
         (str "&nbsp;")
-        [:a {:class "btn btn-outline-secondary" :href "/"} "Cancel"]))))
+        [:a {:class "btn btn-outline-secondary" :href "/signin"} "Cancel"]))))
 
 (defn password-change-confirmed-page []
   (http-headers 
