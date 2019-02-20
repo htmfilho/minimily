@@ -8,13 +8,17 @@
   ([message] (password-ui/password-reset-request-page message)))
 
 (defn send-request-reset-password [params]
-  (let [email (:email params)]
+  (let [email         (:email params)
+        existing-user (user-account-model/existing-user-account email)]
     ; Check if the email exists
-    (if (user-account-model/username-exists email)
-      (redirect "/account/pswd/reset/request/verify")
+    (if (not (empty? existing-user))
+      ; Generate a UUID code and associate it with the user
+      (let [uuid (user-account-model/generate-uuid)]
+        (user-account-model/set-verification (:id existing-user) uuid)
+        (redirect "/account/pswd/reset/request/verify"))
       (request-reset-password "The informed email is unknown. Please, try again below or <a href='/signup'>create a new account</a>.")))
   
-  ; Generate a UUID code and associate it with the user
+  
   ; Send a message with the UUID code
   )
 

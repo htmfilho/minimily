@@ -1,0 +1,4 @@
+{:up   
+  ["alter table user_account add verification varchar(64);"]
+ :down 
+  ["alter table user_account drop column verification;"]}

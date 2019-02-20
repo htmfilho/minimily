@@ -16,6 +16,11 @@
       nil
       (first auth_user))))
 
-(defn username-exists [username]
-  (let [username (db/find-records (existing-username-sqlvec {:username username}))]
-    (not (empty? username))))
+(defn existing-user-account [username]
+  (db/find-records (existing-username-sqlvec {:username username})))
+
+(defn set-verification [id uuid]
+  (db/update-record table {:id id :verification uuid})))
+
+(defn generate-uuid []
+  (str (java.util.UUID/randomUUID)))
