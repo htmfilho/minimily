@@ -23,6 +23,7 @@
                  [ring/ring-core            "1.6.3"  ]  ; web application library
                  [ring/ring-jetty-adapter   "1.6.3"  ]  ; web server library
                  [ring/ring-devel           "1.6.3"  ]  ; web development facilities
+                 [com.draines/postal        "2.0.3"  ]  ; email library
                  
                  ; Extra dependencies
                  [yogthos/config            "1.1.1"  ]  ; manage environment variables
