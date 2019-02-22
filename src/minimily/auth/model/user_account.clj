@@ -1,6 +1,7 @@
 (ns minimily.auth.model.user-account
-  (:require [hugsql.core             :as hugsql]
-            [minimily.utils.database :as db]))
+  (:require [hugsql.core              :as hugsql]
+            [minimily.utils.database  :as db]
+            [minimily.utils.messenger :as messenger]))
 
 (hugsql/def-sqlvec-fns "minimily/auth/model/sql/user_account.sql")
 
@@ -20,7 +21,12 @@
   (db/find-records (existing-username-sqlvec {:username username})))
 
 (defn set-verification [id uuid]
-  (db/update-record table {:id id :verification uuid})))
+  (db/update-record table {:id id :verification uuid}))
 
 (defn generate-uuid []
   (str (java.util.UUID/randomUUID)))
+
+(defn send-request-reset [email uuid]
+  (messenger/send-message email 
+                          "Minimily Reset Password" 
+                          (str uuid)))

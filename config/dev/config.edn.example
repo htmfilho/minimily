@@ -3,5 +3,10 @@
  :AWS_SECRET_ACCESS_KEY ""
  :AWS_S3_BUCKET_NAME ""
  :AWS_ENDPOINT ""
+ :EMAIL_FROM ""
+ :EMAIL_HOST ""
+ :EMAIL_PORT ""
+ :EMAIL_USER ""
+ :EMAIL_PASSWORD ""
  :port 5000
  :reload true}

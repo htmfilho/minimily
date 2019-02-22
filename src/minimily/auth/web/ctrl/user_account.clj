@@ -15,12 +15,10 @@
       ; Generate a UUID code and associate it with the user
       (let [uuid (user-account-model/generate-uuid)]
         (user-account-model/set-verification (:id existing-user) uuid)
+        ; Send a message with the UUID code
+        (user-account-model/send-request-reset email uuid)
         (redirect "/account/pswd/reset/request/verify"))
-      (request-reset-password "The informed email is unknown. Please, try again below or <a href='/signup'>create a new account</a>.")))
-  
-  
-  ; Send a message with the UUID code
-  )
+      (request-reset-password "The informed email is unknown. Please, try again below or <a href='/signup'>create a new account</a>."))))
 
 (defn verify-request-reset-password [params]
   (password-ui/password-reset-request-submitted-page params))
