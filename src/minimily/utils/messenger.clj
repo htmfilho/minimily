@@ -2,7 +2,7 @@
   (:require [postal.core :as postal]
             [config.core :refer [env]]))
 
-(defn send [message]
+(defn post [message]
   (postal/send-message {:host (env  :EMAIL_HOST)
                         :user (env  :EMAIL_USER)
                         :pass (env  :EMAIL_PASSWORD)
@@ -11,8 +11,7 @@
                        message))
 
 (defn send-message [to subject body]
-  (println body)
-  (send {:from (env :EMAIL_FROM)
+  (post {:from (env :EMAIL_FROM)
          :to [to]
          :subject subject
          :body body}))
