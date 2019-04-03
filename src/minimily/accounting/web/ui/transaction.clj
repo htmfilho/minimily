@@ -6,7 +6,7 @@
             [minimily.web.ui.bootstrap  :refer [show-field show-field-link show-value back-button edit-button]]
             [minimily.utils.web.wrapper :refer [http-headers]]))
 
-(defn transaction-page [session account transaction]
+(defn transaction-page [session account transaction category]
   (http-headers
     (layout session "Transaction"
       [:div {:class "card"}
@@ -27,7 +27,7 @@
                                             (str " (" (:currency account) ")")
                                             "")) account :balance)]
             [:div {:class "col-md-6"}
-              (show-field "Category" (:category transaction) :name)]]
+              (show-field-link "Category" category :name (str "/accounting/categories/" (:id category)))]]
           [:div {:class "row"}
             [:div {:class "col-md-1"}
               [:p 

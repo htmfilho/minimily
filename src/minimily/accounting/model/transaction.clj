@@ -12,15 +12,24 @@
 
 (defn find-by-account [profile-id account-id]
   (let [family-members (family-member-model/list-family-organizers profile-id)]
-    (db/find-records (transactions-by-profile-account-sqlvec {:profile-ids family-members 
-                                                              :account-id (Integer/parseInt account-id)}))))
+    (db/find-records 
+      (transactions-by-profile-account-sqlvec 
+        {:profile-ids family-members 
+         :account-id (Integer/parseInt account-id)}))))
 
 (defn find-balance-history [account-id]
   (db/find-records 
-    (transactions-balance-history-sqlvec {:account-id (Integer/parseInt account-id)})))
+    (transactions-balance-history-sqlvec 
+      {:account-id (Integer/parseInt account-id)})))
+
+(defn find-by-category [category-id]
+  (db/find-records 
+    (transactions-category-sqlvec {:category-id category-id})))
 
 (defn calculate-balance [account-id]
-  (let [transactions (db/find-records (transactions-by-account-sqlvec {:account-id account-id}))
+  (let [transactions (db/find-records 
+                       (transactions-by-account-sqlvec 
+                         {:account-id account-id}))
         amounts      (map #(* (:type %) (:amount %)) transactions)]
     (reduce + amounts)))
 

@@ -4,7 +4,8 @@
             [minimily.accounting.web.ui.category-form :refer [category-form-new 
                                                               category-form-edit]]
             [minimily.accounting.web.ui.category      :refer [category-page]]
-            [minimily.accounting.model.category       :as category-model]))
+            [minimily.accounting.model.category       :as category-model]
+            [minimily.accounting.model.transaction    :as transaction-model]))
 
 (defn list-tree-branches
   [categories]
@@ -67,12 +68,13 @@
     (categories-page session categories)))
 
 (defn view-category [session id]
-  (let [profile-id  (:user-id session)
-        category-id (Integer/parseInt id)
-        category    (category-model/get-it profile-id category-id)
-        children    (category-model/find-children profile-id category-id)
-        path        (category-model/find-path profile-id category-id)]
-    (category-page session category children path)))
+  (let [profile-id   (:user-id session)
+        category-id  (Integer/parseInt id)
+        category     (category-model/get-it profile-id category-id)
+        children     (category-model/find-children profile-id category-id)
+        path         (category-model/find-path profile-id category-id)
+        transactions (transaction-model/find-by-category category-id)]
+    (category-page session category children path transactions)))
 
 (defn new-category [session parent-id]
   (let [parent (category-model/get-it (:user-id session) parent-id)]

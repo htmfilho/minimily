@@ -11,3 +11,8 @@ select description, amount, date_transaction, type
 from transaction 
 where account = :account-id
 order by date_transaction asc
+
+-- :name transactions-category :? :*
+select * from transaction 
+where category = :category-id
+order by date_transaction desc

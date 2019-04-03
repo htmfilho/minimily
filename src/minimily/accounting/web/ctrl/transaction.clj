@@ -12,10 +12,7 @@
   (let [account     (account-model/get-it (:user-id session) account)
         transaction (transaction-model/get-it (:user-id session) id)
         category    (category-model/get-it (:user-id session) (:category transaction))]
-    (transaction-page session 
-                      account 
-                      (conj transaction {:category {:id   (:id category)
-                                                    :name (:name category)}}))))
+    (transaction-page session account transaction category)))
 
 (defn new-transaction [session account]
   (let [account (account-model/get-it (:user-id session) account)]
