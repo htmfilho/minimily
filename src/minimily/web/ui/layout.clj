@@ -65,8 +65,9 @@
                 [:a {:class "nav-link dropdown-toggle my-2 my-sm-0" :href "#" :id "profileDropdown" :role "button" :data-toggle "dropdown" 
                      :aria-haspopup "true" :aria-expanded "false"} (:full-name session)]
                 [:div {:class "dropdown-menu" :aria-labelledby "profileDropdown"}
-                  [:a {:class "dropdown-item" :href "/signout"} "Sign Out"]
-                  [:a {:class "dropdown-item" :href "/account/pswd/change"} "Change Password"]]]])]]      
+                  [:a {:class "dropdown-item" :href "/account/pswd/change"} "Change Password"]
+                  [:div {:class "dropdown-divider"}]
+                  [:a {:class "dropdown-item" :href "/signout"} "Sign Out"]]]])]]      
       [:div {:class "container"}
         [:div {:class "page-title"} title]
         content
