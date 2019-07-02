@@ -37,8 +37,10 @@
       [:script {:src "https://use.fontawesome.com/releases/v5.2.0/js/all.js" 
                 :integrity "sha384-4oV5EgaV02iISL2ban6c/RmotsABqE4yZxZLcYMAdG7FAPsyHYAPpywE9PJo+Khy" 
                 :crossorigin "anonymous"}]]
-    [:body 
+    [:body
+      
       [:nav {:class "navbar navbar-expand-lg fixed-top navbar-dark bg-dark"}
+      [:div {:class "container"}
         [:a {:class "navbar-brand" :href "/" :style "font-family: 'Pacifico', cursive;"} "Minimily"]
         [:button {:class "navbar-toggler"
                   :type "button"
@@ -49,17 +51,16 @@
                   :aria-label "Toggle navigation"}
           [:span {:class "navbar-toggler-icon"}]]
         [:div {:class "collapse navbar-collapse" :id "navbarSupportedContent"}
-          [:div {:class "container"}
-            (if (not (empty? session))
-              [:ul {:class "navbar-nav mr-auto"}
-                (map menu-bar-template menu-items)]
-              [:ul {:class "navbar-nav mr-auto"}])]
+          (if (not (empty? session))
+            [:ul {:class "navbar-nav mr-auto"}
+              (map menu-bar-template menu-items)]
+            [:ul {:class "navbar-nav mr-auto"}])
           (if (empty? session)
-            [:ul {:class "navbar-nav my-2 my-lg-0"}
+            [:ul {:class "navbar-nav my-3 my-lg-0"}
               [:li {:class "nav-item"}
-                [:a {:class "nav-link my-2 my-sm-0" :href "/signup"} "Sign Up"]]
+                [:a {:class "nav-link my-3 my-sm-0" :href "/signup"} "Sign Up"]]
               [:li {:class "nav-item"}
-                [:a {:class "nav-link  my-2 my-sm-0" :href "/signin"} "Sign In"]]]
+                [:a {:class "nav-link  my-3 my-sm-0" :href "/signin"} "Sign In"]]]
             [:ul {:class "navbar-nav my-2 my-lg-0"}
               [:li {:class "nav-item dropdown"}
                 [:a {:class "nav-link dropdown-toggle my-2 my-sm-0" :href "#" :id "profileDropdown" :role "button" :data-toggle "dropdown" 
@@ -67,7 +68,8 @@
                 [:div {:class "dropdown-menu" :aria-labelledby "profileDropdown"}
                   [:a {:class "dropdown-item" :href "/account/pswd/change"} "Change Password"]
                   [:div {:class "dropdown-divider"}]
-                  [:a {:class "dropdown-item" :href "/signout"} "Sign Out"]]]])]]      
+                  [:a {:class "dropdown-item" :href "/signout"} "Sign Out"]]]])]]]
+
       [:div {:class "container"}
         [:div {:class "page-title"} title]
         content
