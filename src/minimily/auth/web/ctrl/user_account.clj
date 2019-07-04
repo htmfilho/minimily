@@ -1,7 +1,42 @@
 (ns minimily.auth.web.ctrl.user-account
   (:require [ring.util.response               :refer [redirect]]
+            [minimily.utils.web.wrapper       :refer [http-headers]]
+            [minimily.web.ui.layout           :refer [layout]]
             [minimily.auth.model.user-account :as user-account-model]
+            [minimily.auth.model.user-profile :as user-profile-model]
+            [minimily.auth.web.ui.signin      :refer [signin-content]]
             [minimily.auth.web.ui.password    :as password-ui]))
+
+(defn new-account [params]
+  (let [user-account-id (user-account-model/save {:username (:email params)
+                                                  :password (:password params)})]
+    (user-profile-model/save {:user_account user-account-id
+                              :first_name   (:first_name params)
+                              :last_name    (:last_name params)
+                              :email        (:email params)})
+    (redirect "/signin")))
+
+(defn signin-page []
+  (http-headers 
+    (layout nil "Sign In"
+      (signin-content))))
+
+(defn signin [params session]
+  (let [auth-user (user-account-model/authenticate (:username params) 
+                                                   (:password params))]
+    (if auth-user
+      (let [session {:full-name (user-profile-model/full-name auth-user)
+                     :user-id   (:id auth-user)}
+            forward (:forward params)]
+        (-> (redirect (if (or (.isEmpty forward) (.equals forward "/signin")) "/" forward))
+            (assoc :session session))))))
+
+(defn signin-fail []
+  (redirect "/"))
+
+(defn signout [session]
+  (-> (redirect "/")
+      (assoc :session nil)))
 
 (defn request-reset-password
   ([] (request-reset-password nil))
@@ -9,7 +44,7 @@
 
 (defn send-request-reset-password [params]
   (let [email         (:email params)
-        existing-user (user-account-model/existing-user-account email)]
+        existing-user (user-account-model/find-by-username email)]
     ; Check if the email exists
     (if (not (empty? existing-user))
       ; Generate a UUID code and associate it with the user
@@ -24,10 +59,15 @@
   (password-ui/password-reset-request-submitted-page params))
 
 (defn check-code-reset-password [params]
+  (if-let [existing-user (user-account-model/find-by-verification (:verification params))]
+    (do
+      (user-account-model/reset-verification (:id existing-user))
+      (redirect "/account/pswd/change"))
+    )
   ; Check if the informed UUID is associated with a user
   ; If yes, clean up the UUID, create a session for the user as she was authenticated
   ; If not, inform the UUID is invalid and suggest to restart the process again
-  (redirect "/account/pswd/change"))
+  )
 
 (defn changing-password [session]
   ; Load user data to show in the UI
