@@ -1,8 +1,9 @@
 (ns minimily.auth.web.ui.signin
   (:require [hiccup.form :refer :all]))
 
-(defn signin-content []
+(defn signin-content [message]
   (form-to [:post "/account/login"]
+    (when message [:div {:class "alert alert-warning" :role "alert"} message])
     [:div {:class "row"}
       [:div {:class "col-md-5"}
         [:div {:class "form-group"}

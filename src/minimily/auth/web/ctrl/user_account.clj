@@ -1,6 +1,5 @@
 (ns minimily.auth.web.ctrl.user-account
   (:require [ring.util.response               :refer [redirect]]
-            [buddy.hashers                    :as hashers]
             [minimily.utils.web.wrapper       :refer [http-headers]]
             [minimily.web.ui.layout           :refer [layout]]
             [minimily.auth.model.user-account :as user-account-model]
@@ -21,10 +20,12 @@
   {:full-name (user-profile-model/full-name user)
    :user-id   (:id user)})
 
-(defn signin-page []
-  (http-headers 
-    (layout nil "Sign In"
-      (signin-content))))
+(defn signin-page
+  ([] (signin-page nil))
+  ([message]
+    (http-headers
+      (layout nil "Sign In"
+        (signin-content message)))))
 
 (defn signin [params]
   (let [auth-user (user-account-model/authenticate (:username params) 
@@ -33,7 +34,8 @@
       (let [session (create-session auth-user)
             forward (:forward params)]
         (-> (redirect (if (or (.isEmpty forward) (.equals forward "/signin")) "/" forward))
-            (assoc :session session))))))
+            (assoc :session session)))
+      (signin-page "Your credentials don't match. Please, try again."))))
 
 (defn signin-fail []
   (redirect "/"))
@@ -77,13 +79,10 @@
   (password-ui/password-change-page session nil))
 
 (defn change-password [params session]
-  (println params)
-  (let [password (:password params)
-        password-confirmation (:password_confirm params)
-        hashed (hashers/derive password)]
-    (if (= password password-confirmation)
+  (let [password (:password params)]
+    (if (= password (:password_confirm params))
       (do
-        (user-account-model/set-new-password (:user-id session) hashed)
+        (user-account-model/set-new-password (:user-id session) password)
         (redirect "/account/pswd/change/confirmation"))
       (password-ui/password-change-page session "The password and its confirmation don't match. Please, try again."))))
 

@@ -56,6 +56,9 @@
   (with-conn
     (jdbc/query conn query)))
 
+(defn find-record [query]
+  (first (find-records query)))
+
 (defn get-record 
   ([table id]
     (with-conn
