@@ -1,5 +1,6 @@
 (ns minimily.auth.web.ctrl.user-account
   (:require [ring.util.response               :refer [redirect]]
+            [buddy.hashers                    :as hashers]
             [minimily.utils.web.wrapper       :refer [http-headers]]
             [minimily.web.ui.layout           :refer [layout]]
             [minimily.auth.model.user-account :as user-account-model]
@@ -16,17 +17,20 @@
                               :email        (:email params)})
     (redirect "/signin")))
 
+(defn create-session [user]
+  {:full-name (user-profile-model/full-name user)
+   :user-id   (:id user)})
+
 (defn signin-page []
   (http-headers 
     (layout nil "Sign In"
       (signin-content))))
 
-(defn signin [params session]
+(defn signin [params]
   (let [auth-user (user-account-model/authenticate (:username params) 
                                                    (:password params))]
     (if auth-user
-      (let [session {:full-name (user-profile-model/full-name auth-user)
-                     :user-id   (:id auth-user)}
+      (let [session (create-session auth-user)
             forward (:forward params)]
         (-> (redirect (if (or (.isEmpty forward) (.equals forward "/signin")) "/" forward))
             (assoc :session session))))))
@@ -46,39 +50,42 @@
   (let [email         (:email params)
         existing-user (user-account-model/find-by-username email)]
     ; Check if the email exists
-    (if (not (empty? existing-user))
+    (if (empty? existing-user)
+      (request-reset-password "The informed email is unknown. Please, try again or <a href='/signup'>create a new account</a>.")
       ; Generate a UUID code and associate it with the user
       (let [uuid (user-account-model/generate-uuid)]
         (user-account-model/set-verification (:id existing-user) uuid)
         ; Send a message with the UUID code
         (user-account-model/send-request-reset email uuid)
-        (redirect "/account/pswd/reset/request/verify"))
-      (request-reset-password "The informed email is unknown. Please, try again below or <a href='/signup'>create a new account</a>."))))
-
-(defn verify-request-reset-password [params]
-  (password-ui/password-reset-request-submitted-page params))
+        (redirect "/account/pswd/reset/request/verify")))))
 
 (defn check-code-reset-password [params]
-  (if-let [existing-user (user-account-model/find-by-verification (:verification params))]
-    (do
-      (user-account-model/reset-verification (:id existing-user))
-      (redirect "/account/pswd/change"))
-    )
-  ; Check if the informed UUID is associated with a user
-  ; If yes, clean up the UUID, create a session for the user as she was authenticated
-  ; If not, inform the UUID is invalid and suggest to restart the process again
-  )
+  (let [verified-user (user-account-model/find-by-verification (:verification params))]
+    (if (empty? verified-user)
+      (password-ui/password-reset-request-submitted-page params "The informed code is not valid. Try again or <a href='/account/pswd/reset/request'>request a new code</a>.")
+      (do
+        (user-account-model/reset-verification (:id verified-user))
+        (-> (redirect "/account/pswd/change")
+            (assoc :session (create-session verified-user)))))))
+
+(defn verify-request-reset-password [params]
+  (if (:cd params)
+    (check-code-reset-password {:verification (:cd params)})
+    (password-ui/password-reset-request-submitted-page params nil)))
 
 (defn changing-password [session]
-  ; Load user data to show in the UI
-  (password-ui/password-change-page session))
+  (password-ui/password-change-page session nil))
 
 (defn change-password [params session]
-  ; Check if password and confirmation are the same and if password respects password policy
-  ; If yes, encrypt the password, store it in the database and destroy the 
-  ; session to force the user to login again using the new password
-  ; If not, ask the user to inform the same password in both fields.
-  (redirect "/account/pswd/change/confirmation"))
+  (println params)
+  (let [password (:password params)
+        password-confirmation (:password_confirm params)
+        hashed (hashers/derive password)]
+    (if (= password password-confirmation)
+      (do
+        (user-account-model/set-new-password (:user-id session) hashed)
+        (redirect "/account/pswd/change/confirmation"))
+      (password-ui/password-change-page session "The password and its confirmation don't match. Please, try again."))))
 
-(defn confirm-change-password []
-  (password-ui/password-change-confirmed-page))
+(defn confirm-change-password [session]
+  (password-ui/password-change-confirmed-page session))

@@ -18,28 +18,33 @@
         (str "&nbsp;")
         [:a {:class "btn btn-outline-secondary" :href "/signin"} "Cancel"]))))
 
-(defn password-reset-request-submitted-page [params]
+(defn password-reset-request-submitted-page [params message]
   (http-headers
     (layout nil "Request to Reset Password Submitted"
       (form-to [:post "/account/pswd/reset/request/verify"]
+        (when message [:div {:class "alert alert-warning" :role "alert"} message])
         [:p (str "A message was sent to the informed email with a unique code 
                   generated exclusively for you and valid for a few minutes. 
                   Please, inform the code you received in the field below.")]
         [:div {:class "form-group"}
           (label "secret_code" "Secret Code")
-          (text-field {:class "form-control" :id "secret_code"} "secret_code")]
+          (text-field {:class "form-control" :id "verification"} "verification")]
         (submit-button {:class "btn btn-primary"} "Submit")
         (str "&nbsp;")
         [:a {:class "btn btn-outline-secondary" :href "/signin"} "Cancel"]))))
 
-(defn password-change-page [session]
+(defn password-change-page [session message]
   (http-headers 
-    (layout nil "Changing Password"
+    (layout session "Changing Password"
       (form-to [:post "/account/pswd/change"]
+        (when message [:div {:class "alert alert-warning" :role "alert"} message])
         [:div {:class "row"}
           [:div {:class "col-md-5"}
             [:div {:class "form-group"}
-              (label "password" "Password")
+              (label "name" "Name")
+              [:p (:full-name session)]]
+            [:div {:class "form-group"}
+              (label "password" "New Password")
               (password-field {:class "form-control" :id "password" 
                               :autocomplete "off"} "password")]
             [:div {:class "form-group"}
@@ -50,7 +55,7 @@
         (str "&nbsp;")
         [:a {:class "btn btn-outline-secondary" :href "/signin"} "Cancel"]))))
 
-(defn password-change-confirmed-page []
+(defn password-change-confirmed-page [session]
   (http-headers 
-    (layout nil "Password Changed !"
-      [:a {:class "btn btn-secondary" :href "/signin"} "Sign In"])))
+    (layout session "Password Changed !"
+      [:a {:href "/"} "Go to Homepage"])))

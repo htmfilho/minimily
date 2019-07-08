@@ -10,8 +10,8 @@
     (core/GET  "/signup"                            [] (signup-page))
     (core/GET  "/signout"                           {session :session} 
                                                     (user-account-ctrl/signout session))
-    (core/POST "/account/login"                     {params :params session :session}
-                                                    (user-account-ctrl/signin params session))
+    (core/POST "/account/login"                     {params :params}
+                                                    (user-account-ctrl/signin params))
     (core/GET  "/account/login/fail"                [] 
                                                     (user-account-ctrl/signin-fail))
     (core/GET  "/account/pswd/reset/request"        [] 
@@ -26,8 +26,8 @@
                                                     (user-account-ctrl/changing-password session))
     (core/POST "/account/pswd/change"               {params :params session :session}
                                                     (user-account-ctrl/change-password params session))
-    (core/GET  "/account/pswd/change/confirmation"  []
-                                                    (user-account-ctrl/confirm-change-password))
+    (core/GET  "/account/pswd/change/confirmation"  {session :session}
+                                                    (user-account-ctrl/confirm-change-password session))
     (core/POST "/account/new"                       {params :params}
                                                     (user-account-ctrl/new-account params))
     (core/GET  "/request"                           req (str req))))
