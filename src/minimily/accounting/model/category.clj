@@ -31,11 +31,10 @@
   (find-categories profile-id credit-categories-sqlvec))
 
 (defn count-children [profile-id parent-id]
-  (:count (first 
-            (db/find-records 
-              (categories-count-children-sqlvec 
-                {:profile-ids (family-member-model/list-family-organizers profile-id)
-                 :parent-id   parent-id})))))
+  (:count (db/find-record
+            (categories-count-children-sqlvec 
+              {:profile-ids (family-member-model/list-family-organizers profile-id)
+               :parent-id   parent-id}))))
 
 (defn get-it [profile-id id]
   (db/get-record table id profile-id))

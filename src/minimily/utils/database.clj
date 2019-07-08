@@ -66,9 +66,9 @@
   ([table id profile-id]
     (if (not id)
       nil
-      (first (find-records (str "select * from " (name table) 
+      (find-record (str "select * from " (name table) 
                                 " where id = " id 
-                                " and profile = " profile-id))))))
+                                " and profile = " profile-id)))))
 
 (defn insert-record
   "Returns a map of fields persisted in the database."
