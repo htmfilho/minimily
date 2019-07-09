@@ -73,7 +73,7 @@
 
 (defn verify-request-reset-password [params]
   (if (:cd params)
-    (check-code-reset-password {:verification (:cd params)})
+    (check-code-reset-password {:recovery-code (:cd params)})
     (password-ui/password-reset-request-submitted-page params nil)))
 
 (defn changing-password [session]
