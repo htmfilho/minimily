@@ -1,5 +1,6 @@
 (ns minimily.auth.web.ctrl.user-account
-  (:require [ring.util.response               :refer [redirect]]
+  (:require [clojure.string                   :as string]
+            [ring.util.response               :refer [redirect]]
             [minimily.utils.web.wrapper       :refer [http-headers]]
             [minimily.web.ui.layout           :refer [layout]]
             [minimily.auth.model.user-account :as user-account-model]
@@ -49,7 +50,7 @@
   ([message] (password-ui/password-reset-request-page message)))
 
 (defn send-request-reset-password [params]
-  (let [email         (:email params)
+  (let [email         (string/trim (:email params))
         existing-user (user-account-model/find-by-username email)]
     ; Check if the email exists
     (if (empty? existing-user)
@@ -62,7 +63,7 @@
         (redirect "/account/pswd/reset/request/verify")))))
 
 (defn check-code-reset-password [params]
-  (let [verified-user (user-account-model/find-by-verification (:verification params))]
+  (let [verified-user (user-account-model/find-by-verification (string/trim (:recovery-code params)))]
     (if (empty? verified-user)
       (password-ui/password-reset-request-submitted-page params "The informed code is not valid. Try again or <a href='/account/pswd/reset/request'>request a new code</a>.")
       (do

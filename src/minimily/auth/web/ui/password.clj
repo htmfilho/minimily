@@ -23,12 +23,10 @@
     (layout nil "Request to Reset Password Submitted"
       (form-to [:post "/account/pswd/reset/request/verify"]
         (when message [:div {:class "alert alert-warning" :role "alert"} message])
-        [:p (str "A message was sent to the informed email with a unique code 
-                  generated exclusively for you and valid for a few minutes. 
-                  Please, inform the code you received in the field below.")]
+        [:p (str "Check your email for a link to reset your password. If it doesn’t appear within a few minutes, check your spam folder.")]
         [:div {:class "form-group"}
-          (label "secret_code" "Secret Code")
-          (text-field {:class "form-control" :id "verification"} "verification")]
+          (label "recovery-code" "Recovery Code")
+          (text-field {:class "form-control" :id "recovery-code"} "recovery-code")]
         (submit-button {:class "btn btn-primary"} "Submit")
         (str "&nbsp;")
         [:a {:class "btn btn-outline-secondary" :href "/signin"} "Cancel"]))))

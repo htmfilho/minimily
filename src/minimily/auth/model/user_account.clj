@@ -1,6 +1,8 @@
 (ns minimily.auth.model.user-account
-  (:require [hugsql.core              :as hugsql]
+  (:require [clojure.string           :as string]
+            [hugsql.core              :as hugsql]
             [buddy.hashers            :as hashers]
+            [selmer.parser            :as selmer]
             [minimily.utils.database  :as db]
             [minimily.utils.messenger :as messenger]))
 
@@ -34,9 +36,11 @@
     (db/update-record table {:id id :password hashed-password})))
 
 (defn generate-uuid []
-  (str (java.util.UUID/randomUUID)))
+  (-> (str (java.util.UUID/randomUUID))
+      (string/replace  #"-" "")
+      (string/upper-case)))
 
 (defn send-request-reset [email uuid]
   (messenger/send-message email 
-                          "Minimily Reset Password" 
-                          (str uuid)))
+                          "Reset your Minimily Password"
+                          (selmer/render-file "emails/request_reset_password.txt" {:uuid uuid})))

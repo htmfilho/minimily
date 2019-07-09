@@ -20,6 +20,7 @@
                  [buddy                     "2.0.0"  ]  ; web security
                  [compojure                 "1.6.1"  ]  ; routing library
                  [hiccup                    "1.0.5"  ]  ; html template library
+                 [selmer                    "1.12.12"]  ; template system for text content
                  [ring/ring-core            "1.6.3"  ]  ; web application library
                  [ring/ring-jetty-adapter   "1.6.3"  ]  ; web server library
                  [ring/ring-devel           "1.6.3"  ]  ; web development facilities

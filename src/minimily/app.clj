@@ -1,14 +1,17 @@
 (ns minimily.app
-  (:require [ring.middleware.reload                  :refer [wrap-reload]]
-            [ring.middleware.session                 :refer [wrap-session]]
-            [minimily.middleware.exception           :refer [wrap-exception]]
-            [ring.adapter.jetty                      :as jetty]
-            [compojure.core                          :refer :all]
-            [compojure.handler                       :as handler]
-            [config.core                             :refer [env]]
-            [minimily.web.routing                    :as routing]
-            [minimily.utils.database                 :as db])
+  (:require [ring.middleware.reload        :refer [wrap-reload]]
+            [ring.middleware.session       :refer [wrap-session]]
+            [minimily.middleware.exception :refer [wrap-exception]]
+            [ring.adapter.jetty            :as jetty]
+            [compojure.core                :refer :all]
+            [compojure.handler             :as handler]
+            [config.core                   :refer [env]]
+            [selmer.parser                 :as parser]
+            [minimily.web.routing          :as routing]
+            [minimily.utils.database       :as db])
   (:gen-class))
+
+(parser/set-resource-path! (clojure.java.io/resource "templates"))
 
 (defonce server (atom nil))
 
