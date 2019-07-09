@@ -3,15 +3,15 @@
             [config.core :refer [env]]))
 
 (defn post [message]
-  (postal/send-message {:host (env  :EMAIL_HOST)
-                        :user (env  :EMAIL_USER)
-                        :pass (env  :EMAIL_PASSWORD)
-                        :port (Integer/parseInt (env  :EMAIL_PORT))
+  (postal/send-message {:host (or (:EMAIL_HOST env) (System/getenv "EMAIL_HOST"))
+                        :user (or (:EMAIL_USER env) (System/getenv "EMAIL_USER"))
+                        :pass (or (:EMAIL_PASSWORD env) (System/getenv "EMAIL_PASSWORD"))
+                        :port (Integer/parseInt (or (:EMAIL_PORT env) (System/getenv "EMAIL_PORT")))
                         :tls  true}
                        message))
 
 (defn send-message [to subject body]
-  (post {:from (env :EMAIL_FROM)
+  (post {:from (or (:EMAIL_FROM env) (System/getenv "EMAIL_FROM"))
          :to [to]
          :subject subject
          :body body}))

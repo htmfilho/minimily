@@ -19,7 +19,7 @@
   (let [routing-app (-> (handler/site #'routing/app)
                         wrap-exception
                         wrap-session)]
-    (reset! server (jetty/run-jetty (if (env :reload)
+    (reset! server (jetty/run-jetty (if (:reload env)
                                       (wrap-reload routing-app)
                                       routing-app) 
                                     {:port port :join? false})))
@@ -33,5 +33,5 @@
   "1. Entry point that migrates the database and start the server at port 5000."
   [& [port]]
   (db/migrate)
-  (let [port (or port (Integer. (env :port)) 5000)]
+  (let [port (or port (Integer. (:port env)) 5000)]
     (start-server port)))
