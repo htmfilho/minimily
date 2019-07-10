@@ -7,13 +7,13 @@
             [minimily.inventory.model.good             :as good-model]))
 
 (defn view-collections [session]
-  (let [collections (collection-model/find-all (:user-id session))]
+  (let [collections (collection-model/find-all (:profile-id session))]
     (collections-page session collections)))
 
 (defn view-collection [session id]
   (let [collection-id (Integer/parseInt id)
-        collection    (collection-model/get-it (:user-id session) collection-id)
-        goods         (good-model/find-by-collection (:user-id session) collection-id)]
+        collection    (collection-model/get-it (:profile-id session) collection-id)
+        goods         (good-model/find-by-collection (:profile-id session) collection-id)]
     (collection-page session collection goods)))
 
 (defn new-collection [session]
@@ -21,15 +21,15 @@
 
 (defn edit-collection [session id]
   (let [collection-id (Integer/parseInt id)
-        collection    (collection-model/get-it (:user-id session) collection-id)]
+        collection    (collection-model/get-it (:profile-id session) collection-id)]
     (collection-form-page session collection)))
 
 (defn save-collection [session params]
-  (let [collection (conj params {:profile (:user-id session)})
+  (let [collection (conj params {:profile (:profile-id session)})
         id (collection-model/save collection)]
     (redirect "/inventory/collections")))
 
 (defn delete-collection [session params]
   (let [id (:id params)]
-    (collection-model/delete-it (:user-id session) id)
+    (collection-model/delete-it (:profile-id session) id)
     (redirect "/inventory/collection")))

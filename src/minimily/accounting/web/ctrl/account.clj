@@ -8,17 +8,17 @@
             [minimily.accounting.model.currency      :as currency-model]))
 
 (defn view-accounts [session]
-  (let [active-accounts   (account-model/find-actives (:user-id session))
-        inactive-accounts (account-model/find-inactives (:user-id session))
+  (let [active-accounts   (account-model/find-actives (:profile-id session))
+        inactive-accounts (account-model/find-inactives (:profile-id session))
         currencies        (currency-model/find-all)]
     (accounts-page session active-accounts inactive-accounts currencies)))
 
 (defn view-account [session id]
-  (let [account (account-model/get-it (:user-id session) id)
+  (let [account (account-model/get-it (:profile-id session) id)
         account (assoc account 
                        :percentage-used-credit 
                        (account-model/percentage-used-credit account))
-        transactions (transaction-model/find-by-account (:user-id session) id)]
+        transactions (transaction-model/find-by-account (:profile-id session) id)]
     (account-page session account transactions)))
 
 (defn new-account [session]
@@ -26,7 +26,7 @@
     (account-form-page session currencies)))
 
 (defn edit-account [session id]
-  (let [account    (account-model/get-it (:user-id session) id)
+  (let [account    (account-model/get-it (:profile-id session) id)
         currencies (map #(if (= (:acronym %) (:currency account))
                            (conj % {:selected true})
                            (conj % {:selected false})) 
@@ -35,7 +35,7 @@
 
 (defn save-account [session params]
   (let [account (-> params 
-                    (assoc :profile (:user-id session))
+                    (assoc :profile (:profile-id session))
                     (assoc :debit_limit (if (empty? (:debit_limit params))
                                             0
                                             (BigDecimal. (:debit_limit params))))
@@ -45,5 +45,5 @@
 
 (defn delete-account [session params]
   (let [id (Integer/parseInt (:id params))]
-    (account-model/delete-it (:user-id session) id)
+    (account-model/delete-it (:profile-id session) id)
     (redirect "/accounting/accounts")))

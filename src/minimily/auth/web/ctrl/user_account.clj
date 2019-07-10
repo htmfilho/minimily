@@ -18,8 +18,9 @@
     (redirect "/signin")))
 
 (defn create-session [user]
-  {:full-name (user-profile-model/full-name user)
-   :user-id   (:id user)})
+  {:full-name  (user-profile-model/full-name user)
+   :profile-id (:profile_id user)
+   :account-id (:account_id user)})
 
 (defn signin-page
   ([] (signin-page nil))
@@ -67,7 +68,7 @@
     (if (empty? verified-user)
       (password-ui/password-reset-request-submitted-page params "The informed code is not valid. Try again or <a href='/account/pswd/reset/request'>request a new code</a>.")
       (do
-        (user-account-model/reset-verification (:id verified-user))
+        (user-account-model/reset-verification (:account_id verified-user))
         (-> (redirect "/account/pswd/change")
             (assoc :session (create-session verified-user)))))))
 
@@ -77,13 +78,16 @@
     (password-ui/password-reset-request-submitted-page params nil)))
 
 (defn changing-password [session]
-  (password-ui/password-change-page session nil))
+  (if (empty? session) 
+    (redirect "/")
+    (password-ui/password-change-page session nil)))
 
 (defn change-password [params session]
-  (let [password (:password params)]
+  (let [password (:password params)
+        account-id (:account-id session)]
     (if (= password (:password_confirm params))
       (do
-        (user-account-model/set-new-password (:user-id session) password)
+        (user-account-model/set-new-password account-id password)
         (redirect "/account/pswd/change/confirmation"))
       (password-ui/password-change-page session "The password and its confirmation don't match. Please, try again."))))
 

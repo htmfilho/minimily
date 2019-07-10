@@ -11,18 +11,18 @@
 
 (defn view-document [session id]
   (let [document-id (Integer/parseInt id)
-        document    (document-model/get-it (:user-id session) document-id)
-        folder      (folder-model/get-it (:user-id session) (:folder document))
-        path        (document-model/find-path (:user-id session) document-id)]
+        document    (document-model/get-it (:profile-id session) document-id)
+        folder      (folder-model/get-it (:profile-id session) (:folder document))
+        path        (document-model/find-path (:profile-id session) document-id)]
     (document-page session document folder path)))
 
 (defn new-document [session folder-id]
-  (let [folder (folder-model/get-it (:user-id session) folder-id)]
+  (let [folder (folder-model/get-it (:profile-id session) folder-id)]
     (document-form-add session folder)))
 
 (defn edit-document [session id]
-  (let [document (document-model/get-it (:user-id session) id)
-        folder   (folder-model/get-it (:user-id session) (:folder document))]
+  (let [document (document-model/get-it (:profile-id session) id)
+        folder   (folder-model/get-it (:profile-id session) (:folder document))]
     (document-form-edit session folder document)))
 
 (defn save-document [session params]
@@ -35,18 +35,18 @@
                      (conj {:file_original_name (:filename file)})
                      (conj {:file_format (:content-type file)})
                      (conj {:file_size (:size file)})
-                     (conj {:file_store_path (str (folder-model/path (:user-id session) folder) "/" (s/tech (:filename file)))})
-                     (conj {:profile (:user-id session)}))]
+                     (conj {:file_store_path (str (folder-model/path (:profile-id session) folder) "/" (s/tech (:filename file)))})
+                     (conj {:profile (:profile-id session)}))]
     (document-model/save document (:tempfile file))
     (redirect (str "/folders/" folder) :see-other)))
 
 (defn delete-document [session params]
   (let [document-id (Integer/parseInt (:id params))]
-    (document-model/delete-it (:user-id session) document-id)
+    (document-model/delete-it (:profile-id session) document-id)
     (redirect (str "/folders/" (:folder params)))))
 
 (defn download-document [session id]
-  (let [document (document-model/get-file (:user-id session) id)]
+  (let [document (document-model/get-file (:profile-id session) id)]
     (content-type {:status 200
                    :headers {}
                    :body (:input-stream document)} 

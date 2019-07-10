@@ -16,12 +16,12 @@
     (reduce conj documents folders)))
 
 (defn view-parent-folders [session]
-  (let [folders (merge-num-children (:user-id session) 
-                                    (folder-model/find-parents (:user-id session)))]
+  (let [folders (merge-num-children (:profile-id session) 
+                                    (folder-model/find-parents (:profile-id session)))]
     (folders-page session folders)))
 
 (defn view-folder [session id]
-  (let [profile-id (:user-id session)
+  (let [profile-id (:profile-id session)
         folder-id  (Integer/parseInt id)
         folder     (folder-model/get-it profile-id folder-id)
         children   (merge-documents folder-id
@@ -31,20 +31,20 @@
     (folder-page session folder children path)))
 
 (defn new-folder [session parent-id]
-  (let [parent (folder-model/get-it (:user-id session) parent-id)]
+  (let [parent (folder-model/get-it (:profile-id session) parent-id)]
     (folder-form-new session parent)))
 
 (defn edit-folder [session id]
-  (let [folder (folder-model/get-it (:user-id session) id)]
+  (let [folder (folder-model/get-it (:profile-id session) id)]
     (folder-form-edit session folder)))
 
 (defn save-folder [session folder]
   (let [parent (when (:parent folder) (Integer/parseInt (:parent folder)))
-        folder (conj folder {:parent parent :profile (:user-id session)})
+        folder (conj folder {:parent parent :profile (:profile-id session)})
         id (folder-model/save folder)]
     (redirect (str "/folders/" (if (nil? parent) id parent)))))
 
 (defn delete-folder [session params]
   (let [folder-id (Integer/parseInt (:id params))]
-    (folder-model/delete-it (:user-id session) folder-id)
+    (folder-model/delete-it (:profile-id session) folder-id)
     (redirect "/folders")))
