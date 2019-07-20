@@ -11,7 +11,10 @@
 (def table :user_account)
 
 (defn save [user-account]
-  (db/save-record table user-account))
+  (let [user-account (assoc user-account 
+                            :password 
+                            (hashers/derive (:password user-account)))]
+    (db/save-record table user-account)))
 
 (defn authenticate [username password]
   (let [user-account (db/find-record (find-by-username-sqlvec {:username username}))]

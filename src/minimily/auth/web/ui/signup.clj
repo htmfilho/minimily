@@ -5,24 +5,48 @@
                                                 password-field submit-button
                                                 text-field]]))
 
-(defn signup-page []
-  (http-headers 
-    (layout nil "Sign Up"
-      (form-to [:post "/account/new"]
-        [:div {:class "form-group"}
-          (label "first_name" "First Name")
-          (text-field {:class "form-control" :id "first_name"} "first_name")]
-        [:div {:class "form-group"}
-          (label "last_name" "Last Name")
-          (text-field {:class "form-control" :id "last_name"} "last_name")]  
-        [:div {:class "form-group"}
-          (label "email" "Email address")
-          (email-field {:class "form-control" :id "email" 
-                        :autocomplete "off"} "email")]
-        [:div {:class "form-group"}
-          (label "password" "Password")
-          (password-field {:class "form-control" :id "password" 
-                           :autocomplete "off"} "password")]
-        (submit-button {:class "btn btn-primary"} "Submit")
-        (str "&nbsp;")
-        [:a {:class "btn btn-outline-secondary" :href "/"} "Cancel"]))))
+(defn signup-page
+  ([] (signup-page nil nil))
+  ([user-account message]
+    (http-headers 
+      (layout nil "Sign Up"
+        (form-to [:post "/account/new"]
+          (when message [:div {:class "alert alert-warning" :role "alert"} message])
+          
+          [:div.row
+            [:div.col-md-6
+              [:div.form-group
+                (label "first-name" "First Name")
+                (text-field {:class "form-control" :id "first-name" :required "required" :value (:first-name user-account)} "first-name")]]
+            [:div.col-md-6
+              [:div.form-group
+                (label "last-name" "Last Name")
+                (text-field {:class "form-control" :id "last-name" :required "required" :value (:last-name user-account)} "last-name")]]]
+
+          [:div.row
+            [:div.col-md-6
+              [:div.form-group
+                (label "email" "Email Address")
+                (email-field {:class "form-control" :id "email" 
+                              :autocomplete "off" :required "required" :value (:email user-account)} "email")]]
+            [:div.col-md-6
+              [:div.form-group
+                (label "email-confirmation" "Email Confirmation")
+                (email-field {:class "form-control" :id "email-confirmation" 
+                              :autocomplete "off" :required "required" :value (:email-confirmation user-account)} "email-confirmation")]]]
+
+          [:div.row
+            [:div.col-md-6
+              [:div.form-group
+                (label "password" "Password")
+                (password-field {:class "form-control" :id "password" 
+                                 :required "required"} "password")]]
+            [:div.col-md-6
+              [:div.form-group
+                (label "password-confirmation" "Password Confirmation")
+                (password-field {:class "form-control" :id "password-confirmation" 
+                                 :required "required"} "password-confirmation")]]]
+          
+          (submit-button {:class "btn btn-primary"} "Submit")
+          (str "&nbsp;")
+          [:a {:class "btn btn-outline-secondary" :href "/"} "Cancel"])))))

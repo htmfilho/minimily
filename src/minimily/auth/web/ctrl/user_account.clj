@@ -6,16 +6,28 @@
             [minimily.auth.model.user-account :as user-account-model]
             [minimily.auth.model.user-profile :as user-profile-model]
             [minimily.auth.web.ui.signin      :refer [signin-content]]
+            [minimily.auth.web.ui.signup      :as signup-ui]
             [minimily.auth.web.ui.password    :as password-ui]))
 
 (defn new-account [params]
-  (let [user-account-id (user-account-model/save {:username (:email params)
-                                                  :password (:password params)})]
-    (user-profile-model/save {:user_account user-account-id
-                              :first_name   (:first_name params)
-                              :last_name    (:last_name params)
-                              :email        (:email params)})
-    (redirect "/signin")))
+  (let [email    (:email params)
+        password (:password params)]
+    ; check if email matches
+    (if (= email (:email-confirmation params))
+      ; check if password matches
+      (if (= password (:password-confirmation params))
+        ; check if email already exists
+        (if (empty? (user-account-model/find-by-username email))
+          (let [user-account-id (user-account-model/save {:username (:email params)
+                                                          :password (:password params)})]
+            (user-profile-model/save {:user_account user-account-id
+                                      :first_name   (:first-name params)
+                                      :last_name    (:last-name params)
+                                      :email        (:email params)})
+            (redirect "/signin"))
+          (signup-ui/signup-page params "E-mail address already registered. Do you want to <a href='/signup'>reset your password</a>?"))
+        (signup-ui/signup-page params "Password doesn't match with the confirmation."))
+      (signup-ui/signup-page params "E-mail doesn't match with the confirmation."))))
 
 (defn create-session [user]
   {:full-name  (user-profile-model/full-name user)
