@@ -6,7 +6,7 @@
             [minimily.accounting.web.routing :as accounting]
             [minimily.documents.web.routing  :as documents]
             [minimily.inventory.web.routing  :as inventory]
-            [minimily.web.ui.home            :refer [home-page]]))
+            [minimily.web.ctrl.home          :refer [home-page]]))
 
 (defn routes []
   (core/routes

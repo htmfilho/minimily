@@ -38,7 +38,6 @@
                 :integrity "sha384-4oV5EgaV02iISL2ban6c/RmotsABqE4yZxZLcYMAdG7FAPsyHYAPpywE9PJo+Khy" 
                 :crossorigin "anonymous"}]]
     [:body
-      
       [:nav {:class "navbar navbar-expand-lg fixed-top navbar-dark bg-dark"}
       [:div {:class "container"}
         [:a {:class "navbar-brand" :href "/" :style "font-family: 'Pacifico', cursive;"} "Minimily"]
