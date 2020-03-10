@@ -39,6 +39,10 @@
         (url/POST "/save"
                   {session :session params :params} 
                   (document-ctrl/save-document session params))
+
+        (url/POST "/saveandnew"
+                  {session :session params :params}
+                  (document-ctrl/save-and-new-document session params))
         
         (url/POST "/delete"
                   {session :session params :params}

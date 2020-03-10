@@ -37,7 +37,9 @@
         file (:file params)
         document (-> {} 
                      (conj {:folder folder})
-                     (conj {:title (:title params)})
+                     (conj {:title (if (empty? (:title params)) 
+                                     (:filename file) 
+                                     (:title params))})
                      (conj {:description (:description params)})
                      (conj {:file_original_name (:filename file)})
                      (conj {:file_format (:content-type file)})
@@ -46,6 +48,30 @@
                      (conj {:profile (:profile-id session)}))]
       (document-model/save document (:tempfile file))
       (redirect (str "/folders/" folder) :see-other))))
+
+(defn save-and-new-document [session params]
+  (if (:id params)
+    (let [document (-> {}
+                       (conj {:id (:id params)})
+                       (conj {:title (:title params)})
+                       (conj {:description (:description params)}))]
+      (document-model/save document)
+      (redirect (str "/folders/" (:folder params))))
+    (let [folder (Integer/parseInt (:folder params))
+        file (:file params)
+        document (-> {} 
+                     (conj {:folder folder})
+                     (conj {:title (if (empty? (:title params)) 
+                                     (:filename file) 
+                                     (:title params))})
+                     (conj {:description (:description params)})
+                     (conj {:file_original_name (:filename file)})
+                     (conj {:file_format (:content-type file)})
+                     (conj {:file_size (:size file)})
+                     (conj {:file_store_path (str (folder-model/path (:profile-id session) folder) "/" (s/tech (:filename file)))})
+                     (conj {:profile (:profile-id session)}))]
+      (document-model/save document (:tempfile file))
+      (redirect (str "/folders/" folder "/documents/new") :see-other))))
 
 (defn delete-document [session params]
   (let [document-id (Integer/parseInt (:id params))]

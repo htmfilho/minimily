@@ -26,7 +26,13 @@
           (label "description" "Description")
           (text-area {:class "form-control" :id "description"} 
                      "description")]
-        (submit-button {:class "btn btn-primary"} "Submit")
+
+        (submit-button {:class "btn btn-primary"
+                        :formaction (str "/folders/" (:id folder) "/documents/save")} "Submit")
+        (str "&nbsp;")
+        
+        (submit-button {:class "btn btn-primary"
+                        :formaction (str "/folders/" (:id folder) "/documents/saveandnew")} "Submit and New")
         (str "&nbsp;")
         [:a {:class "btn btn-outline-secondary" 
              :href (str "/folders/" (:id folder))} "Cancel"]])))
