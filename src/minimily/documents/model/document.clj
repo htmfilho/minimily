@@ -42,10 +42,13 @@
                  :file file)
   document)
 
-(defn save [document file]
-  (let [id (db/save-record table document)]
-    (save-file file document)
-    id))
+(defn save
+  ([document]
+    (save document nil))
+  ([document file]
+    (let [id (db/save-record table document)]
+      (when (some? file) (save-file file document))
+      id)))
 
 (defn delete-it [profile-id id]
   (db/delete-record table id profile-id))
