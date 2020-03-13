@@ -17,6 +17,7 @@ jobs:
           POSTGRES_USER: minimily
           POSTGRES_PASSWORD: secret
           POSTGRES_DB: minimily
+          DATABASE_TYPE: POSTGRES
 
     working_directory: ~/repo
 
