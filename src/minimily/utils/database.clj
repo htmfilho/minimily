@@ -33,9 +33,9 @@
 
  
 (def datasource
-  (if (= (:DATABASE_TYPE env) "POSTGRES")
-    (cp/make-datasource (conj postgres-options (decompose-postgres-url (:DATABASE_URL env))))
-    (cp/make-datasource {:url (:DATABASE_URL env) :adapter "h2"})))
+  (if (= (:DATABASE_TYPE env) "H2")
+    (cp/make-datasource {:url (:DATABASE_URL env) :adapter "h2"})
+    (cp/make-datasource (conj postgres-options (decompose-postgres-url (:DATABASE_URL env))))))
 
 (def migration-config
   {:datastore  (migration/sql-database {:datasource datasource})
