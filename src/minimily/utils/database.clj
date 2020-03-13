@@ -1,17 +1,16 @@
 (ns minimily.utils.database
-  (:require [hikari-cp.core    :as cp]
-            [clojure.string    :as str]
-            [clojure.java.jdbc :as jdbc]
-            [clojure.java.io   :as io]
-            [config.core       :refer [env reload-env]]
-            [ragtime.jdbc      :as migration]
-            [ragtime.repl      :as repl]))
+  (:require [hikari-cp.core        :as cp]
+            [clojure.string        :as str]
+            [clojure.java.jdbc     :as jdbc]
+            [clojure.java.io       :as io]
+            [config.core           :refer [env reload-env]]
+            [ragtime.jdbc          :as migration]
+            [ragtime.repl          :as repl]
+            [minimily.utils.config :as config]))
 
-(defn copy-file [source-path dest-path]
-  (io/copy (io/file source-path) 
-           (io/file dest-path)))
-
-(defn decompose-url [url]
+(defn decompose-postgres-url
+  "Decomposes a URL in the postgres format: postgres://minimily:secret@localhost:5432/minimily"
+  [url]
   (if-let [url (or url (System/getenv "DATABASE_URL"))]
     (let [double-slashes (str/index-of url "//")
           second-colon   (str/index-of url ":" (+ double-slashes 2))
@@ -24,16 +23,16 @@
        :port-number   (subs url (+ third-colon 1) slash)
        :database-name (subs url (+ slash 1))})
     (do
-      (copy-file "config/dev/config.edn.example" "config/dev/config.edn")
+      (config/initialize)
       (reload-env)
-      (decompose-url (:DATABASE_URL env)))))
+      (decompose-postgres-url (:DATABASE_URL env)))))
 
 (def options {:pool-name "db-pool"
               :adapter "postgresql"
               :maximum-pool-size 2})
  
 (def datasource
-  (cp/make-datasource (conj options (decompose-url (:DATABASE_URL env)))))
+  (cp/make-datasource (conj options (decompose-postgres-url (:DATABASE_URL env)))))
 
 (def migration-config
   {:datastore  (migration/sql-database {:datasource datasource})
