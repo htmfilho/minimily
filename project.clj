@@ -13,7 +13,7 @@
                  [org.postgresql/postgresql "42.2.0" ]  ; db driver
                  [com.h2database/h2         "1.4.200"]  ; db driver
                  [com.layerware/hugsql      "0.4.9"  ]  ; sql abstraction
-                 [hikari-cp                 "1.8.1"  ]  ; connection pool
+                 [hikari-cp                 "2.10.0" ]  ; connection pool (https://github.com/tomekw/hikari-cp)
                  [ragtime                   "0.8.0"  ]  ; migration
                  [org.slf4j/slf4j-nop       "1.7.13" ]  ; hikari-cp's dependency
 
@@ -21,7 +21,7 @@
                  [buddy                     "2.0.0"  ]  ; web security
                  [compojure                 "1.6.1"  ]  ; routing library
                  [hiccup                    "1.0.5"  ]  ; html template library
-                 [selmer                    "1.12.12"]  ; template system for text content
+                 [selmer                    "1.12.12"]  ; template system
                  [ring/ring-core            "1.6.3"  ]  ; web application library
                  [ring/ring-jetty-adapter   "1.6.3"  ]  ; web server library
                  [ring/ring-devel           "1.6.3"  ]  ; web development facilities
