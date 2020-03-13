@@ -11,3 +11,4 @@ target/
 .nrepl-port
 config/dev/config.edn
 config/prod/config.edn
+data/
