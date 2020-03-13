@@ -4,15 +4,17 @@ Minimily is an application designed to help you keeping your life as simple as p
 
 [![CircleCI](https://circleci.com/gh/htmfilho/minimily.svg?style=svg)](https://circleci.com/gh/htmfilho/minimily)
 
-## Requirements
+## Installing
 
-Minimily is a web application and it has 3 requirements:
+### Requirements
 
- 1. *PostgreSQL* is a database that scales from a Raspberry PI to a high availability cluster. It requires some additional configuration at the beginning, but it is quite straightforward to work with. 
+Minimily is a web application and it has 3 requirements: 
 
- 2. The application is developed in Clojure, a language hosted on the *Java Virtual Machine* (JVM), which means it depends on a Java environment to work. The JVM is well known for its performance and large ecosystem.
+ 1. The application is developed in Clojure, a language hosted on the *Java Virtual Machine* (JVM), which means it depends on a Java environment to work. The JVM is well known for its performance and large ecosystem.
 
- 3. *Leiningen* is a build tool for Clojure applications. It is used during development, packaging and deployment.
+ 2. *Leiningen* is a build tool for Clojure applications. It is used during development, packaging and deployment.
+
+ 3. Minimily uses an embedded database that works out of the box, but in case you need more capacity, you can use *PostgreSQL* instead. PostgreSQL is a database that scales from a Raspberry PI to a high availability cluster. It requires some additional configuration at the beginning, but it is quite straightforward to work with.
 
 ### Installing PostgreSQL
 
@@ -29,7 +31,22 @@ Then create the database for the application:
       =# grant connect on database minimily to minimily;
       =# \q
 
+In the configuration file, available at `config/[env]/config.edn`, use the following URL to connect to PostgreSQL:
+
+    :DATABASE_URL "postgres://minimily:secret@localhost:5432/minimily"
+
 ### Installing JVM
+
+Minimily is open source and free like free beer. You can use Minimily and contribute to it as much as you can. In order to fulfill this promesse, we also need to use open source and free software. In the JVM world, there are free and paid distributions. We want you to be careful about which distribution to pick. So, we would like to recommend the following distributions:
+
+* **OpenJDK**: https://openjdk.java.net/install/
+* **Amazon**: https://aws.amazon.com/corretto/
+
+Please, follow the installation instructions in their respective websites.
+
+## Using
+
+## Contributing
 
 ### Installing Leiningen
 
@@ -54,7 +71,7 @@ Run the `jar` package:
 To deploy to Heroku, make sure you have a PostgreSQL database and an 
 environment variable named DATABASE_URL.
 
-## Code Conventions
+### Code Conventions
 
 The application is organized in decoupled modules. They are:
 
