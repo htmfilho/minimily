@@ -1,4 +1,4 @@
 {:DATABASE_TYPE "POSTGRES"
- :DATABASE_URL "postgres://username:password@servername:port/databasename"
+ :DATABASE_URL "postgres://minimily:secret@localhost:5432/minimily"
  :port 3000
  :reload false}
