@@ -1,4 +1,4 @@
-{:DATABASE_URL "postgres://minimily:secret@localhost:5432/minimily"
+{:DATABASE_URL "jdbc:h2:file:./data/h2;MODE=PostgreSQL;AUTO_SERVER=TRUE"
  :AWS_ACCESS_KEY_ID ""
  :AWS_SECRET_ACCESS_KEY ""
  :AWS_S3_BUCKET_NAME ""
