@@ -5,5 +5,5 @@
 (deftest test-mandatory-datasource-options
   (testing "The mandatory datasource options are present."
     (is (reduce #(and %1 %2)
-                (map #(contains? options %)
+                (map #(contains? postgres-options %)
                      [:pool-name :adapter])))))
