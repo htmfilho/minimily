@@ -17,4 +17,4 @@
            (io/file dest-path)))
 
 (defn initialize []
-  (copy-file "config/dev/config.edn.example" "config/dev/config.edn"))
+  (copy-file "config/prod/config.edn.example" "config/dev/config.edn"))

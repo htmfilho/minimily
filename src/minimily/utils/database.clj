@@ -30,7 +30,6 @@
 (def postgres-options {:pool-name "db-pool"
                        :adapter "postgresql"
                        :maximum-pool-size 2})
-
  
 (def datasource
   (if (= (:DATABASE_TYPE env) "H2")
