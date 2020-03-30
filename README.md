@@ -50,9 +50,13 @@ Please, follow the installation instructions in their respective websites.
 
 ### Installing Leiningen
 
-Run from the terminal (dev profile):
+Run from the terminal using the _dev_ profile:
 
     $ lein run
+
+or using the _prod_ profile:
+
+    $ lein with-profile prod run
 
 Run from the REPL (dev profile):
 
