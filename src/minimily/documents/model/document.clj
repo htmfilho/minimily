@@ -29,11 +29,10 @@
 (defn get-it [profile-id id]
   (db/get-record table id profile-id))
 
-(defn get-file [profile-id id]
-  (let [document (get-it profile-id id)]
-    (s3/get-object cred 
-                   :bucket-name bucket
-                   :key (:file_store_path document))))
+(defn get-file [document]
+  (s3/get-object cred 
+                 :bucket-name bucket
+                 :key (:file_store_path document)))
 
 (defn save-file [file document]
   (s3/put-object cred

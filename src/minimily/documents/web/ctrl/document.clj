@@ -78,9 +78,15 @@
     (document-model/delete-it (:profile-id session) document-id)
     (redirect (str "/folders/" (:folder params)))))
 
+(defn content-disposition [file-format file-name]
+  (str (get {"image/jpeg"      "inline"
+             "application/pdf" "inline"} file-format "attachment")
+       "; filename=\"" file-name "\""))
+
 (defn download-document [session id]
-  (let [document (document-model/get-file (:profile-id session) id)]
+  (let [document    (document-model/get-it (:profile-id session) id)
+        s3-document (document-model/get-file document)]
     (content-type {:status 200
-                   :headers {}
-                   :body (:input-stream document)} 
-                  (:content-type (:object-metadata document)))))
+                   :headers {"Content-Disposition" (content-disposition (:file_format document) (:file_original_name document))}
+                   :body (:input-stream s3-document)} 
+                  (:content-type (:file-format document)))))
