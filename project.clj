@@ -6,7 +6,7 @@
   :url "http://minimily.com"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
-  :dependencies [[org.clojure/clojure       "1.9.0"  ]  ; recent version of Clojure
+  :dependencies [[org.clojure/clojure       "1.9.0" ]  ; recent version of Clojure
 
                  ; Database dependencies
                  [org.clojure/java.jdbc     "0.7.0"  ]  ; jdbc api
@@ -23,17 +23,41 @@
                  [hiccup                    "1.0.5"  ]  ; html template library
                  [selmer                    "1.12.12"]  ; template system used for email messages
                  [ring/ring-core            "1.6.3"  ]  ; web application library
-                 [ring/ring-jetty-adapter   "1.6.3"  ]  ; web server library
+                 ;[ring/ring-jetty-adapter   "1.6.3"  ]  ; web server library
+                 [http-kit                  "2.3.0"  ]
                  [ring/ring-devel           "1.6.3"  ]  ; web development facilities
                  [com.draines/postal        "2.0.3"  ]  ; email library
+                 [javax.servlet/servlet-api "2.5"    ]
                  
                  ; Extra dependencies
-                 [yogthos/config            "1.1.1"  ]  ; manage environment variables
+                 [yogthos/config            "1.1.4"  ]  ; manage environment variables
                  [amazonica                 "0.3.121"]  ; access to amazon web services
                  [org.clojure/data.json     "0.2.6"  ]  ; data structures to json
                  [clj-time                  "0.14.0" ]]
+
+  :plugins [[io.taylorwood/lein-native-image "0.3.0"]
+            [nrepl/lein-nrepl "0.3.2"]]
+
   :min-lein-version "2.0.0"
-  :main ^:ship-aot minimily.app
+  
+  :aot :all
+  
+  :main minimily.app
+
+  :native-image {:name "minimily"
+                 :jvm-opts ["-Dclojure.compiler.direct-linking=true"]
+                 :opts     ["--enable-url-protocols=http"
+                            "--report-unsupported-elements-at-runtime"
+                            "--initialize-at-build-time"
+                            "--allow-incomplete-classpath"
+                            "--no-server"
+                            "--initialize-at-run-time=org.postgresql.sspi.SSPIClient"
+                            "-H:ConfigurationResourceRoots=resources"
+                            ~(str "-H:ResourceConfigurationFiles="
+                                  (System/getProperty "user.dir")
+                                  (java.io.File/separator)
+                                  "resource-config.json")]}
+
   :uberjar-name "minimily-standalone.jar"
   :profiles {:prod {:resource-paths ["config/prod"]}
              :dev  {:resource-paths ["config/dev"]} ; it runs when using the repl.
