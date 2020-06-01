@@ -2,7 +2,7 @@
   (:require [ring.middleware.reload        :refer [wrap-reload]]
             [ring.middleware.session       :refer [wrap-session]]
             [minimily.middleware.exception :refer [wrap-exception]]
-            [ring.adapter.jetty            :as jetty]
+            [org.httpkit.server            :refer [run-server]]
             [compojure.core                :refer :all]
             [compojure.handler             :as handler]
             [config.core                   :refer [env]]
@@ -22,15 +22,18 @@
   (let [routing-app (-> (handler/site #'routing/app)
                         wrap-exception
                         wrap-session)]
-    (reset! server (jetty/run-jetty (if (:reload env)
-                                      (wrap-reload routing-app)
-                                      routing-app) 
-                                    {:port port :join? false})))
+    (reset! server (run-server (if (:reload env)
+                                   (wrap-reload routing-app)
+                                   routing-app) 
+                               {:port port :join? false})))
   (println (str "Go to http://localhost:" port)))
 
 (defn stop-server []
-  (.stop @server)
-  (reset! server nil))
+  (when-not (nil? @server)
+    (@server :timeout 100)
+    (reset! server nil)))
+
+(.addShutdownHook (Runtime/getRuntime) (Thread. stop-server))
 
 (defn -main
   "1. Entry point that migrates the database and start the server at port 5000."

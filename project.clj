@@ -23,7 +23,6 @@
                  [hiccup                    "1.0.5"  ]  ; html template library
                  [selmer                    "1.12.12"]  ; template system used for email messages
                  [ring/ring-core            "1.6.3"  ]  ; web application library
-                 ;[ring/ring-jetty-adapter   "1.6.3"  ]  ; web server library
                  [http-kit                  "2.3.0"  ]
                  [ring/ring-devel           "1.6.3"  ]  ; web development facilities
                  [com.draines/postal        "2.0.3"  ]  ; email library
