@@ -32,7 +32,7 @@
                  [yogthos/config            "1.1.4"  ]  ; manage environment variables
                  [amazonica                 "0.3.121"]  ; access to amazon web services
                  [org.clojure/data.json     "0.2.6"  ]  ; data structures to json
-                 [clj-time                  "0.14.0" ]]
+                 [clj-time                  "0.15.2" ]]
 
   :plugins [[io.taylorwood/lein-native-image "0.3.0"]
             [nrepl/lein-nrepl "0.3.2"]]
