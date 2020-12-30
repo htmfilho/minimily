@@ -40,7 +40,7 @@
                          (Integer/parseInt (:category params)))})
       (conj {:type (Integer/parseInt (:type params))})
       (conj {:amount (BigDecimal. (:amount params))})
-      (conj {:date_transaction (to-date (str (:date_transaction params) " 12:00:00") "yyyy-MM-dd HH:mm:ss")})
+      (conj {:date_transaction (to-date (str (:date_transaction params) " 12:00:00 -0500") "yyyy-MM-dd HH:mm:ss Z")})
       (conj {:profile (:profile-id session)})))
 
 (defn add-transaction [session params]
@@ -59,7 +59,7 @@
                         (conj {:category (if (empty? (:category params)) 
                                            nil
                                            (Integer/parseInt (:category params)))})
-                        (conj {:date_transaction (to-date (str (:date_transaction params) " 12:00:00") "yyyy-MM-dd HH:mm:ss")})
+                        (conj {:date_transaction (to-date (str (:date_transaction params) " 12:00:00 -0500") "yyyy-MM-dd HH:mm:ss Z")})
                         (conj {:profile (:profile-id session)}))]
     (transaction-model/save transaction)
     (redirect (str "/accounting/accounts/" (:account transaction) "/transactions/" (:id transaction)))))
