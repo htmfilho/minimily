@@ -19,7 +19,7 @@
         amount-from      (BigDecimal. (:amount transfer))
         amount-to        (BigDecimal. (:amount_to transfer))
         fee              (if (contains? transfer :fee) (BigDecimal. (:fee transfer)) (BigDecimal. 0))
-        date-transaction (to-date (:date_transaction transfer) "yyyy-MM-dd")
+        date-transaction (to-date (str (:date_transaction transfer) "12:00:00 -0500") "yyyy-MM-dd HH:mm:ss Z")
         transaction-from {:account (:id from) 
                           :type -1
                           :amount (.add amount-from fee)

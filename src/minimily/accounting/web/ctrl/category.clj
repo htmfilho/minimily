@@ -30,9 +30,10 @@
             (recur (rest categories) 
                    remaining
                    tree)
-            ; If the parent is in the tree, replace the parent of the 
-            ; category with the parent found, add the category to the tree, and 
-            ; remove the category from the remaining.
+            ; If the parent is in the tree:
+            ; - replace the parent of the category with the parent found
+            ; - add the category to the tree 
+            ; - remove the category from the remaining
             (let [node      (conj category {:parent parent})
                   remaining (filter #(not= (:id %) (:id category)) remaining)]
               (recur remaining
