@@ -13,13 +13,12 @@
     (form/transfer-form-page session account to-accounts)))
 
 (defn perform-transfer [session transfer]
-  (println transfer)
   (let [from             (account-model/get-it (:profile-id session) (:account transfer))
         to               (account-model/get-it (:profile-id session) (:to transfer))
         amount-from      (BigDecimal. (:amount transfer))
         amount-to        (BigDecimal. (:amount_to transfer))
         fee              (if (contains? transfer :fee) (BigDecimal. (:fee transfer)) (BigDecimal. 0))
-        date-transaction (to-date (str (:date_transaction transfer) "12:00:00 -0500") "yyyy-MM-dd HH:mm:ss Z")
+        date-transaction (to-date (:date_transaction transfer) "yyyy-MM-dd")
         transaction-from {:account (:id from) 
                           :type -1
                           :amount (.add amount-from fee)

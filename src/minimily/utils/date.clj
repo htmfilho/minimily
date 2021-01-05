@@ -11,6 +11,8 @@
   (.format (SimpleDateFormat. format) date))
 
 (defn to-date [str-date format]
-  (->> str-date
-       (timef/parse (timef/formatter format))
-       (timec/to-sql-date)))
+  (let [str-date (str str-date " 12:00:00 -0500")
+        format   (str format " HH:mm:ss Z")]
+    (->> str-date
+         (timef/parse (timef/formatter format))
+         (timec/to-sql-date))))
