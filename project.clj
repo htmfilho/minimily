@@ -6,7 +6,7 @@
   :url "http://minimily.com"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
-  :dependencies [[org.clojure/clojure       "1.9.0" ]  ; recent version of Clojure
+  :dependencies [[org.clojure/clojure       "1.10.2" ]  ; recent version of Clojure
 
                  ; Database dependencies
                  [org.clojure/java.jdbc     "0.7.0"  ]  ; jdbc api

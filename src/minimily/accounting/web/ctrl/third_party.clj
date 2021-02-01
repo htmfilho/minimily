@@ -23,7 +23,7 @@
 (defn save-third-party [session params]
   (let [third-party params
         id          (third-party-model/save third-party)]
-    (redirect (str "/accounting/third_parties/"))))
+    (redirect (str "/accounting/third_parties"))))
 
 (defn delete-third-party [session params]
   (let [id (Integer/parseInt (:id params))]
