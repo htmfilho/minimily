@@ -1,0 +1,12 @@
+{:up   
+  ["create table third_party (
+    id     serial       primary key,
+    name   varchar(100) not null
+  );
+  
+  alter table account add third_party integer references third_party;
+  alter table account alter column profile drop not null;"]
+ :down 
+  ["alter table account alter column profile integer not null;
+    alter table account drop column third_party;
+    drop table third_party;"]}

@@ -8,7 +8,10 @@
                              :description "Accounts where money is managed."}
                             {:label "Categories"
                              :link "/accounting/categories"
-                             :description "Categories of incomes and expenses."}]}
+                             :description "Categories of incomes and expenses."}
+                            {:label "Third Parties"
+                             :link "/accounting/third_parties"
+                             :description "Third party services and organizations we do business with."}]}
 
                  {:label "Documents" 
                   :link "/folders" 

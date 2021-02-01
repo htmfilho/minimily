@@ -1,10 +1,11 @@
 (ns minimily.accounting.web.routing
   (:require [compojure.core                           :as url]
             [minimily.accounting.web.ctrl.account     :as account-ctrl]
+            [minimily.accounting.web.ctrl.accounting  :as accounting-ctrl]
             [minimily.accounting.web.ctrl.category    :as category-ctrl]
+            [minimily.accounting.web.ctrl.third-party :as third-party-ctrl]
             [minimily.accounting.web.ctrl.transaction :as transaction-ctrl]
             [minimily.accounting.web.ctrl.transfer    :as transfer-ctrl]
-            [minimily.accounting.web.ctrl.accounting  :as accounting-ctrl]
             [minimily.accounting.web.api.account      :as account-api]
             [minimily.accounting.web.api.transaction  :as transaction-api]
             [minimily.accounting.web.api.category     :as category-api]))
@@ -102,6 +103,31 @@
         (url/GET "/:id/edit"
                  {session :session {id :id} :params}
                  (category-ctrl/edit-category session id)))
+
+      (url/context "/third_parties" []
+        (url/GET "/"
+                 {session :session}
+                 (third-party-ctrl/view-third-parties session))
+
+        (url/GET  "/new"
+                  {session :session} 
+                  (third-party-ctrl/new-third-party session))
+        
+        (url/GET  "/:id"
+                  {session :session {id :id} :params}
+                  (third-party-ctrl/view-third-party session id))
+
+        (url/GET "/:id/edit"
+                 {session :session {id :id} :params}
+                 (third-party-ctrl/edit-third-party session id))
+
+        (url/POST "/save"
+                  {session :session params :params}
+                  (third-party-ctrl/save-third-party session params))
+                  
+        (url/POST "/delete"
+                  {session :session params :params} 
+                  (third-party-ctrl/delete-third-party session params)))
     
       (url/context "/api" []
         (url/context "/accounts" []
