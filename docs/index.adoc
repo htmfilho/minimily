@@ -1,0 +1,18 @@
+﻿= Minimily : Organize Your Minimalist Life
+Hildeberto Mendonca <me@hildeberto.com>
+v0.1.0
+:doctype: book
+:pdf-page-size: LETTER
+:encoding: utf-8
+:toc: left
+:toclevels: 3
+:numbered:
+
+> Minimily is an application designed to help you keeping your life as simple as possible. We will help you to make decisions taking into account the impact on your health, family, living place, community and environment.
+
+:sectnums!:
+
+
+:sectnums:
+
+
