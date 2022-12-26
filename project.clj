@@ -11,7 +11,6 @@
                  ; Database dependencies
                  [org.clojure/java.jdbc     "0.7.0"  ]  ; jdbc api
                  [org.postgresql/postgresql "42.2.0" ]  ; db driver
-                 [com.h2database/h2         "1.4.200"]  ; db driver (https://h2database.com)
                  [com.layerware/hugsql      "0.4.9"  ]  ; sql abstraction
                  [hikari-cp                 "2.10.0" ]  ; connection pool (https://github.com/tomekw/hikari-cp)
                  [ragtime                   "0.8.0"  ]  ; migration
