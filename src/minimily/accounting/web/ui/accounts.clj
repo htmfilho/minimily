@@ -22,17 +22,15 @@
           [:thead
             [:tr 
               [:th "Name"]
-              [:th "Number"]
               [:th {:style "text-align: right;"} "Balance"]
               [:th "Currency"]]]
           [:tbody 
             (map #(vector :tr [:td [:a {:href (str "/accounting/accounts/" (:id %))} 
                                        (:name %)]]
-                              [:td (:number %)]
                               [:td {:style "text-align: right;"} (:balance %)]
                               [:td (:currency %)]) active-accounts)
             [:tr
-             [:td {:colspan "2" :style "text-align: right;"} [:b "Total:"]]
+             [:td {:style "text-align: right;"} [:b "Total:"]]
              [:td {:style "text-align: right;"} (reduce + (filter #(not (nil? %)) (map #(:balance %) active-accounts)))]
              [:td]]]]]
       
@@ -44,16 +42,14 @@
           [:thead
             [:tr 
               [:th "Name"]
-              [:th "Number"]
               [:th {:style "text-align: right;"} "Balance"]
               [:th "Currency"]]]
           [:tbody 
             (map #(vector :tr [:td [:a {:href (str "/accounting/accounts/" (:id %))} 
                                        (:name %)]]
-                              [:td (:number %)]
                               [:td {:style "text-align: right;"} (:balance %)]
                               [:td (:currency %)]) inactive-accounts)
             [:tr
-             [:td {:colspan "2" :style "text-align: right;"} [:b "Total:"]]
+             [:td {:style "text-align: right;"} [:b "Total:"]]
              [:td {:style "text-align: right;"} (reduce + (filter #(not (nil? %)) (map #(:balance %) inactive-accounts)))]
              [:td]]]]])))

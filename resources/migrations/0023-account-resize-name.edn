@@ -1,0 +1,6 @@
+{:up   
+  ["alter table account alter column name type varchar(100);
+    alter table account drop column number;"]
+ :down 
+  ["alter table account alter column name type varchar(30);
+    alter table account add number varchar(30) null;"]}

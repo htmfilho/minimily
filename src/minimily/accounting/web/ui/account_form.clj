@@ -14,16 +14,10 @@
         (when account (hidden-field "id" (:id account)))
         [:div {:class "form-group"}
           (label "name" "Name")
-          (text-field {:class "form-control" :id "name" :maxlength "30"} 
+          (text-field {:class "form-control" :id "name" :maxlength "100"} 
                       "name" 
                       (:name account))]
         [:div {:class "row"}
-          [:div {:class "col-md-4"}
-            [:div {:class "form-group"}
-              (label "number" "Number")
-              (text-field {:class "form-control" :id "number" :maxlength "30"}
-                          "number"
-                          (:number account))]]
           [:div {:class "col-md-4"}
             [:div {:class "form-group"}
               (label "currency" "Currency")
@@ -37,7 +31,7 @@
               (text-field {:class "form-control" :id "debit_limit"}
                           "debit_limit"
                           (:debit_limit account))]]
-          [:div {:class "col-md-2"}
+          [:div {:class "col-md-6"}
             (bootstrap/checkbox "active" "Active" (:active account))]]
         (submit-button {:class "btn btn-primary"} "Submit")
         (str "&nbsp;")
