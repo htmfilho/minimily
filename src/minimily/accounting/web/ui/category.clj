@@ -35,6 +35,7 @@
             [:thead
               [:tr 
                 [:th "Name"]
+                [:th "Type"]
                 [:th "Description"]]]
             [:tbody 
               (map #(vector :tr [:td 
@@ -42,6 +43,7 @@
                                       [:i {:class "fas fa-tag"}]
                                       (str "&nbsp;")
                                       [:a {:href (str "/accounting/categories/" (:id %))} (:name %)]]]
+                                [:td (if (> (:transaction_type %) 0) "Credit" "Debit")]
                                 [:td (:description %)]) children)]])]
       [:br]
 

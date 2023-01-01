@@ -15,10 +15,12 @@
           [:thead
             [:tr 
               [:th "Name"]
+              [:th "Type"]
               [:th "Description"]]]
           [:tbody 
             (map #(vector :tr [:td [:a {:href (str "/accounting/categories/" (:id %))}
                                        [:i {:class "fas fa-tag"}]
                                        (str "&nbsp;")
                                        (:name %)]]
+                              [:td (if (> (:transaction_type %) 0) "Credit" "Debit")]
                               [:td (:description %)]) categories)]]])))
