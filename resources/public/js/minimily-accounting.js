@@ -109,6 +109,12 @@ function loadThirdPartyAccounts(accounts, status) {
     accounts.forEach(function(account) {
         selectThirdPartyAccount.append($("<option></option>").attr("value", account.id).text(account.name));
     });
+
+    if(accounts.length > 0) {
+        document.getElementById("third-party-account").selectedIndex = 1;
+    } else {
+        document.getElementById("third-party-account").selectedIndex = 0;
+    }
 }
 
 $("#amount").change(function() {
