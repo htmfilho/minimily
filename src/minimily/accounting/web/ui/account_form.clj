@@ -7,7 +7,7 @@
             [minimily.web.ui.bootstrap  :as bootstrap]
             [minimily.utils.web.wrapper :refer [http-headers]]))
 
-(defn account-form-page [session currencies & [account]]
+(defn account-form-page [session currencies third-parties & [account]]
   (http-headers
     (layout session "Account"
       (form-to [:post "/accounting/accounts/save"]
@@ -20,8 +20,17 @@
         [:div {:class "row"}
           [:div {:class "col-md-4"}
             [:div {:class "form-group"}
+              (label "third-party" "Third Party")
+              [:select {:class "form-control" :name "third_party" :id "third-party" :required "required"}
+                       [:option {:value ""} "Select..."]
+                       (map #(vector :option (if (:selected %)
+                                               {:value (:id %) :selected "true"}
+                                               {:value (:id %)}) (:name %)) third-parties)]]]
+          [:div {:class "col-md-4"}
+            [:div {:class "form-group"}
               (label "currency" "Currency")
-              [:select {:name "currency" :class "form-control" :id "currency"}
+              [:select {:name "currency" :class "form-control" :id "currency" :required "required"}
+                       [:option {:value ""} "Select..."]
                        (map #(vector :option (if (:selected %) 
                                                {:value (:acronym %) :selected "true"}
                                                {:value (:acronym %)}) (str (:acronym %) " (" (:name %) ")")) currencies)]]]
@@ -31,7 +40,7 @@
               (text-field {:class "form-control" :id "debit_limit"}
                           "debit_limit"
                           (:debit_limit account))]]
-          [:div {:class "col-md-6"}
+          [:div {:class "col-md-2"}
             (bootstrap/checkbox "active" "Active" (:active account))]]
         (submit-button {:class "btn btn-primary"} "Submit")
         (str "&nbsp;")

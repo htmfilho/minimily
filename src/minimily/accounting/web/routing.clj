@@ -33,6 +33,7 @@
         (url/POST "/delete"
                   {session :session params :params} 
                   (account-ctrl/delete-account session params))
+
         (url/GET "/:id"
                  {session :session {id :id} :params}
                  (account-ctrl/view-account session id))

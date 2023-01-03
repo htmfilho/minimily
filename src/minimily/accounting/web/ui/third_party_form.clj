@@ -12,10 +12,10 @@
     (layout session "Third Party"
       (form-to [:post "/accounting/third_parties/save"]
         (when third-party (hidden-field "id" (:id third-party)))
-        [:div {:class "form-group"}
-          (label "name" "Name")
-          (text-field {:class "form-control" :id "name" :maxlength "30"} 
-                      "name" 
+            [:div {:class "form-group"}
+              (label "name" "Name")
+              (text-field {:class "form-control" :id "name" :maxlength "30"} 
+                "name" 
                       (when third-party (:name third-party)))]
         (submit-button {:class "btn btn-primary"} "Submit")
         (str "&nbsp;")

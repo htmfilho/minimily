@@ -3,15 +3,17 @@
             [minimily.accounting.web.ui.third-parties    :refer [third-parties-page]]
             [minimily.accounting.web.ui.third-party      :refer [third-party-page]]
             [minimily.accounting.web.ui.third-party-form :refer [third-party-form-page]]
-            [minimily.accounting.model.third-party       :as third-party-model]))
+            [minimily.accounting.model.third-party       :as third-party-model]
+            [minimily.accounting.model.account           :as account-model]))
 
 (defn view-third-parties [session]
   (let [third-parties (third-party-model/find-all)]
     (third-parties-page session third-parties)))
 
 (defn view-third-party [session id]
-  (let [third-party (third-party-model/get-it id)]
-    (third-party-page session third-party)))
+  (let [third-party (third-party-model/get-it id)
+        accounts    (account-model/find-third-party-accounts id)]
+    (third-party-page session third-party accounts)))
 
 (defn new-third-party [session]
   (third-party-form-page session))

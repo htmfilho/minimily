@@ -5,7 +5,8 @@
             [minimily.accounting.web.ui.account      :refer [account-page]]
             [minimily.accounting.model.account       :as account-model]
             [minimily.accounting.model.transaction   :as transaction-model]
-            [minimily.accounting.model.currency      :as currency-model]))
+            [minimily.accounting.model.currency      :as currency-model]
+            [minimily.accounting.model.third-party   :as third-party-model]))
 
 (defn view-accounts [session]
   (let [active-accounts   (account-model/find-actives (:profile-id session))
@@ -14,28 +15,37 @@
     (accounts-page session active-accounts inactive-accounts currencies)))
 
 (defn view-account [session id]
-  (let [account (account-model/get-it (:profile-id session) id)
-        account (assoc account 
+  (let [account      (account-model/get-it (:profile-id session) id)
+        account      (assoc account 
                        :percentage-used-credit 
                        (account-model/percentage-used-credit account))
+        third-party  (third-party-model/get-it (:third_party account))
         transactions (transaction-model/find-by-account (:profile-id session) id)]
-    (account-page session account transactions)))
+    (account-page session account third-party transactions)))
 
 (defn new-account [session]
-  (let [currencies (currency-model/find-all)]
-    (account-form-page session currencies)))
+  (let [currencies    (currency-model/find-all)
+        third-parties (third-party-model/find-all)]
+    (account-form-page session currencies third-parties)))
 
 (defn edit-account [session id]
-  (let [account    (account-model/get-it (:profile-id session) id)
-        currencies (map #(if (= (:acronym %) (:currency account))
-                           (conj % {:selected true})
-                           (conj % {:selected false})) 
-                        (currency-model/find-all))]
-    (account-form-page session currencies account)))
+  (let [account       (account-model/get-it (:profile-id session) id)
+        third-parties (map #(if (= (:id %) (:third_party account))
+                              (conj % {:selected true})
+                              (conj % {:selected false})) 
+                           (third-party-model/find-all))
+        currencies    (map #(if (= (:acronym %) (:currency account))
+                              (conj % {:selected true})
+                              (conj % {:selected false})) 
+                           (currency-model/find-all))]
+    (account-form-page session currencies third-parties account)))
 
 (defn save-account [session params]
   (let [account (-> params 
                     (assoc :profile (:profile-id session))
+                    (conj {:third_party (if (empty? (:third_party params)) 
+                                           nil
+                                           (Integer/parseInt (:third_party params)))})
                     (assoc :debit_limit (if (empty? (:debit_limit params))
                                             0
                                             (BigDecimal. (:debit_limit params))))
