@@ -18,5 +18,8 @@
       (filter #(not= (:id %) except) third-parties)
       third-parties)))
 
+(defn find-other-third-parties [account-id]
+  (db/find-records (other-third-parties-sqlvec {:account-id account-id})))
+
 (defn delete-it [id]
   (db/delete-record table id))

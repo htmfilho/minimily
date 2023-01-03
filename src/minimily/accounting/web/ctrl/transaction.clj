@@ -17,7 +17,7 @@
 
 (defn new-transaction [session account]
   (let [account       (account-model/get-it (:profile-id session) account)
-        third-parties (third-party-model/find-all)]
+        third-parties (third-party-model/find-other-third-parties (:id account))]
     (form/transaction-form-add session account third-parties)))
 
 (defn edit-transaction [session account id]
