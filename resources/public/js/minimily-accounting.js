@@ -102,6 +102,15 @@ function loadCategories(categories, status) {
     });
 }
 
+function loadThirdPartyAccounts(accounts, status) {
+    var selectThirdPartyAccount = $("#third-party-account");
+    selectThirdPartyAccount.empty();
+    selectThirdPartyAccount.append($("<option></option>").attr("value", "").text("Select..."));
+    accounts.forEach(function(account) {
+        selectThirdPartyAccount.append($("<option></option>").attr("value", account.id).text(account.name));
+    });
+}
+
 $("#amount").change(function() {
     var amount = $(this).val() ? $(this).val() : 0;
     $(this).val(parseFloat(amount).toFixed(2));
@@ -128,6 +137,10 @@ $("#credit").change(function() {
 
 $("#debit").change(function() {
     $.getJSON("/accounting/api/categories/debit", loadCategories);
+});
+
+$("#third-party").change(function() {
+    $.getJSON("/accounting/api/accounts?third_party=" + $(this).val(), loadThirdPartyAccounts);
 });
 
 $(document).ready(getCurrencySelectedAccount);

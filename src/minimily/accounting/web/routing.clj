@@ -132,6 +132,10 @@
     
       (url/context "/api" []
         (url/context "/accounts" []
+          (url/GET "/"
+                   {session :session params :params}
+                   (account-api/get-accounts session params))
+
           (url/GET "/:account/balance/history" 
                    {session :session {account :account} :params}
                    (transaction-api/get-balance-history session account))

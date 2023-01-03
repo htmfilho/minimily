@@ -21,7 +21,7 @@
           [:div {:class "col-md-4"}
             [:div {:class "form-group"}
               (label "third-party" "Third Party")
-              [:select {:class "form-control" :name "third_party" :id "third-party" :required "required"}
+              [:select {:class "form-control" :name "third_party" :required "required"}
                        [:option {:value ""} "Select..."]
                        (map #(vector :option (if (:selected %)
                                                {:value (:id %) :selected "true"}

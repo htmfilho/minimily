@@ -3,10 +3,11 @@
             [minimily.utils.date                         :refer [to-date]]
             [minimily.accounting.web.ui.transaction-form :as form]
             [minimily.accounting.web.ui.transaction      :refer [transaction-page]]
+            [minimily.accounting.web.ctrl.category       :as category-ctrl]
             [minimily.accounting.model.account           :as account-model]
             [minimily.accounting.model.transaction       :as transaction-model]
             [minimily.accounting.model.category          :as category-model]
-            [minimily.accounting.web.ctrl.category       :as category-ctrl]))
+            [minimily.accounting.model.third-party       :as third-party-model]))
 
 (defn view-transaction [session account id]
   (let [account     (account-model/get-it (:profile-id session) account)
@@ -15,8 +16,9 @@
     (transaction-page session account transaction category)))
 
 (defn new-transaction [session account]
-  (let [account (account-model/get-it (:profile-id session) account)]
-    (form/transaction-form-add session account)))
+  (let [account       (account-model/get-it (:profile-id session) account)
+        third-parties (third-party-model/find-all)]
+    (form/transaction-form-add session account third-parties)))
 
 (defn edit-transaction [session account id]
   (let [profile-id  (:profile-id session)

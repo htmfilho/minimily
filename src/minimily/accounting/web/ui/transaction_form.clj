@@ -9,7 +9,7 @@
             [minimily.web.ui.bootstrap  :refer [show-field]]
             [minimily.utils.web.wrapper :refer [http-headers]]))
 
-(defn transaction-form-add [session account]
+(defn transaction-form-add [session account third-parties]
   (http-headers
     (layout session "Transaction"
       (form-to [:post (str "/accounting/accounts/" (:id account) "/transactions/add")]
@@ -42,10 +42,18 @@
                               false
                               -1)
                 [:span {:class "form-check-label"} "Debit"]]]]
-          [:div {:class "col-md-9"}
+          [:div {:class "col-md-5"}
             [:div {:class "form-group"}
-              (label "category" "Category")
-              [:select {:name "category" :class "form-control" :id "category"}
+              (label "third-party" "Third Party")
+              [:select {:name "third_party" :class "form-control" :id "third-party"}
+                       [:option {:value ""} "Select..."]
+                       (map #(vector :option (if (:selected %)
+                                               {:value (:id %) :selected "true"}
+                                               {:value (:id %)}) (:name %)) third-parties)]]]
+          [:div {:class "col-md-4"}
+            [:div {:class "form-group"}
+              (label "third-party-account" "Third Party Account")
+              [:select {:name "third_party_account" :class "form-control" :id "third-party-account"}
                        [:option {:value ""} "Select..."]]]]]
         
         [:div {:class "row"}
@@ -54,7 +62,14 @@
               (label "amount" (str "Amount (" (:currency account) ")"))
               (text-field {:class "form-control" :id "amount"} 
                           "amount")]]
-          [:div {:class "col-md-6"}
+          [:div {:class "col-md-9"}
+            [:div {:class "form-group"}
+              (label "category" "Category")
+              [:select {:name "category" :class "form-control" :id "category"}
+                       [:option {:value ""} "Select..."]]]]]
+
+        [:div {:class "row"}
+          [:div {:class "col-md-9"}
             [:div {:class "form-group"}
               (label "description" "Description")
               (text-field {:class "form-control" :id "description"} 
