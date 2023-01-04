@@ -42,10 +42,12 @@
 (defn create-counter-transaction [transaction third-party-account]
   (-> transaction 
       (conj {:type (* (:type transaction) -1)})
+      (conj {:account_transfer (:account transaction)})
       (conj {:account third-party-account})))
 
 (defn add [transaction third-party-account]
-  (let [counter-transaction (create-counter-transaction transaction third-party-account)]
+  (let [transaction         (conj transaction {:account_transfer third-party-account})
+        counter-transaction (create-counter-transaction transaction third-party-account)]
     (account-model/update-balance (:account transaction)
                                   (+ (* (:type transaction) 
                                         (:amount transaction))
