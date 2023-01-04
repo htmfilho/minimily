@@ -53,7 +53,7 @@
           [:div {:class "col-md-4"}
             [:div {:class "form-group"}
               (label "third-party-account" "Third Party Account")
-              [:select {:name "third_party_account" :class "form-control" :id "third-party-account"}
+              [:select {:name "third_party_account" :class "form-control" :id "third-party-account" :required "required"}
                        [:option {:value ""} "Select..."]]]]]
         
         [:div {:class "row"}

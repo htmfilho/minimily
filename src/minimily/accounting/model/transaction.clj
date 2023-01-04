@@ -37,14 +37,27 @@
   (db/get-record table id profile-id))
 
 (defn save [transaction]
+  (println transaction)
   (db/save-record table transaction))
 
-(defn add [transaction]
-  (account-model/update-balance (:account transaction)
-                                (+ (* (:type transaction) 
-                                      (:amount transaction))
-                                   (calculate-balance (:account transaction))))
-  (save transaction))
+(defn create-counter-transaction [transaction third-party-account]
+  (-> transaction 
+      (conj {:type (* (:type transaction) -1)})
+      (conj {:account third-party-account})))
+
+(defn add [transaction third-party-account]
+  (let [counter-transaction (create-counter-transaction transaction third-party-account)]
+    (account-model/update-balance (:account transaction)
+                                  (+ (* (:type transaction) 
+                                        (:amount transaction))
+                                     (calculate-balance (:account transaction))))
+    (save transaction)
+    
+    (account-model/update-balance third-party-account
+                                  (+ (* (:type counter-transaction)
+                                        (:amount counter-transaction))
+                                     (calculate-balance (:account counter-transaction))))
+    (save counter-transaction)))
 
 (defn delete-it [profile-id id]
   (db/delete-record table id profile-id))

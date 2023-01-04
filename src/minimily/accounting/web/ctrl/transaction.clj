@@ -34,8 +34,10 @@
                                         (conj % {:selected false})) 
                                      (category-ctrl/list-categories categories)))))
 
-(defn create-transaction [session params]
+(defn params-to-transaction [session params]
   (-> params
+      (dissoc :third_party_account)
+      (dissoc :third_party)
       (conj {:account (Integer/parseInt (:account params))})
       (conj {:category (if (empty? (:category params)) 
                          nil
@@ -46,21 +48,23 @@
       (conj {:profile (:profile-id session)})))
 
 (defn add-transaction [session params]
-  (let [transaction (create-transaction session params)]
-    (transaction-model/add transaction)
+  (let [transaction         (params-to-transaction session params)
+        third-party-account (Integer/parseInt (:third_party_account params))]
+    (transaction-model/add transaction third-party-account)
     (redirect (str "/accounting/accounts/" (:account transaction)))))
 
 (defn add-and-new-transaction [session params]
-  (let [transaction (create-transaction session params)]
-    (transaction-model/add transaction)
+  (let [transaction         (params-to-transaction session params)
+        third-party-account (Integer/parseInt (:third_party_account params))]
+    (transaction-model/add transaction third-party-account)
     (redirect (str "/accounting/accounts/" (:account transaction) "/transactions/new"))))
 
 (defn save-transaction [session params]
   (let [transaction (-> params
                         (conj {:account (Integer/parseInt (:account params))})
                         (conj {:category (if (empty? (:category params)) 
-                                           nil
-                                           (Integer/parseInt (:category params)))})
+                                          nil
+                                          (Integer/parseInt (:category params)))})
                         (conj {:date_transaction (to-date (:date_transaction params) "yyyy-MM-dd")})
                         (conj {:profile (:profile-id session)}))]
     (transaction-model/save transaction)
