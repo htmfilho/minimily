@@ -37,7 +37,6 @@
   (db/get-record table id profile-id))
 
 (defn save [transaction]
-  (println transaction)
   (db/save-record table transaction))
 
 (defn create-counter-transaction [transaction third-party-account]
