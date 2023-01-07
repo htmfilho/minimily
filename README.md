@@ -108,6 +108,10 @@ The web is divided in four parts:
 2. The prefix `find-` indicates the function returns a collection of values or
    records.
 
+## Dependencies
+
+- [HugSQL](https://www.hugsql.org/) is a library to abstract SQL statements as functions.
+
 ## License
 
 Copyright © 2017-2018 Hildeberto Mendonca
