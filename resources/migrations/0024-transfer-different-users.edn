@@ -1,0 +1,15 @@
+{:up   
+  ["create table account_transfer (
+    id             serial       primary key,
+    profile_from   integer      not null references user_profile on delete cascade,
+    account_from   integer      not null references account on delete cascade,
+    profile_to     integer          null references user_profile on delete set null,
+    account_to     integer          null references account on delete set null,
+    amount         numeric(8,2) not null,
+    currency       varchar(3)   not null references currency on delete restrict,
+    date_created   timestamp    not null default current_timestamp,
+    date_completed timestamp        null,
+    description    varchar(255)     null
+  );"]
+ :down 
+  ["drop table account_transfer;"]}
