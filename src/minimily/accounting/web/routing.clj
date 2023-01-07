@@ -129,7 +129,16 @@
         (url/POST "/delete"
                   {session :session params :params} 
                   (third-party-ctrl/delete-third-party session params)))
-    
+
+      (url/context "/transfers" []
+        (url/GET  "/"
+                  {session :session} 
+                  (transfer-ctrl/view-transfers session))
+                  
+        (url/GET  "/:id"
+                  {session :session {id :id} :params}
+                  (transfer-ctrl/view-transfer session id)))
+
       (url/context "/api" []
         (url/context "/accounts" []
           (url/GET "/"

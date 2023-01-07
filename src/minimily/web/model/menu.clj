@@ -6,6 +6,9 @@
                   :submenu [{:label "Accounts"
                              :link "/accounting/accounts"
                              :description "Accounts where money is managed."}
+                            {:label "Transfers"
+                             :link "/accounting/transfers"
+                             :description "Transfers between accounts"}
                             {:label "Categories"
                              :link "/accounting/categories"
                              :description "Categories of incomes and expenses."}

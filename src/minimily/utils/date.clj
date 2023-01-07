@@ -8,7 +8,9 @@
   (new Date))
 
 (defn to-string [date format]
-  (.format (SimpleDateFormat. format) date))
+  (if (nil? date)
+    ""
+    (.format (SimpleDateFormat. format) date)))
 
 (defn to-date [str-date format]
   (let [str-date (str str-date " 12:00:00 -0500")
