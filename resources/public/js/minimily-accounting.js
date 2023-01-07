@@ -17,9 +17,10 @@ function calculateAmountTo() {
     $("#final_balance").text(finalBalance);
 }
 
-function getCurrencySelectedAccount() {
-    var toAccount = $("#to").val();
-    if (toAccount != undefined) {
+function whenToAccountSelected() {
+    $("#to_user").val("");
+    var toAccount = $("#to_account").val();
+    if (toAccount != "") {
         $.getJSON("/accounting/api/accounts/" + toAccount + "/currency", function(toCurrency, status) {
             var fromCurrency = $("#currency").text();
             if (toCurrency != fromCurrency) {
@@ -32,12 +33,23 @@ function getCurrencySelectedAccount() {
                 $("#fee").prop("disabled", true);
                 $("#rate").val("");
                 $("#fee").val("");
-                $("#rate_label").text("Rate")
+                $("#rate_label").text("Rate");
                 $("#amount_to_label").text("Amount To");
             }
             calculateAmountTo();
         });
     }
+}
+
+function whenToUserSelected() {
+    document.getElementById("to_account").selectedIndex = 0;
+    $("#rate").prop("disabled", true);
+    $("#fee").prop("disabled", true);
+    $("#rate").val("");
+    $("#fee").val("");
+    $("#rate_label").text("Rate");
+    $("#amount_to_label").text("Amount To");
+    calculateAmountTo();
 }
 
 function getLabelsBalanceHistory(balanceHistory) {
@@ -57,7 +69,7 @@ function getValuesBalanceHistory(balanceHistory) {
 }
 
 function loadChart(account) {
-    $.getJSON("/api" + account + "/balance/history", function(data, status) {
+    $.getJSON("/accounting/api/accounts/" + account + "/balance/history", function(data, status) {
         balanceHistory = data;
         // charts
         var balanceHistoryChart = echarts.init(document.getElementById('balance-history-chart'));
@@ -92,6 +104,13 @@ function loadChart(account) {
         balanceHistoryChart.setOption(option);
     });
 }
+
+$('a[data-toggle="tab"]').on('shown.bs.tab', function (event) {
+    if(event.target.id === "history-tab") {
+        var path = window.location.pathname;
+        loadChart(path.substring(path.lastIndexOf("/") + 1));
+    }
+});
 
 function loadCategories(categories, status) {
     var selectCategory = $("#category");
@@ -135,7 +154,9 @@ $("#fee").change(function() {
     calculateAmountTo();
 });
 
-$("#to").change(getCurrencySelectedAccount);
+$("#to_account").change(whenToAccountSelected);
+
+$("#to_user").change(whenToUserSelected);
 
 $("#credit").change(function() {
     $.getJSON("/accounting/api/categories/credit", loadCategories);
@@ -149,11 +170,4 @@ $("#third-party").change(function() {
     $.getJSON("/accounting/api/accounts?third_party=" + $(this).val(), loadThirdPartyAccounts);
 });
 
-$(document).ready(getCurrencySelectedAccount);
-
-$(document).ready(function() {
-    var path = window.location.pathname;
-    if(path.includes("accounting")) {
-        loadChart(path);
-    }
-});
+$(document).ready(whenToAccountSelected);

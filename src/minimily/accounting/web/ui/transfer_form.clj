@@ -46,12 +46,17 @@
           [:div {:class "card-header"} "To"]
           [:div {:class "card-body"}
             [:div {:class "row"}
-              [:div {:class "col-4"}
+              [:div {:class "col-6"}
                 [:div {:class "form-group"}
-                  (label "to" "To Account")
-                  [:select {:name "to" :class "form-control" :id "to"}
+                  (label "to_account" "To Account")
+                  [:select {:name "to_account" :class "form-control" :id "to_account"}
                     (conj (map #(vector :option {:value (:id %)} (str (:name %) " (" (:currency %) ")")) to-accounts)
                           [:option {:value ""} "Select..."])]]]
+              [:div {:class "col-6"}
+                [:div {:class "form-group"}
+                  (label "to_user" "To User (Email)")
+                  (text-field {:class "form-control" :id "to_user"} "to_user")]]]
+            [:div {:class "row"}
               [:div {:class "col-md-2"}
                 [:div {:class "form-group"}
                   [:label {:for "rate" :id "rate_label"} "Rate"]
@@ -65,7 +70,7 @@
                 [:div {:class "form-group"}
                   [:label {:for "fee"} (str "Fee (" (:currency account) ")")]
                   (text-field {:class "form-control" :id "fee" :disabled "disabled"} "fee")]]
-              [:div {:class "col-md-2"}
+              [:div {:class "col-md-6"}
                 [:div {:class "form-group"}
                   (label "date_transaction" "Date")
                   [:input {:type "date" :id "date_transaction" :name "date_transaction" :class "form-control"
