@@ -2,7 +2,6 @@
   (:require [ring.util.response                       :refer [redirect]]
             [minimily.utils.date                      :refer [to-date]]
             [minimily.auth.model.user-profile         :as user-profile-model]
-            [minimily.accounting.web.ui.transfer-form :as form]
             [minimily.accounting.web.ui.transaction   :refer [transaction-page]]
             [minimily.accounting.web.ui.transfer      :as transfer-view]
             [minimily.accounting.model.account        :as account-model]
@@ -13,7 +12,7 @@
   (let [account (account-model/get-it (:profile-id session) account)
         to-accounts (account-model/find-actives-except (:profile-id session) 
                                                        (:id account))]
-    (form/transfer-form-page session account to-accounts)))
+    (transfer-view/transfer-form-page session account to-accounts)))
 
 (defn perform-transfer-to-account [session params]
   (let [from             (account-model/get-it (:profile-id session) (:account params))
@@ -63,7 +62,7 @@
 
 (defn perform-transfer-to-user [session params]
   (let [account-from     (account-model/get-it (:profile-id session) (:account params))
-        profile-to       (user-profile-model/find-profiles-by-email (:to_user params)) 
+        profile-to       (user-profile-model/find-profile-by-email (:to_user params)) 
         transfer         {:profile_from (:profile-id session)
                           :account_from (:id account-from)
                           :profile_to (:id profile-to)
