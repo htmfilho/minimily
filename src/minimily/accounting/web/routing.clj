@@ -106,9 +106,9 @@
                  (category-ctrl/edit-category session id)))
 
       (url/context "/third_parties" []
-        (url/GET "/"
-                 {session :session}
-                 (third-party-ctrl/view-third-parties session))
+        (url/GET  "/"
+                  {session :session}
+                  (third-party-ctrl/view-third-parties session))
 
         (url/GET  "/new"
                   {session :session} 
@@ -118,9 +118,9 @@
                   {session :session {id :id} :params}
                   (third-party-ctrl/view-third-party session id))
 
-        (url/GET "/:id/edit"
-                 {session :session {id :id} :params}
-                 (third-party-ctrl/edit-third-party session id))
+        (url/GET  "/:id/edit"
+                  {session :session {id :id} :params}
+                  (third-party-ctrl/edit-third-party session id))
 
         (url/POST "/save"
                   {session :session params :params}
@@ -137,7 +137,11 @@
                   
         (url/GET  "/:id"
                   {session :session {id :id} :params}
-                  (transfer-ctrl/view-transfer session id)))
+                  (transfer-ctrl/view-transfer session id))
+                  
+        (url/POST "/:id"
+                  {session :session params :params}
+                  (transfer-ctrl/complete-transfer session params)))
 
       (url/context "/api" []
         (url/context "/accounts" []

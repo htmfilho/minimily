@@ -7,6 +7,9 @@
 (defn today []
   (new Date))
 
+(defn now []
+  (timec/to-sql-date (new Date)))
+
 (defn to-string [date format]
   (if (nil? date)
     ""

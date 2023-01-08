@@ -62,10 +62,7 @@
     (layout session "Tranfer"
       [:div {:class "card"}
         [:div {:class "card-header"}
-          (form-to {:id "form_transfer"} [:post (str "/accounting/transfers/" (:id transfer) "/delete")]
-            (back-button "/accounting/transfers/")
-            (str "&nbsp;")
-            (hidden-field "id" (:id transfer)))]
+          (back-button "/accounting/transfers/")]
         [:div {:class "card-body"}
           [:div {:class "row"}
             [:div {:class "col-md-6"}
@@ -85,11 +82,16 @@
                 [:br]
                 (to-string (:date_completed transfer) "MMM dd, yyyy")]]]
           (when (and (nil? (:date_completed transfer)) (= (:profile-id session) (:profile_to  transfer)))
-            [:div {:class "form-group"}
-              (label "account-to" "Account To")
-              [:select {:name "account_to" :class "form-control" :id "account-to"}
-                       [:option {:value ""} "Select..."]
-                       (map #(vector :option {:value (:id %)} (:name %)) accounts)]])]])))
+            (form-to [:post (str "/accounting/transfers/" (:id transfer))]
+              [:div {:class "form-group"}
+                (label "account-to" "To Account")
+                [:select {:name "account_to" :class "form-control" :id "account-to"}
+                        [:option {:value ""} "Select..."]
+                        (map #(vector :option {:value (:id %)} (:name %)) accounts)]]
+            
+              (submit-button {:class "btn btn-primary"} "Submit")
+              (str "&nbsp;")
+              [:a {:class "btn btn-outline-secondary" :href (str "/accounting/transfers/")} "Cancel"]))]])))
 
 (defn transfer-form-page [session account to-accounts]
   (http-headers

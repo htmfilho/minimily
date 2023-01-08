@@ -1,6 +1,6 @@
 (ns minimily.accounting.web.ctrl.transfer
   (:require [ring.util.response                       :refer [redirect]]
-            [minimily.utils.date                      :refer [to-date]]
+            [minimily.utils.date                      :refer [to-date now to-string]]
             [minimily.auth.model.user-profile         :as user-profile-model]
             [minimily.accounting.web.ui.transaction   :refer [transaction-page]]
             [minimily.accounting.web.ui.transfer      :as transfer-view]
@@ -44,6 +44,8 @@
                           :account_transfer (:id from)
                           :date_transaction date-transaction
                           :profile (:profile-id session)}]
+    (transfer-model/save transfer)
+
     (account-model/update-balance (:account transaction-from)
                                   (+ (* (:type transaction-from) 
                                         (:amount transaction-from))
@@ -55,8 +57,6 @@
                                         (:amount transaction-to))
                                      (transaction-model/calculate-balance (:account transaction-to))))
     (transaction-model/save transaction-to)
-
-    (transfer-model/save transfer)
     
     (redirect (str "/accounting/accounts/" (:id from)))))
 
@@ -77,6 +77,43 @@
   (if (empty? (:to_user transfer))
     (perform-transfer-to-account session transfer)
     (perform-transfer-to-user session transfer)))
+
+(defn complete-transfer [session params]
+  (let [account-to        (account-model/get-it (:profile-id session) (:account_to params))
+        transfer          (transfer-model/get-it (:id params))
+        account-from      (account-model/get-it (:profile-id session) (:account_from transfer))
+        transaction-from  {:account (:id account-from)
+                           :type -1
+                           :amount (:amount transfer)
+                           :description (str "Transfer to " (:name account-to))
+                           :account_transfer (:id account-to)
+                           :date_transaction (:date_created transfer)
+                           :profile (:profile_from transfer)}
+        transaction-to    {:account (:id account-to)
+                           :type 1
+                           :amount (:amount transfer)
+                           :description (str "Transfer from " (:name account-from))
+                           :account_transfer (:id account-from)
+                           :date_transaction (:date_created transfer)
+                           :profile (:profile_to transfer)}]
+    (transfer-model/save  (conj transfer
+                                {:account_to (:id account-to)
+                                 :date_completed (now)
+                                 :description (str (:description transfer) " to " (:name account-to))}))
+
+    (account-model/update-balance (:account transaction-from)
+                                  (+ (* (:type transaction-from) 
+                                        (:amount transaction-from))
+                                     (transaction-model/calculate-balance (:account transaction-from))))
+    (transaction-model/save transaction-from)
+    
+    (account-model/update-balance (:account transaction-to)
+                                  (+ (* (:type transaction-to)
+                                        (:amount transaction-to))
+                                     (transaction-model/calculate-balance (:account transaction-to))))
+    (transaction-model/save transaction-to)
+
+    (redirect "/accounting/transfers")))
 
 (defn view-transfers [session]
   (let [transfers-from (transfer-model/find-transfers-from-profile (:profile-id session))
