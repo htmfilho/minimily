@@ -1,7 +1,6 @@
 (ns minimily.accounting.model.transaction
   (:require [hugsql.core                         :as hugsql]
             [minimily.utils.database             :as db]
-            [minimily.family.model.family-member :as family-member-model]
             [minimily.accounting.model.account   :as account-model]))
 
 (hugsql/def-sqlvec-fns "minimily/accounting/model/sql/transaction.sql")
@@ -11,11 +10,10 @@
 (def CREDIT 1)
 
 (defn find-by-account [profile-id account-id]
-  (let [family-members (family-member-model/list-family-organizers profile-id)]
-    (db/find-records 
-      (transactions-by-profile-account-sqlvec 
-        {:profile-ids family-members 
-         :account-id (Integer/parseInt account-id)}))))
+  (db/find-records 
+    (transactions-by-profile-account-sqlvec 
+      {:profile-id profile-id 
+       :account-id (Integer/parseInt account-id)})))
 
 (defn find-balance-history [account-id]
   (db/find-records 

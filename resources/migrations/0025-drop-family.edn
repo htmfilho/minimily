@@ -1,0 +1,15 @@
+{:up   
+  ["drop table family_member;
+    drop table family;"]
+ :down 
+  ["create table family (
+    id          serial        primary key,
+    name        varchar(100)  not null
+  );
+
+  create table family_member (
+    id           serial       primary key,
+    family       integer      not null references family,
+    user_profile integer      not null references user_profile,
+    organizer    boolean
+  );"]}

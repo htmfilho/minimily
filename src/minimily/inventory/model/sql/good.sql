@@ -1,12 +1,12 @@
 -- :name goods-by-location :? :*
 select * from good 
-where profile in (:v*:profile-ids) and 
+where profile = :profile-id and 
       location = :location-id
 order by name
 
 -- :name goods-by-collection :? :*
 select * from good 
-where profile in (:v*:profile-ids) and 
+where profile = :profile-id and 
       collection = :collection-id
 order by name
 
@@ -17,4 +17,4 @@ select g.id, g.name, g.description, g.quantity, g.value,
 from good g left join location l on g.location = l.id
             left join collection c on g.collection = c.id
 where g.id = :id and 
-      g.profile in (:v*:profile-ids)
+      g.profile = :profile-id

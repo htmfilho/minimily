@@ -31,7 +31,4 @@
                              :description "The collections you classify your goods."}
                             {:label "Goods"
                              :link "/inventory/goods"
-                             :description "All your goods."}]}
-                 {:label "Family" 
-                  :link "/family" 
-                  :description "Manage the data of your entire family."}])
+                             :description "All your goods."}]}])

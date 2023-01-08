@@ -81,7 +81,6 @@ The application is organized in decoupled modules. They are:
 
 - _accounting_: manages the finances of the family
 - _documents_: manages digitalized and phisical copies of documents
-- _family_: define the family, its members and the relationship between them
 - _inventory_: manages all objects in the house
 - _auth_: manages the authentification of users
 

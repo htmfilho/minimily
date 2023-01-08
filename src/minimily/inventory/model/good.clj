@@ -1,7 +1,6 @@
 (ns minimily.inventory.model.good
   (:require [hugsql.core                         :as hugsql]
-            [minimily.utils.database             :as db]
-            [minimily.family.model.family-member :as family-member-model]))
+            [minimily.utils.database             :as db]))
 
 (hugsql/def-sqlvec-fns "minimily/inventory/model/sql/good.sql")
 
@@ -10,13 +9,13 @@
 (defn find-by-location [profile-id location-id]
   (db/find-records 
     (goods-by-location-sqlvec 
-      {:profile-ids (family-member-model/list-family-organizers profile-id)
+      {:profile-id profile-id
        :location-id location-id})))
 
 (defn find-by-collection [profile-id collection-id]
   (db/find-records 
     (goods-by-collection-sqlvec 
-      {:profile-ids (family-member-model/list-family-organizers profile-id)
+      {:profile-id profile-id
        :collection-id collection-id})))
 
 (defn find-by-criteria [profile-id location-id collection-id]
@@ -34,7 +33,7 @@
   (let [goods (db/find-records
                 (good-sqlvec 
                   {:id id
-                   :profile-ids (family-member-model/list-family-organizers profile-id)}))]
+                   :profile-id profile-id}))]
     (if (empty? goods)
       nil
       (first goods))))

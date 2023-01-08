@@ -1,28 +1,20 @@
 (ns minimily.accounting.model.category
   (:require [hugsql.core                         :as hugsql]
             [minimily.utils.database             :as db]
-            [minimily.utils.string               :as s]
-            [minimily.family.model.family-member :as family-member-model]))
+            [minimily.utils.string               :as s]))
 
 (hugsql/def-sqlvec-fns "minimily/accounting/model/sql/category.sql")
 
 (def table :transaction_category)
 
 (defn find-parents [profile-id]
-  (db/find-records 
-    (categories-sqlvec 
-      {:profile-ids 
-          (family-member-model/list-family-organizers profile-id)})))
+  (db/find-records (categories-sqlvec {:profile-id profile-id})))
 
 (defn find-children [profile-id parent-id]
-  (db/find-records 
-    (categories-children-sqlvec 
-      {:profile-ids (family-member-model/list-family-organizers profile-id)
-       :parent-id   parent-id})))
+  (db/find-records (categories-children-sqlvec {:profile-id profile-id :parent-id parent-id})))
 
 (defn- find-categories [profile-id query-func]
-  (db/find-records
-    (query-func {:profile-ids (family-member-model/list-family-organizers profile-id)})))
+  (db/find-records (query-func {:profile-id profile-id})))
 
 (defn find-debit-categories [profile-id]
   (find-categories profile-id debit-categories-sqlvec))
@@ -32,9 +24,7 @@
 
 (defn count-children [profile-id parent-id]
   (:count (db/find-record
-            (categories-count-children-sqlvec 
-              {:profile-ids (family-member-model/list-family-organizers profile-id)
-               :parent-id   parent-id}))))
+            (categories-count-children-sqlvec {:profile-id profile-id :parent-id parent-id}))))
 
 (defn get-it [profile-id id]
   (db/get-record table id profile-id))

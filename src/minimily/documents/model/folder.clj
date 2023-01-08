@@ -1,26 +1,22 @@
 (ns minimily.documents.model.folder
   (:require [hugsql.core                         :as hugsql]
             [minimily.utils.database             :as db]
-            [minimily.utils.string               :as s]
-            [minimily.family.model.family-member :as family-member-model]))
+            [minimily.utils.string               :as s]))
 
 (hugsql/def-sqlvec-fns "minimily/documents/model/sql/folder.sql")
 
 (def table :folder)
 
 (defn find-parents [profile-id]
-  (db/find-records 
-    (folders-by-profile-sqlvec 
-      {:profile-ids 
-          (family-member-model/list-family-organizers profile-id)})))
+  (db/find-records (folders-by-profile-sqlvec {:profile-id profile-id})))
 
 (defn find-children [profile-id parent-id]
-  (db/find-records (folders-children-sqlvec {:profile-ids (family-member-model/list-family-organizers profile-id)
-                                             :parent-id   parent-id})))
+  (db/find-records (folders-children-sqlvec {:profile-id profile-id
+                                             :parent-id  parent-id})))
 
 (defn count-children [profile-id parent-id]
   (:count (db/find-record (folders-count-children-sqlvec 
-                            {:profile-ids (family-member-model/list-family-organizers profile-id)
+                            {:profile-id profile-id
                              :parent-id   parent-id}))))
 
 (defn get-it [profile-id id]

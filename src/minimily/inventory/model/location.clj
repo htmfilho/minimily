@@ -1,7 +1,6 @@
 (ns minimily.inventory.model.location
   (:require [hugsql.core                         :as hugsql]
-            [minimily.utils.database             :as db]
-            [minimily.family.model.family-member :as family-member-model]))
+            [minimily.utils.database             :as db]))
 
 (hugsql/def-sqlvec-fns "minimily/inventory/model/sql/location.sql")
 
@@ -10,7 +9,7 @@
 (defn find-all [profile-id]
   (db/find-records 
     (locations-by-profile-sqlvec 
-      {:profile-ids (family-member-model/list-family-organizers profile-id)})))
+      {:profile-id profile-id})))
 
 (defn get-it [profile-id id]
   (db/get-record table id profile-id))

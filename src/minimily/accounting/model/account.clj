@@ -1,31 +1,28 @@
 (ns minimily.accounting.model.account
   (:require [hugsql.core                         :as hugsql]
-            [minimily.utils.database             :as db]
-            [minimily.family.model.family-member :as family-member-model])
+            [minimily.utils.database             :as db])
   (:import (java.math RoundingMode)))
 
 (hugsql/def-sqlvec-fns "minimily/accounting/model/sql/account.sql")
 
 (def table :account)
 
-(defn find-actives [profile]
-  (let [family-members (family-member-model/list-family-organizers profile)]
-    (db/find-records (active-accounts-sqlvec {:ids family-members}))))
+(defn find-actives [profile-id]
+  (db/find-records (active-accounts-sqlvec {:profile-id profile-id})))
 
-(defn find-inactives [profile]
-  (let [family-members (family-member-model/list-family-organizers profile)]
-    (db/find-records (inactive-accounts-sqlvec {:ids family-members}))))
+(defn find-inactives [profile-id]
+  (db/find-records (inactive-accounts-sqlvec {:profile-id profile-id})))
 
-(defn find-actives-except [profile except-id]
+(defn find-actives-except [profile-id except-id]
   (filter #(not= (:id %) except-id) 
-          (find-actives profile)))
+          (find-actives profile-id)))
 
 (defn find-third-party-accounts [third-party-id]
   (let [third-party-id (try (Integer/parseInt third-party-id) (catch Exception e 0))]
     (db/find-records (third-party-accounts-sqlvec {:third-party-id third-party-id}))))
 
-(defn get-it [profile id]
-  (db/get-record table id))
+(defn get-it [profile-id id]
+  (db/get-record table id profile-id))
 
 (defn save [account]
   (db/save-record table account))
@@ -44,5 +41,5 @@
                                     debit-limit
                                     RoundingMode/HALF_UP))))))
 
-(defn delete-it [profile id]
-  (db/delete-record table id profile))
+(defn delete-it [profile-id id]
+  (db/delete-record table id profile-id))

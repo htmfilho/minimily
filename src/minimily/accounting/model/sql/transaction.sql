@@ -1,6 +1,6 @@
 -- :name transactions-by-profile-account :? :*
 select * from transaction 
-where profile in (:v*:profile-ids) and account = :account-id 
+where profile = :profile-id and account = :account-id 
 order by date_transaction desc
 
 -- :name transactions-by-account :? :*
