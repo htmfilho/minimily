@@ -15,7 +15,7 @@
     (accounts-page session active-accounts inactive-accounts currencies)))
 
 (defn view-account [session id]
-  (let [account      (account-model/get-it (:profile-id session) id)
+  (let [account      (account-model/get-it id (:profile-id session))
         account      (assoc account 
                        :percentage-used-credit 
                        (account-model/percentage-used-credit account))
@@ -25,15 +25,15 @@
 
 (defn new-account [session]
   (let [currencies    (currency-model/find-all)
-        third-parties (third-party-model/find-all)]
+        third-parties (third-party-model/find-third-parties (:profile-id session))]
     (account-form-page session currencies third-parties)))
 
 (defn edit-account [session id]
-  (let [account       (account-model/get-it (:profile-id session) id)
+  (let [account       (account-model/get-it id (:profile-id session))
         third-parties (map #(if (= (:id %) (:third_party account))
                               (conj % {:selected true})
                               (conj % {:selected false})) 
-                           (third-party-model/find-all))
+                           (third-party-model/find-third-parties (:profile-id session)))
         currencies    (map #(if (= (:acronym %) (:currency account))
                               (conj % {:selected true})
                               (conj % {:selected false})) 

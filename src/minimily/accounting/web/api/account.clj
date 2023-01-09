@@ -3,12 +3,12 @@
             [minimily.accounting.model.account :as account-model]))
 
 (defn get-accounts [session params]
-  (let [profile        (:profile-id session)
+  (let [profile-id     (:profile-id session)
         third-party-id (:third_party params)]
     (json/write-str (if (empty? third-party-id)
-                      (account-model/find-actives profile)
-                      (account-model/find-third-party-accounts third-party-id)))))
+                      (account-model/find-actives profile-id)
+                      (account-model/find-third-party-accounts profile-id third-party-id)))))
 
 (defn get-currency [session account-id]
-  (let [account (account-model/get-it nil account-id)]
+  (let [account (account-model/get-it account-id (:profile-id session))]
     (json/write-str (:currency account))))

@@ -9,14 +9,14 @@
             [minimily.accounting.model.transfer       :as transfer-model]))
 
 (defn new-transfer [session account]
-  (let [account (account-model/get-it (:profile-id session) account)
+  (let [account (account-model/get-it account (:profile-id session))
         to-accounts (account-model/find-actives-except (:profile-id session) 
                                                        (:id account))]
     (transfer-view/transfer-form-page session account to-accounts)))
 
 (defn perform-transfer-to-account [session params]
-  (let [from             (account-model/get-it (:profile-id session) (:account params))
-        to               (account-model/get-it (:profile-id session) (:to_account params))
+  (let [from             (account-model/get-it (:account params) (:profile-id session))
+        to               (account-model/get-it (:to_account params) (:profile-id session))
         amount-from      (BigDecimal. (:amount params))
         amount-to        (BigDecimal. (:amount_to params))
         fee              (if (contains? params :fee) (BigDecimal. (:fee params)) (BigDecimal. 0))
@@ -61,7 +61,7 @@
     (redirect (str "/accounting/accounts/" (:id from)))))
 
 (defn perform-transfer-to-user [session params]
-  (let [account-from     (account-model/get-it (:profile-id session) (:account params))
+  (let [account-from     (account-model/get-it (:account params) (:profile-id session))
         profile-to       (user-profile-model/find-profile-by-email (:to_user params)) 
         transfer         {:profile_from (:profile-id session)
                           :account_from (:id account-from)
@@ -79,9 +79,9 @@
     (perform-transfer-to-user session transfer)))
 
 (defn complete-transfer [session params]
-  (let [account-to        (account-model/get-it (:profile-id session) (:account_to params))
+  (let [account-to        (account-model/get-it (:account_to params) (:profile-id session))
         transfer          (transfer-model/get-it (:id params))
-        account-from      (account-model/get-it (:profile-id session) (:account_from transfer))
+        account-from      (account-model/get-it (:account_from transfer) (:profile-id session))
         transaction-from  {:account (:id account-from)
                            :type -1
                            :amount (:amount transfer)

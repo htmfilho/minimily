@@ -10,14 +10,14 @@
             [minimily.accounting.model.third-party       :as third-party-model]))
 
 (defn view-transaction [session account id]
-  (let [account     (account-model/get-it (:profile-id session) account)
+  (let [account     (account-model/get-it account (:profile-id session))
         transaction (transaction-model/get-it (:profile-id session) id)
         category    (category-model/get-it (:profile-id session) (:category transaction))]
     (transaction-page session account transaction category)))
 
 (defn new-transaction [session account]
-  (let [account       (account-model/get-it (:profile-id session) account)
-        third-parties (third-party-model/find-other-third-parties (:id account))]
+  (let [account       (account-model/get-it account (:profile-id session))
+        third-parties (third-party-model/find-other-third-parties (:id account) (:profile-id session))]
     (form/transaction-form-add session account third-parties)))
 
 (defn edit-transaction [session account id]
@@ -27,7 +27,7 @@
                                   (category-model/find-debit-categories profile-id)
                                   (category-model/find-credit-categories profile-id))]
     (form/transaction-form-edit session 
-                                (account-model/get-it (:profile-id session) account) 
+                                (account-model/get-it account (:profile-id session)) 
                                 transaction
                                 (map #(if (= (:id %) (:category transaction))
                                         (conj % {:selected true})

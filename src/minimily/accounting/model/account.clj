@@ -17,11 +17,11 @@
   (filter #(not= (:id %) except-id) 
           (find-actives profile-id)))
 
-(defn find-third-party-accounts [third-party-id]
+(defn find-third-party-accounts [profile-id third-party-id]
   (let [third-party-id (try (Integer/parseInt third-party-id) (catch Exception e 0))]
-    (db/find-records (third-party-accounts-sqlvec {:third-party-id third-party-id}))))
+    (db/find-records (third-party-accounts-sqlvec {:profile-id profile-id :third-party-id third-party-id}))))
 
-(defn get-it [profile-id id]
+(defn get-it [id profile-id]
   (db/get-record table id profile-id))
 
 (defn save [account]
