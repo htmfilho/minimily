@@ -63,11 +63,12 @@
     (with-conn
       (jdbc/get-by-id conn table (valid-id id))))
   ([table id profile-id]
-    (if (not id)
+    (if (or (not id) (not profile-id))
       nil
-      (find-record (str "select * from " (name table) 
+      (let [sql (str "select * from " (name table) 
                                 " where id = " id 
-                                " and profile = " profile-id)))))
+                                " and profile = " profile-id)]
+        (find-record sql)))))
 
 (defn insert-record
   "Returns a map of fields persisted in the database."
