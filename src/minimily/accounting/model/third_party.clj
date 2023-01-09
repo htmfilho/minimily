@@ -12,14 +12,14 @@
 (defn get-it [id]
   (db/get-record table id))
 
-(defn find-all [& [except]]
-  (let [third-parties (db/find-records (third-parties-sqlvec))]
+(defn find-third-parties [profile-id & [except]]
+  (let [third-parties (db/find-records (third-parties-sqlvec {:profile-id profile-id}))]
     (if except
       (filter #(not= (:id %) except) third-parties)
       third-parties)))
 
-(defn find-other-third-parties [account-id]
-  (db/find-records (other-third-parties-sqlvec {:account-id account-id})))
+(defn find-other-third-parties [account-id profile-id]
+  (db/find-records (other-third-parties-sqlvec {:account-id account-id :profile-id profile-id})))
 
 (defn delete-it [id]
   (db/delete-record table id))

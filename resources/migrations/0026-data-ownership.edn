@@ -1,0 +1,4 @@
+{:up   
+  ["alter table third_party add column profile integer references user_profile;"]
+ :down 
+  ["alter table third_party drop column profile;"]}

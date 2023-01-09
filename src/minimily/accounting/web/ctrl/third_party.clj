@@ -7,12 +7,12 @@
             [minimily.accounting.model.account           :as account-model]))
 
 (defn view-third-parties [session]
-  (let [third-parties (third-party-model/find-all)]
+  (let [third-parties (third-party-model/find-third-parties (:profile-id session))]
     (third-parties-page session third-parties)))
 
 (defn view-third-party [session id]
   (let [third-party (third-party-model/get-it id)
-        accounts    (account-model/find-third-party-accounts id)]
+        accounts    (account-model/find-third-party-accounts (:profile-id session) id)]
     (third-party-page session third-party accounts)))
 
 (defn new-third-party [session]
