@@ -31,13 +31,13 @@
               (label "type" "Type")
               [:br]
               [:div {:class "form-check form-check-inline"}
-                (radio-button {:class "form-check-input" :id "credit"}
+                (radio-button {:class "form-check-input" :id "credit" :required "required"}
                               "type"
                               false
                               1)
                 [:span {:class "form-check-label"} "Credit"]]
               [:div {:class "form-check form-check-inline"}
-                (radio-button {:class "form-check-input" :id "debit"}
+                (radio-button {:class "form-check-input" :id "debit" :required "required"}
                               "type"
                               false
                               -1)
@@ -60,19 +60,19 @@
           [:div {:class "col-md-3"}
             [:div {:class "form-group"}
               (label "amount" (str "Amount (" (:currency account) ")"))
-              (text-field {:class "form-control" :id "amount"} 
+              (text-field {:class "form-control" :id "amount" :required "required"} 
                           "amount")]]
           [:div {:class "col-md-9"}
             [:div {:class "form-group"}
               (label "category" "Category")
-              [:select {:name "category" :class "form-control" :id "category"}
+              [:select {:name "category" :class "form-control" :id "category" :required "required"}
                        [:option {:value ""} "Select..."]]]]]
 
         [:div {:class "row"}
           [:div {:class "col-md-9"}
             [:div {:class "form-group"}
               (label "description" "Description")
-              (text-field {:class "form-control" :id "description"} 
+              (text-field {:class "form-control" :id "description" :required "required"} 
                           "description")]]
           [:div {:class "col-md-3"}
            [:div {:class "form-group"}
