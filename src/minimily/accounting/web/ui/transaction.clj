@@ -27,7 +27,9 @@
                                             (str " (" (:currency account) ")")
                                             "")) account :balance)]
             [:div {:class "col-md-6"}
-              (show-field-link "Category" category :name (str "/accounting/categories/" (:id category)))]]
+              (if category
+                (show-field-link "Category" category :name (str "/accounting/categories/" (:id category)))
+                (show-field "Category" {:transfer "Transfer"} :transfer))]]
           [:div {:class "row"}
             [:div {:class "col-md-1"}
               [:p 
