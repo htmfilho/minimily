@@ -20,7 +20,8 @@ function calculateAmountTo() {
 function whenToAccountSelected() {
     $("#to_user").val("");
     var toAccount = $("#to_account").val();
-    if (toAccount != "") {
+    console.log(toAccount);
+    if (toAccount !== "" && toAccount != undefined) {
         $.getJSON("/accounting/api/accounts/" + toAccount + "/currency", function(toCurrency, status) {
             var fromCurrency = $("#currency").text();
             if (toCurrency != fromCurrency) {
