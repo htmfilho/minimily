@@ -12,9 +12,9 @@
                             {:label "Categories"
                              :link "/accounting/categories"
                              :description "Categories of incomes and expenses."}
-                            {:label "Third Parties"
+                            {:label "Parties"
                              :link "/accounting/third_parties"
-                             :description "Third party services and organizations we do business with."}]}
+                             :description "Parties involved on finantial transactions."}]}
 
                  {:label "Documents" 
                   :link "/folders" 

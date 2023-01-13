@@ -9,7 +9,7 @@
 
 (defn third-party-form-page [session  & [third-party]]
   (http-headers
-    (layout session "Third Party"
+    (layout session "Party"
       (form-to [:post "/accounting/third_parties/save"]
         (when third-party (hidden-field "id" (:id third-party)))
             [:div {:class "form-group"}

@@ -6,14 +6,14 @@
 
 (defn third-parties-page [session third-parties]
   (http-headers 
-    (layout session "Third Parties"
+    (layout session "Parties"
       [:div {:class "card"}
         [:div {:class "card-header"}
           [:div {:class "row"}
             [:div {:class "col-md-12"}
              (back-button "/accounting")
              (str "&nbsp;")
-             [:a {:href "/accounting/third_parties/new" :class "btn btn-secondary"} "New Third Party"]]]]
+             [:a {:href "/accounting/third_parties/new" :class "btn btn-secondary"} "New Party"]]]]
         [:table {:class "table table-striped"}
           [:thead
             [:tr 
