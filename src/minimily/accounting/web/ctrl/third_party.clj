@@ -23,8 +23,16 @@
     (third-party-form-page session third-party)))
 
 (defn save-third-party [session params]
-  (let [third-party params
-        id          (third-party-model/save third-party)]
+  (let [third-party (conj params {:profile (:profile-id session)})
+        id          (third-party-model/save third-party)
+        account     {:profile (:profile-id session)
+                     :name    (:name params)
+                     :balance 0
+                     :currency "CAD"
+                     :active true
+                     :third_party id}]
+    (when (nil? (:id params))
+      (account-model/save account))
     (redirect (str "/accounting/third_parties"))))
 
 (defn delete-third-party [session params]
