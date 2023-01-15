@@ -9,15 +9,9 @@
     (layout session "Accounts"
       [:div {:class "card"}
         [:div {:class "card-header"}
-          [:div {:class "row"}
-            [:div {:class "col-md-8"}
              (back-button "/accounting")
              (str "&nbsp;")
              [:a {:href "/accounting/accounts/new" :class "btn btn-secondary"} "New Account"]]
-            [:div {:class "col-md-4"}
-              (form-to [:get "/accounting/accounts"]
-                [:select {:name "currency" :class "form-control" :id "currency" :onchange "this.form.submit()"}
-                  (map #(vector :option {:value (:acronym %)} (str (:acronym %) " (" (:name %) ")")) currencies)])]]]
         [:table {:class "table table-striped"}
           [:thead
             [:tr 
