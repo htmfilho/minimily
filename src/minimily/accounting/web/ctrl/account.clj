@@ -9,10 +9,10 @@
             [minimily.accounting.model.third-party   :as third-party-model]))
 
 (defn view-accounts [session]
-  (let [active-accounts   (account-model/find-actives (:profile-id session))
-        inactive-accounts (account-model/find-inactives (:profile-id session))
-        currencies        (currency-model/find-all)]
-    (accounts-page session active-accounts inactive-accounts currencies)))
+  (let [active-accounts      (account-model/find-active-accounts (:profile-id session))
+        inactive-accounts    (account-model/find-inactive-accounts (:profile-id session))
+        third-party-accounts (account-model/find-third-party-accounts (:profile-id session))]
+    (accounts-page session active-accounts inactive-accounts third-party-accounts)))
 
 (defn view-account [session id]
   (let [account      (account-model/get-it id (:profile-id session))

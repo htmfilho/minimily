@@ -21,7 +21,7 @@
         [:div {:class "card-body"}
           [:div {:class "row"}
             [:div {:class "col-md-3"} (show-field "Name" account :name)]
-            [:div {:class "col-md-3"} (show-field-link "Third Party" third-party :name (str "/accounting/third_parties/" (:id third-party)))]
+            [:div {:class "col-md-3"} (show-field-link "Party" third-party :name (str "/accounting/third_parties/" (:id third-party)))]
             [:div {:class "col-md-2"} (show-field "Balance" account :balance)]
             [:div {:class "col-md-2"} (show-field "Currency" account :currency)]
             [:div {:class "col-md-2"} (show-field "Debit Limit" account :debit_limit)]]

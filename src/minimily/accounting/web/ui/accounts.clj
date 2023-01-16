@@ -4,7 +4,7 @@
             [minimily.web.ui.bootstrap  :refer [back-button]]
             [minimily.utils.web.wrapper :refer [http-headers]]))
 
-(defn accounts-page [session active-accounts inactive-accounts currencies]
+(defn accounts-page [session active-accounts inactive-accounts third-party-accounts]
   (http-headers 
     (layout session "Accounts"
       [:ul {:class "nav nav-tabs" :id "accounts-tabs" :role "tablist"}
@@ -59,11 +59,19 @@
                 (map #(vector :tr [:td [:a {:href (str "/accounting/accounts/" (:id %))} 
                                           (:name %)]]
                                   [:td {:style "text-align: right;"} (:balance %)]
-                                  [:td (:currency %)]) inactive-accounts)
-                [:tr
-                [:td {:style "text-align: right;"} [:b "Total:"]]
-                [:td {:style "text-align: right;"} (reduce + (filter #(not (nil? %)) (map #(:balance %) inactive-accounts)))]
-                [:td]]]]]]
+                                  [:td (:currency %)]) inactive-accounts)]]]]
                 
         [:div {:class "tab-pane fade show" :id "third-parties-panel" :role "tabpanel"
-               :aria-labelledby "third-parties-tab"}]])))
+               :aria-labelledby "third-parties-tab"}
+          [:div {:class "card"}
+            [:table {:class "table table-striped"}
+              [:thead
+                [:tr 
+                  [:th "Name"]
+                  [:th {:style "text-align: right;"} "Balance"]
+                  [:th "Currency"]]]
+              [:tbody 
+                (map #(vector :tr [:td [:a {:href (str "/accounting/accounts/" (:id %))} 
+                                          (:name %)]]
+                                  [:td {:style "text-align: right;"} (:balance %)]
+                                  [:td (:currency %)]) third-party-accounts)]]]]])))

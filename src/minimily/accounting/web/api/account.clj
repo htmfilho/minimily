@@ -6,7 +6,7 @@
   (let [profile-id     (:profile-id session)
         third-party-id (:third_party params)]
     (json/write-str (if (empty? third-party-id)
-                      (account-model/find-actives profile-id)
+                      (account-model/find-active-accounts profile-id)
                       (account-model/find-third-party-accounts profile-id third-party-id)))))
 
 (defn get-currency [session account-id]

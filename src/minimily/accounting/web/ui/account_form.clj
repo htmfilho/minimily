@@ -20,8 +20,8 @@
         [:div {:class "row"}
           [:div {:class "col-md-4"}
             [:div {:class "form-group"}
-              (label "third-party" "Third Party")
-              [:select {:class "form-control" :name "third_party" :required "required"}
+              (label "third-party" "Party")
+              [:select {:class "form-control" :name "third_party"}
                        [:option {:value ""} "Select..."]
                        (map #(vector :option (if (:selected %)
                                                {:value (:id %) :selected "true"}
@@ -41,7 +41,9 @@
                           "debit_limit"
                           (:debit_limit account))]]
           [:div {:class "col-md-2"}
-            (bootstrap/checkbox "active" "Active" (:active account))]]
+            (if (:active account)
+              (bootstrap/checkbox "active" "Active" (:active account))
+              (bootstrap/checkbox "active" "Active" true))]]
         (submit-button {:class "btn btn-primary"} "Submit")
         (str "&nbsp;")
         [:a {:class "btn btn-outline-secondary" :href (str "/accounting/accounts/" (:id account))} "Cancel"]))))
