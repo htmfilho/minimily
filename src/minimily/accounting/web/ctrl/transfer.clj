@@ -10,8 +10,8 @@
 
 (defn new-transfer [session account]
   (let [account (account-model/get-it account (:profile-id session))
-        to-accounts (account-model/find-actives-except (:profile-id session) 
-                                                       (:id account))]
+        to-accounts (account-model/find-active-accounts (:profile-id session) 
+                                                        (:id account))]
     (transfer-view/transfer-form-page session account to-accounts)))
 
 (defn perform-transfer-to-account [session params]
@@ -96,10 +96,6 @@
                            :account_transfer (:id account-from)
                            :date_transaction (:date_created transfer)
                            :profile (:profile_to transfer)}]
-    (transfer-model/save  (conj transfer
-                                {:account_to (:id account-to)
-                                 :date_completed (now)
-                                 :description (str (:description transfer) " to " (:name account-to))}))
 
     (account-model/update-balance (:account transaction-from)
                                   (+ (* (:type transaction-from) 
@@ -113,6 +109,11 @@
                                      (transaction-model/calculate-balance (:account transaction-to))))
     (transaction-model/save transaction-to)
 
+    (transfer-model/save  (conj transfer
+                                {:account_to (:id account-to)
+                                 :date_completed (now)
+                                 :description (str (:description transfer) " to " (:name account-to))}))
+
     (redirect "/accounting/transfers")))
 
 (defn view-transfers [session]
@@ -122,5 +123,5 @@
 
 (defn view-transfer [session id]
   (let [transfer (transfer-model/get-it id)
-        accounts (account-model/find-actives (:profile-id session))]
+        accounts (account-model/find-active-accounts (:profile-id session))]
     (transfer-view/transfer-page session transfer accounts)))
