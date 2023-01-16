@@ -7,19 +7,22 @@
 
 (def table :account)
 
-(defn find-actives [profile-id]
-  (db/find-records (active-accounts-sqlvec {:profile-id profile-id})))
+(defn find-active-accounts 
+  ([profile-id]
+    (db/find-records (active-accounts-sqlvec {:profile-id profile-id})))
+  ([profile-id except-id]
+    (filter #(not= (:id %) except-id) 
+            (find-active-accounts profile-id))))
 
-(defn find-inactives [profile-id]
+(defn find-inactive-accounts [profile-id]
   (db/find-records (inactive-accounts-sqlvec {:profile-id profile-id})))
 
-(defn find-actives-except [profile-id except-id]
-  (filter #(not= (:id %) except-id) 
-          (find-actives profile-id)))
-
-(defn find-third-party-accounts [profile-id third-party-id]
-  (let [third-party-id (try (Integer/parseInt third-party-id) (catch Exception e 0))]
-    (db/find-records (third-party-accounts-sqlvec {:profile-id profile-id :third-party-id third-party-id}))))
+(defn find-third-party-accounts 
+  ([profile-id]
+    (db/find-records (all-third-party-accounts-sqlvec {:profile-id profile-id})))
+  ([profile-id third-party-id]
+    (let [third-party-id (try (Integer/parseInt third-party-id) (catch Exception e 0))]
+      (db/find-records (specific-third-party-accounts-sqlvec {:profile-id profile-id :third-party-id third-party-id})))))
 
 (defn get-it [id profile-id]
   (db/get-record table id profile-id))
