@@ -96,19 +96,21 @@
                            :account_transfer (:id account-from)
                            :date_transaction (:date_created transfer)
                            :profile (:profile_to transfer)}]
+    (println transaction-from)
+    (println transaction-to)
 
+    (transaction-model/save transaction-from)
     (account-model/update-balance (:account transaction-from)
                                   (+ (* (:type transaction-from) 
                                         (:amount transaction-from))
                                      (transaction-model/calculate-balance (:account transaction-from))))
-    (transaction-model/save transaction-from)
     
+    (transaction-model/save transaction-to)
     (account-model/update-balance (:account transaction-to)
                                   (+ (* (:type transaction-to)
                                         (:amount transaction-to))
                                      (transaction-model/calculate-balance (:account transaction-to))))
-    (transaction-model/save transaction-to)
-
+    
     (transfer-model/save  (conj transfer
                                 {:account_to (:id account-to)
                                  :date_completed (now)
