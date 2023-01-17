@@ -96,9 +96,6 @@
                            :account_transfer (:id account-from)
                            :date_transaction (:date_created transfer)
                            :profile (:profile_to transfer)}]
-    
-    (println transaction-from)
-    (println transaction-to)
 
     (transaction-model/save transaction-from)
     (account-model/update-balance (:account transaction-from)
