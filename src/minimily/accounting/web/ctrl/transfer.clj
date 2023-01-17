@@ -81,7 +81,7 @@
 (defn complete-transfer [session params]
   (let [account-to        (account-model/get-it (:account_to params) (:profile-id session))
         transfer          (transfer-model/get-it (:id params))
-        account-from      (account-model/get-it (:account_from transfer) (:profile-id session))
+        account-from      (account-model/get-it (:account_from transfer) (:profile_from transfer))
         transaction-from  {:account (:id account-from)
                            :type -1
                            :amount (:amount transfer)
@@ -96,6 +96,7 @@
                            :account_transfer (:id account-from)
                            :date_transaction (:date_created transfer)
                            :profile (:profile_to transfer)}]
+    
     (println transaction-from)
     (println transaction-to)
 

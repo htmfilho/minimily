@@ -47,7 +47,7 @@
                    {session :session {account :account} :params}
                    (transfer-ctrl/new-transfer session account))
           
-          (url/POST "/perform" 
+          (url/POST "/perform"
                     {session :session params :params}
                     (transfer-ctrl/perform-transfer session params)))
 
