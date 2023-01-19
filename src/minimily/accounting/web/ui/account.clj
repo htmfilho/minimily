@@ -1,10 +1,82 @@
 (ns minimily.accounting.web.ui.account
-  (:require [hiccup.form                :refer [form-to submit-button 
+  (:require [hiccup.form                :refer [form-to label submit-button text-field
                                                 hidden-field]]
             [minimily.web.ui.layout     :refer [layout]]
-            [minimily.web.ui.bootstrap  :refer [show-field show-field-link back-button edit-button]]
+            [minimily.web.ui.bootstrap  :refer [show-field show-field-link back-button edit-button checkbox]]
             [minimily.utils.date        :refer [to-string]]
             [minimily.utils.web.wrapper :refer [http-headers]]))
+
+(defn accounts-page [session active-accounts inactive-accounts third-party-accounts]
+  (http-headers 
+    (layout session "Accounts"
+      [:ul {:class "nav nav-tabs" :id "accounts-tabs" :role "tablist"}
+        [:li {:class "nav-item"}
+          [:a {:class "nav-link active" :id "active-tab" :data-toggle "tab"
+               :href "#active-panel" :role "tab" :aria-controls "active-panel"
+               :aria-selected "true"} "Active"]]
+        [:li {:class "nav-item" }
+          [:a {:class "nav-link" :id "inactive-tab" :data-toggle "tab"
+               :href "#inactive-panel" :role "tab" :aria-controls "inactive-panel"
+               :aria-selected "false"} "Inactive"]]
+        [:li {:class "nav-item" }
+          [:a {:class "nav-link" :id "third-party-tab" :data-toggle "tab"
+               :href "#third-parties-panel" :role "tab" :aria-controls "third-parties-panel"
+               :aria-selected "false"} "Third Parties"]]]
+
+      [:div {:class "tab-content" :id "tabs-content"}
+        [:br]
+        [:div {:class "tab-pane fade show active" :id "active-panel" :role "tabpanel"
+               :aria-labelledby "active-tab"}
+          [:div {:class "card"}
+            [:div {:class "card-header"}
+                (back-button "/accounting")
+                (str "&nbsp;")
+                [:a {:href "/accounting/accounts/new" :class "btn btn-secondary"} "New Account"]]
+            [:table {:class "table table-striped"}
+              [:thead
+                [:tr 
+                  [:th "Name"]
+                  [:th {:style "text-align: right;"} "Balance"]
+                  [:th "Currency"]]]
+              [:tbody 
+                (map #(vector :tr [:td [:a {:href (str "/accounting/accounts/" (:id %))} 
+                                          (:name %)]]
+                                  [:td {:style "text-align: right;"} (:balance %)]
+                                  [:td (:currency %)]) active-accounts)
+                [:tr
+                [:td {:style "text-align: right;"} [:b "Total:"]]
+                [:td {:style "text-align: right;"} (reduce + (filter #(not (nil? %)) (map #(:balance %) active-accounts)))]
+                [:td]]]]]]
+
+        [:div {:class "tab-pane fade show" :id "inactive-panel" :role "tabpanel"
+               :aria-labelledby "inactive-tab"}
+          [:div {:class "card"}
+            [:table {:class "table table-striped"}
+              [:thead
+                [:tr 
+                  [:th "Name"]
+                  [:th {:style "text-align: right;"} "Balance"]
+                  [:th "Currency"]]]
+              [:tbody 
+                (map #(vector :tr [:td [:a {:href (str "/accounting/accounts/" (:id %))} 
+                                          (:name %)]]
+                                  [:td {:style "text-align: right;"} (:balance %)]
+                                  [:td (:currency %)]) inactive-accounts)]]]]
+                
+        [:div {:class "tab-pane fade show" :id "third-parties-panel" :role "tabpanel"
+               :aria-labelledby "third-parties-tab"}
+          [:div {:class "card"}
+            [:table {:class "table table-striped"}
+              [:thead
+                [:tr 
+                  [:th "Name"]
+                  [:th {:style "text-align: right;"} "Balance"]
+                  [:th "Currency"]]]
+              [:tbody 
+                (map #(vector :tr [:td [:a {:href (str "/accounting/accounts/" (:id %))} 
+                                          (:name %)]]
+                                  [:td {:style "text-align: right;"} (:balance %)]
+                                  [:td (:currency %)]) third-party-accounts)]]]]])))
 
 (defn account-page [session account third-party & [transactions]]
   (http-headers
@@ -85,3 +157,44 @@
         [:div {:class "tab-pane fade show" :id "history-panel" :role "tabpanel"
                :aria-labelledby "history-tab"}
           [:div {:id "balance-history-chart" :style "width: 800px;height:400px;"}]]])))
+
+(defn account-form-page [session currencies third-parties & [account]]
+  (http-headers
+    (layout session "Account"
+      (form-to [:post "/accounting/accounts/save"]
+        (when account (hidden-field "id" (:id account)))
+        [:div {:class "form-group"}
+          (label "name" "Name")
+          (text-field {:class "form-control" :id "name" :maxlength "100"} 
+                      "name" 
+                      (:name account))]
+        [:div {:class "row"}
+          [:div {:class "col-md-4"}
+            [:div {:class "form-group"}
+              (label "third-party" "Party")
+              [:select {:class "form-control" :name "third_party"}
+                       [:option {:value ""} "Select..."]
+                       (map #(vector :option (if (:selected %)
+                                               {:value (:id %) :selected "true"}
+                                               {:value (:id %)}) (:name %)) third-parties)]]]
+          [:div {:class "col-md-4"}
+            [:div {:class "form-group"}
+              (label "currency" "Currency")
+              [:select {:name "currency" :class "form-control" :id "currency" :required "required"}
+                       [:option {:value ""} "Select..."]
+                       (map #(vector :option (if (:selected %) 
+                                               {:value (:acronym %) :selected "true"}
+                                               {:value (:acronym %)}) (str (:acronym %) " (" (:name %) ")")) currencies)]]]
+          [:div {:class "col-md-2"}
+            [:div {:class "form-group"}
+              (label "debit_limit" "Debit Limit")
+              (text-field {:class "form-control" :id "debit_limit"}
+                          "debit_limit"
+                          (:debit_limit account))]]
+          [:div {:class "col-md-2"}
+            (if (:active account)
+              (checkbox "active" "Active" (:active account))
+              (checkbox "active" "Active" true))]]
+        (submit-button {:class "btn btn-primary"} "Submit")
+        (str "&nbsp;")
+        [:a {:class "btn btn-outline-secondary" :href (str "/accounting/accounts/" (:id account))} "Cancel"]))))

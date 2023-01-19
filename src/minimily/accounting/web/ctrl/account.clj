@@ -1,8 +1,6 @@
 (ns minimily.accounting.web.ctrl.account
   (:require [ring.util.response                      :refer [redirect]]
-            [minimily.accounting.web.ui.accounts     :refer [accounts-page]]
-            [minimily.accounting.web.ui.account-form :refer [account-form-page]]
-            [minimily.accounting.web.ui.account      :refer [account-page]]
+            [minimily.accounting.web.ui.account      :as account-view]
             [minimily.accounting.model.account       :as account-model]
             [minimily.accounting.model.transaction   :as transaction-model]
             [minimily.accounting.model.currency      :as currency-model]
@@ -12,7 +10,7 @@
   (let [active-accounts      (account-model/find-active-accounts (:profile-id session))
         inactive-accounts    (account-model/find-inactive-accounts (:profile-id session))
         third-party-accounts (account-model/find-third-party-accounts (:profile-id session))]
-    (accounts-page session active-accounts inactive-accounts third-party-accounts)))
+    (account-view/accounts-page session active-accounts inactive-accounts third-party-accounts)))
 
 (defn view-account [session id]
   (let [account      (account-model/get-it id (:profile-id session))
@@ -21,12 +19,12 @@
                        (account-model/percentage-used-credit account))
         third-party  (third-party-model/get-it (:third_party account))
         transactions (transaction-model/find-by-account (:profile-id session) id)]
-    (account-page session account third-party transactions)))
+    (account-view/account-page session account third-party transactions)))
 
 (defn new-account [session]
   (let [currencies    (currency-model/find-all)
         third-parties (third-party-model/find-third-parties (:profile-id session))]
-    (account-form-page session currencies third-parties)))
+    (account-view/account-form-page session currencies third-parties)))
 
 (defn edit-account [session id]
   (let [account       (account-model/get-it id (:profile-id session))
@@ -38,7 +36,7 @@
                               (conj % {:selected true})
                               (conj % {:selected false})) 
                            (currency-model/find-all))]
-    (account-form-page session currencies third-parties account)))
+    (account-view/account-form-page session currencies third-parties account)))
 
 (defn save-account [session params]
   (let [account (-> params 
