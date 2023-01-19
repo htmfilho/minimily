@@ -44,19 +44,20 @@
                           :account_transfer (:id from)
                           :date_transaction date-transaction
                           :profile (:profile-id session)}]
-    (transfer-model/save transfer)
-
+    
+    (transaction-model/save transaction-from)
     (account-model/update-balance (:account transaction-from)
                                   (+ (* (:type transaction-from) 
                                         (:amount transaction-from))
                                      (transaction-model/calculate-balance (:account transaction-from))))
-    (transaction-model/save transaction-from)
     
+    (transaction-model/save transaction-to)
     (account-model/update-balance (:account transaction-to)
                                   (+ (* (:type transaction-to)
                                         (:amount transaction-to))
                                      (transaction-model/calculate-balance (:account transaction-to))))
-    (transaction-model/save transaction-to)
+    
+    (transfer-model/save transfer)
     
     (redirect (str "/accounting/accounts/" (:id from)))))
 
