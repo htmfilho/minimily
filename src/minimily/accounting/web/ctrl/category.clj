@@ -1,9 +1,6 @@
 (ns minimily.accounting.web.ctrl.category
   (:require [ring.util.response                       :refer [redirect]]
-            [minimily.accounting.web.ui.categories    :refer [categories-page]]
-            [minimily.accounting.web.ui.category-form :refer [category-form-new 
-                                                              category-form-edit]]
-            [minimily.accounting.web.ui.category      :refer [category-page]]
+            [minimily.accounting.web.ui.category      :as category-view]
             [minimily.accounting.model.category       :as category-model]
             [minimily.accounting.model.transaction    :as transaction-model]))
 
@@ -66,7 +63,7 @@
 
 (defn view-parent-categories [session]
   (let [categories (category-model/find-parents (:profile-id session))]
-    (categories-page session categories)))
+    (category-view/categories-page session categories)))
 
 (defn view-category [session id]
   (let [profile-id   (:profile-id session)
@@ -75,15 +72,15 @@
         children     (category-model/find-children profile-id category-id)
         path         (category-model/find-path profile-id category-id)
         transactions (transaction-model/find-by-category category-id)]
-    (category-page session category children path transactions)))
+    (category-view/category-page session category children path transactions)))
 
 (defn new-category [session parent-id]
   (let [parent (category-model/get-it (:profile-id session) parent-id)]
-    (category-form-new session parent)))
+    (category-view/category-form-new session parent)))
 
 (defn edit-category [session id]
   (let [category (category-model/get-it (:profile-id session) id)]
-    (category-form-edit session category)))
+    (category-view/category-form-edit session category)))
 
 (defn save-category [session category]
   (println category)
