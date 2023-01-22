@@ -1,5 +1,5 @@
 (ns minimily.accounting.web.ui.third-party
-  (:require [hiccup.form                :refer [form-to submit-button 
+  (:require [hiccup.form                :refer [form-to submit-button label text-field
                                                 hidden-field]]
             [minimily.web.ui.layout     :refer [layout]]
             [minimily.web.ui.bootstrap  :refer [show-field back-button edit-button]]
@@ -43,3 +43,36 @@
                     (map #(vector :tr [:td [:a {:href (str "/accounting/accounts/" (:id %))} (:name %)]]
                                       [:td {:style "text-align: right;"} (:balance %)]
                                       [:td (:currency %)]) accounts)]]]]]]))))
+
+(defn third-parties-page [session third-parties]
+  (http-headers 
+    (layout session "Parties"
+      [:div {:class "card"}
+        [:div {:class "card-header"}
+          [:div {:class "row"}
+            [:div {:class "col-md-12"}
+             (back-button "/accounting")
+             (str "&nbsp;")
+             [:a {:href "/accounting/third_parties/new" :class "btn btn-secondary"} "New Party"]]]]
+        [:table {:class "table table-striped"}
+          [:thead
+            [:tr 
+              [:th "Name"]]]
+          [:tbody 
+            (map #(vector :tr [:td [:a {:href (str "/accounting/third_parties/" (:id %))} 
+                                       (:name %)]]) third-parties)]]])))
+
+(defn third-party-form-page [session  & [third-party]]
+  (http-headers
+    (layout session "Party"
+      (form-to [:post "/accounting/third_parties/save"]
+        (when third-party (hidden-field "id" (:id third-party)))
+            [:div {:class "form-group"}
+              (label "name" "Name")
+              (text-field {:class "form-control" :id "name" :maxlength "30"} 
+                "name" 
+                      (when third-party (:name third-party)))]
+        (submit-button {:class "btn btn-primary"} "Submit")
+        (str "&nbsp;")
+        [:a {:class "btn btn-outline-secondary" :href (str "/accounting/third_parties/"
+                                                           (when third-party (:id third-party)))} "Cancel"]))))
