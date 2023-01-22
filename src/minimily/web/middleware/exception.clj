@@ -1,4 +1,4 @@
-(ns minimily.middleware.exception)
+(ns minimily.web.middleware.exception)
 
 (defn wrap-exception [handler]
   (fn [request]
