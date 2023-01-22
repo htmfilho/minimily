@@ -1,9 +1,6 @@
 (ns minimily.documents.web.ctrl.folder
   (:require [ring.util.response                    :refer [redirect]]
-            [minimily.documents.web.ui.folders     :refer [folders-page]]
-            [minimily.documents.web.ui.folder-form :refer [folder-form-new 
-                                                           folder-form-edit]]
-            [minimily.documents.web.ui.folder      :refer [folder-page]]
+            [minimily.documents.web.ui.folder      :as folder-view]
             [minimily.documents.model.folder       :as folder-model]
             [minimily.documents.model.document     :as document-model]))
 
@@ -18,7 +15,7 @@
 (defn view-parent-folders [session]
   (let [folders (merge-num-children (:profile-id session) 
                                     (folder-model/find-parents (:profile-id session)))]
-    (folders-page session folders)))
+    (folder-view/folders-page session folders)))
 
 (defn view-folder [session id]
   (let [profile-id (:profile-id session)
@@ -28,15 +25,15 @@
                                    (merge-num-children profile-id
                                                        (folder-model/find-children profile-id folder-id)))
         path (folder-model/find-path profile-id folder-id)]
-    (folder-page session folder children path)))
+    (folder-view/folder-page session folder children path)))
 
 (defn new-folder [session parent-id]
   (let [parent (folder-model/get-it (:profile-id session) parent-id)]
-    (folder-form-new session parent)))
+    (folder-view/folder-form-new session parent)))
 
 (defn edit-folder [session id]
   (let [folder (folder-model/get-it (:profile-id session) id)]
-    (folder-form-edit session folder)))
+    (folder-view/folder-form-edit session folder)))
 
 (defn save-folder [session folder]
   (let [parent (when (:parent folder) (Integer/parseInt (:parent folder)))
