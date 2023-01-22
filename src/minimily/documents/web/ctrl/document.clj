@@ -3,8 +3,7 @@
                                                              file-response 
                                                              header
                                                              content-type]]
-            [minimily.documents.web.ui.document-form :refer :all]
-            [minimily.documents.web.ui.document      :refer [document-page]]
+            [minimily.documents.web.ui.document      :as document-view]
             [minimily.documents.model.folder         :as folder-model]
             [minimily.documents.model.document       :as document-model]
             [minimily.utils.string                   :as s]))
@@ -14,16 +13,16 @@
         document    (document-model/get-it (:profile-id session) document-id)
         folder      (folder-model/get-it (:profile-id session) (:folder document))
         path        (document-model/find-path (:profile-id session) document-id)]
-    (document-page session document folder path)))
+    (document-view/document-page session document folder path)))
 
 (defn new-document [session folder-id]
   (let [folder (folder-model/get-it (:profile-id session) folder-id)]
-    (document-form-add session folder)))
+    (document-view/document-form-add session folder)))
 
 (defn edit-document [session id]
   (let [document (document-model/get-it (:profile-id session) id)
         folder   (folder-model/get-it (:profile-id session) (:folder document))]
-    (document-form-edit session folder document)))
+    (document-view/document-form-edit session folder document)))
 
 (defn save-document [session params]
   (if (:id params)
