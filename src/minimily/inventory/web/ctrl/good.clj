@@ -1,8 +1,6 @@
 (ns minimily.inventory.web.ctrl.good
   (:require [ring.util.response                  :refer [redirect]]
-            [minimily.inventory.web.ui.good      :refer [good-page]]
-            [minimily.inventory.web.ui.goods     :refer [goods-page]]
-            [minimily.inventory.web.ui.good-form :refer [good-form-page]]
+            [minimily.inventory.web.ui.good      :as good-view]
             [minimily.inventory.model.collection :as collection-model]
             [minimily.inventory.model.location   :as location-model]
             [minimily.inventory.model.good       :as good-model]))
@@ -21,17 +19,17 @@
                             (conj % {:selected true}) 
                             (conj % {:selected false})) 
                            (collection-model/find-all (:profile-id session))))]
-    (goods-page session goods locations collections)))
+    (good-view/goods-page session goods locations collections)))
 
 (defn view-good [session id]
   (let [good-id (Integer/parseInt id)
         good    (good-model/get-it (:profile-id session) good-id)]
-    (good-page session good)))
+    (good-view/good-page session good)))
 
 (defn new-good [session]
   (let [locations   (location-model/find-all (:profile-id session))
         collections (collection-model/find-all (:profile-id session))]
-    (good-form-page session locations collections)))
+    (good-view/good-form-page session locations collections)))
 
 (defn edit-good [session id]
   (let [good-id     (Integer/parseInt id)
@@ -44,8 +42,7 @@
                             (conj % {:selected true}) 
                             (conj % {:selected false})) 
                          (collection-model/find-all (:profile-id session)))]
-    (println good)
-    (good-form-page session locations collections good)))
+    (good-view/good-form-page session locations collections good)))
 
 (defn save-good [session params]
   (let [good (-> params
