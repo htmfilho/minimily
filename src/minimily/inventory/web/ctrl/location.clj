@@ -1,28 +1,26 @@
 (ns minimily.inventory.web.ctrl.location
   (:require [ring.util.response                      :refer [redirect]]
-            [minimily.inventory.web.ui.location      :refer [location-page]]
-            [minimily.inventory.web.ui.locations     :refer [locations-page]]
-            [minimily.inventory.web.ui.location-form :refer [location-form-page]]
+            [minimily.inventory.web.ui.location      :as location-view]
             [minimily.inventory.model.location       :as location-model]
             [minimily.inventory.model.good           :as good-model]))
 
 (defn view-locations [session]
   (let [locations (location-model/find-all (:profile-id session))]
-    (locations-page session locations)))
+    (location-view/locations-page session locations)))
 
 (defn view-location [session id]
   (let [location-id (Integer/parseInt id)
         location    (location-model/get-it (:profile-id session) location-id)
         goods       (good-model/find-by-location (:profile-id session) location-id)]
-    (location-page session location goods)))
+    (location-view/location-page session location goods)))
 
 (defn new-location [session]
-  (location-form-page session))
+  (location-view/location-form-page session))
 
 (defn edit-location [session id]
   (let [location-id (Integer/parseInt id)
         location    (location-model/get-it (:profile-id session) location-id)]
-    (location-form-page session location)))
+    (location-view/location-form-page session location)))
 
 (defn save-location [session params]
   (let [location (conj params {:profile (:profile-id session)})

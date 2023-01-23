@@ -1,5 +1,5 @@
 (ns minimily.inventory.web.ui.location
-  (:require [hiccup.form                :refer [form-to submit-button 
+  (:require [hiccup.form                :refer [form-to label submit-button text-field text-area
                                                 hidden-field]]
             [minimily.web.ui.layout     :refer [layout]]
             [minimily.web.ui.bootstrap  :refer [show-field back-button edit-button]]
@@ -34,3 +34,40 @@
             (map #(vector :tr [:td [:a {:href (str "/inventory/goods/" (:id %))} 
                                        (:name %)]]
                               [:td (:description %)]) goods)]]])))
+
+(defn locations-page [session locations]
+  (http-headers 
+    (layout session "Locations"
+      [:div {:class "card"}
+        [:div {:class "card-header"}
+          (back-button "/inventory")
+          (str "&nbsp;")
+          [:a {:href "/inventory/locations/new" :class "btn btn-secondary"} "New Location"]]
+        [:table {:class "table table-striped"}
+          [:thead
+            [:tr 
+              [:th "Name"]
+              [:th "Description"]]]
+          [:tbody 
+            (map #(vector :tr [:td [:a {:href (str "/inventory/locations/" (:id %))} 
+                                       (:name %)]]
+                              [:td (:description %)]) locations)]]])))
+
+(defn location-form-page [session & [location]]
+  (http-headers
+    (layout session "Location"
+      (form-to [:post "/inventory/locations/save"]
+        (when location (hidden-field "id" (:id location)))
+        [:div {:class "form-group"}
+          (label "name" "Name")
+          (text-field {:class "form-control" :id "name"} 
+                      "name" 
+                      (:name location))]
+        [:div {:class "form-group"}
+          (label "description" "Description")
+          (text-area {:class "form-control" :id "description"} 
+                      "description"
+                      (:description location))]
+        (submit-button {:class "btn btn-primary"} "Submit")
+        (str "&nbsp;")
+        [:a {:class "btn btn-outline-secondary" :href (str "/inventory/locations/" (:id location))} "Cancel"]))))
