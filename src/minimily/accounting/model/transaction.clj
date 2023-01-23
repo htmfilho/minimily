@@ -46,17 +46,17 @@
 (defn add [transaction third-party-account]
   (let [transaction         (conj transaction {:account_transfer third-party-account})
         counter-transaction (create-counter-transaction transaction third-party-account)]
+    (save transaction)
     (account-model/update-balance (:account transaction)
                                   (+ (* (:type transaction) 
                                         (:amount transaction))
                                      (calculate-balance (:account transaction))))
-    (save transaction)
     
+    (save counter-transaction)
     (account-model/update-balance third-party-account
                                   (+ (* (:type counter-transaction)
                                         (:amount counter-transaction))
-                                     (calculate-balance (:account counter-transaction))))
-    (save counter-transaction)))
+                                     (calculate-balance (:account counter-transaction))))))
 
 (defn delete-it [profile-id id]
   (db/delete-record table id profile-id))
