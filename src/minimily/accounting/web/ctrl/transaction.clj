@@ -53,7 +53,7 @@
                                   {:account_transfer third-party-account})
         transaction-from    (transaction-model/create-counter-transaction transaction-to third-party-account)]
     (transfer-model/transfer transaction-from transaction-to)
-    (redirect (str "/accounting/accounts/" (:account transaction)))))
+    (redirect (str "/accounting/accounts/" (:account transaction-to)))))
 
 (defn add-and-new-transaction [session params]
   (let [third-party-account (Integer/parseInt (:third_party_account params))
@@ -61,7 +61,7 @@
                                   {:account_transfer third-party-account})
         transaction-from    (transaction-model/create-counter-transaction transaction-to third-party-account)]
     (transfer-model/transfer transaction-from transaction-to)
-    (redirect (str "/accounting/accounts/" (:account transaction) "/transactions/new"))))
+    (redirect (str "/accounting/accounts/" (:account transaction-to) "/transactions/new"))))
 
 (defn save-transaction [session params]
   (let [transaction (-> params
