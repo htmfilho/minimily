@@ -5,6 +5,7 @@
             [minimily.accounting.web.ctrl.category  :as category-ctrl]
             [minimily.accounting.model.account      :as account-model]
             [minimily.accounting.model.transaction  :as transaction-model]
+            [minimily.accounting.model.transfer     :as transfer-model]
             [minimily.accounting.model.category     :as category-model]
             [minimily.accounting.model.third-party  :as third-party-model]))
 
@@ -47,15 +48,19 @@
       (conj {:profile (:profile-id session)})))
 
 (defn add-transaction [session params]
-  (let [transaction         (params-to-transaction session params)
-        third-party-account (Integer/parseInt (:third_party_account params))]
-    (transaction-model/add transaction third-party-account)
+  (let [third-party-account (Integer/parseInt (:third_party_account params))
+        transaction-to      (conj (params-to-transaction session params)
+                                  {:account_transfer third-party-account})
+        transaction-from    (transaction-model/create-counter-transaction transaction-to third-party-account)]
+    (transfer-model/transfer transaction-from transaction-to)
     (redirect (str "/accounting/accounts/" (:account transaction)))))
 
 (defn add-and-new-transaction [session params]
-  (let [transaction         (params-to-transaction session params)
-        third-party-account (Integer/parseInt (:third_party_account params))]
-    (transaction-model/add transaction third-party-account)
+  (let [third-party-account (Integer/parseInt (:third_party_account params))
+        transaction-to      (conj (params-to-transaction session params)
+                                  {:account_transfer third-party-account})
+        transaction-from    (transaction-model/create-counter-transaction transaction-to third-party-account)]
+    (transfer-model/transfer transaction-from transaction-to)
     (redirect (str "/accounting/accounts/" (:account transaction) "/transactions/new"))))
 
 (defn save-transaction [session params]
