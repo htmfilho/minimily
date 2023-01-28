@@ -27,12 +27,12 @@
       (reload-env)
       (decompose-postgres-url (:DATABASE_URL env)))))
 
-(def postgres-options {:pool-name "db-pool"
-                       :adapter "postgresql"
-                       :maximum-pool-size 2})
- 
+(def pool-options {:pool-name "db-pool"
+                   :adapter "postgresql"
+                   :maximum-pool-size 2})
+
 (def datasource
-  (cp/make-datasource (conj postgres-options (decompose-postgres-url (:DATABASE_URL env)))))
+  (cp/make-datasource (conj pool-options (decompose-postgres-url (:DATABASE_URL env)))))
 
 (def migration-config
   {:datastore  (migration/sql-database {:datasource datasource})
