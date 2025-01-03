@@ -1,7 +1,7 @@
 (ns minimily.accounting.model.transaction
-  (:require [hugsql.core                         :as hugsql]
-            [minimily.utils.database             :as db]
-            [minimily.accounting.model.account   :as account-model]))
+  (:require [hugsql.core             :as hugsql]
+            [clojure.java.jdbc       :as jdbc]
+            [minimily.utils.database :as db]))
 
 (hugsql/def-sqlvec-fns "minimily/accounting/model/sql/transaction.sql")
 
@@ -39,9 +39,13 @@
 
 (defn create-counter-transaction [transaction third-party-account]
   (-> transaction 
-      (conj {:type (* (:type transaction) -1)})
+      (conj {:type (* (:type transaction) DEBIT)})
       (conj {:account_transfer (:account transaction)})
       (conj {:account third-party-account})))
 
 (defn delete-it [profile-id id]
   (db/delete-record table id profile-id))
+
+(defn delete-all-account [account-id profile-id]
+  (db/with-conn
+    (jdbc/delete! conn table ["account = ? and profile = ?" account-id profile-id])))

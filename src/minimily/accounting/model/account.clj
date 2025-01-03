@@ -1,6 +1,7 @@
 (ns minimily.accounting.model.account
-  (:require [hugsql.core                         :as hugsql]
-            [minimily.utils.database             :as db])
+  (:require [hugsql.core                           :as hugsql]
+            [minimily.utils.database               :as db]
+            [minimily.accounting.model.transaction :as transaction-model])
   (:import (java.math RoundingMode)))
 
 (hugsql/def-sqlvec-fns "minimily/accounting/model/sql/account.sql")
@@ -28,7 +29,19 @@
   (db/get-record table id profile-id))
 
 (defn save [account]
-  (db/save-record table account))
+  (let [initial-balance (:initial_balance account)
+        account (dissoc account :initial_balance)
+        account-id (if (nil? (:id account))
+                      (db/save-record table (assoc account :balance initial-balance))
+                      (db/save-record table account))]
+    ; Create an initial transaction to define the initial balance.
+    (when (and (> initial-balance 0) (or (> account-id 0) (nil? (:id account))))
+      (transaction-model/save {:account account-id
+                               :type    transaction-model/CREDIT
+                               :amount  initial-balance
+                               :description "Initial balance"
+                               :profile  (:profile account)}))
+    account-id))
 
 (defn update-balance [id new-balance]
   (db/update-record table {:id id :balance new-balance})
@@ -45,4 +58,6 @@
                                     RoundingMode/HALF_UP))))))
 
 (defn delete-it [profile-id id]
-  (db/delete-record table id profile-id))
+  (do
+    (transaction-model/delete-all-account id profile-id)
+    (db/delete-record table id profile-id)))

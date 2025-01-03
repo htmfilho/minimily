@@ -41,9 +41,12 @@
 (defn save-account [session params]
   (let [account (-> params 
                     (assoc :profile (:profile-id session))
-                    (conj {:third_party (if (empty? (:third_party params)) 
+                    (conj {:third_party (if (empty? (:third_party params))
                                            nil
                                            (Integer/parseInt (:third_party params)))})
+                    (assoc :initial_balance (if (empty? (:initial_balance params))
+                                               0
+                                               (BigDecimal. (:initial_balance params))))
                     (assoc :debit_limit (if (empty? (:debit_limit params))
                                             0
                                             (BigDecimal. (:debit_limit params))))

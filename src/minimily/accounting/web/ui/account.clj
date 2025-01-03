@@ -163,21 +163,24 @@
     (layout session "Account"
       (form-to [:post "/accounting/accounts/save"]
         (when account (hidden-field "id" (:id account)))
-        [:div {:class "form-group"}
-          (label "name" "Name")
-          (text-field {:class "form-control" :id "name" :maxlength "100"} 
-                      "name" 
-                      (:name account))]
         [:div {:class "row"}
-          [:div {:class "col-md-4"}
+          [:div {:class "col-md-6"}
+            [:div {:class "form-group"}
+              (label "name" "Name")
+              (text-field {:class "form-control" :id "name" :maxlength "100"} 
+                          "name" 
+                          (:name account))]]
+          [:div {:class "col-md-6"}
             [:div {:class "form-group"}
               (label "third-party" "Party")
               [:select {:class "form-control" :name "third_party"}
                        [:option {:value ""} "Select..."]
                        (map #(vector :option (if (:selected %)
                                                {:value (:id %) :selected "true"}
-                                               {:value (:id %)}) (:name %)) third-parties)]]]
-          [:div {:class "col-md-4"}
+                                               {:value (:id %)}) (:name %)) third-parties)]]]]
+        
+        [:div {:class "row"}
+          [:div {:class "col-md-6"}
             [:div {:class "form-group"}
               (label "currency" "Currency")
               [:select {:name "currency" :class "form-control" :id "currency" :required "required"}
@@ -185,6 +188,12 @@
                        (map #(vector :option (if (:selected %) 
                                                {:value (:acronym %) :selected "true"}
                                                {:value (:acronym %)}) (str (:acronym %) " (" (:name %) ")")) currencies)]]]
+          [:div {:class "col-md-2"}
+            [:div {:class "form-group"}
+              (label "initial_balance" "Initial Balance")
+              (text-field {:class "form-control" :id "initial_balance" }
+                          "initial_balance"
+                          (:balance account))]]
           [:div {:class "col-md-2"}
             [:div {:class "form-group"}
               (label "debit_limit" "Debit Limit")
@@ -195,6 +204,7 @@
             (if (:active account)
               (checkbox "active" "Active" (:active account))
               (checkbox "active" "Active" true))]]
+        
         (submit-button {:class "btn btn-primary"} "Submit")
         (str "&nbsp;")
         [:a {:class "btn btn-outline-secondary" :href (str "/accounting/accounts/" (:id account))} "Cancel"]))))
